@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 12 feb 2020 om 16:16
+-- Gegenereerd op: 14 feb 2020 om 11:29
 -- Serverversie: 10.1.37-MariaDB
 -- PHP-versie: 7.2.12
 
@@ -151,7 +151,7 @@ ALTER TABLE `customer`
 -- Indexen voor tabel `customer_product`
 --
 ALTER TABLE `customer_product`
-  ADD KEY `fk_customer_product` (`customer_id`,`product_id`),
+  ADD KEY `fk_customer_product_id` (`customer_id`,`product_id`) USING BTREE,
   ADD KEY `fk_product_customer_id` (`product_id`);
 
 --
@@ -242,41 +242,41 @@ ALTER TABLE `user`
 -- Beperkingen voor tabel `customer_product`
 --
 ALTER TABLE `customer_product`
-  ADD CONSTRAINT `fk_customer_product_id` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_product_customer_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_customer_product_id` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_product_customer_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Beperkingen voor tabel `profiel`
 --
 ALTER TABLE `profiel`
-  ADD CONSTRAINT `profiel_ibfk_1` FOREIGN KEY (`id`) REFERENCES `user` (`profiel_id`);
+  ADD CONSTRAINT `profiel_ibfk_1` FOREIGN KEY (`id`) REFERENCES `user` (`profiel_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Beperkingen voor tabel `ticket_customer`
 --
 ALTER TABLE `ticket_customer`
-  ADD CONSTRAINT `c_fk_customer_ticket_id` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_ticket_customer_id` FOREIGN KEY (`ticket_id`) REFERENCES `ticket` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `c_fk_customer_ticket_id` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_ticket_customer_id` FOREIGN KEY (`ticket_id`) REFERENCES `ticket` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Beperkingen voor tabel `ticket_product`
 --
 ALTER TABLE `ticket_product`
-  ADD CONSTRAINT `fk_product_ticket_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_ticket_product_id` FOREIGN KEY (`ticket_id`) REFERENCES `ticket` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_product_ticket_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_ticket_product_id` FOREIGN KEY (`ticket_id`) REFERENCES `ticket` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Beperkingen voor tabel `user`
 --
 ALTER TABLE `user`
-  ADD CONSTRAINT `fk_profiel_id` FOREIGN KEY (`profiel_id`) REFERENCES `profiel` (`id`);
+  ADD CONSTRAINT `fk_profiel_id` FOREIGN KEY (`profiel_id`) REFERENCES `profiel` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Beperkingen voor tabel `user_ticket`
 --
 ALTER TABLE `user_ticket`
-  ADD CONSTRAINT `fk_ticket_user_id` FOREIGN KEY (`ticket_id`) REFERENCES `ticket` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_user_ticket_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_ticket_user_id` FOREIGN KEY (`ticket_id`) REFERENCES `ticket` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_user_ticket_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
