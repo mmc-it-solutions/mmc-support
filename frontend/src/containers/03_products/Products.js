@@ -8,7 +8,7 @@ class Products extends React.Component {
     customerId: 1,
 
     modal: {
-      display: "flex",
+      display: "none",
       name: "",
       disabled: true
     }
