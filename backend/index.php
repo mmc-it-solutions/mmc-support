@@ -70,11 +70,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
             $statement = $this->getCon()->prepare($sql);
             $statement->execute([$data['name'],false]);
 
-            $value = $this->getCon()->lastInsertId();
+            try {
+                $value = $this->getCon()->lastInsertId();
+                $sql = "INSERT INTO customer_product(`customer_id`,`product_id`) VALUES(?,?)";
+                $statement = $this->getCon()->prepare($sql);
+                $statement->execute([$data['customerId'],$value]);            
+            } catch (Exception $fout) {
+                echo "Error adding customer_product: " . $fout->getMessage();
+                exit;
+            }
 
-            $sql = "INSERT INTO customer_product(`customer_id`,`product_id`) VALUES(?,?)";
-            $statement = $this->getCon()->prepare($sql);
-            $statement->execute([$data['customerId'],$value]);
         }
     }
 

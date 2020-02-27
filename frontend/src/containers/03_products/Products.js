@@ -5,8 +5,8 @@ import "./products.css";
 
 class Products extends React.Component {
   state = {
-    //wordt op dit moment gebruikt voor testing.
-    //Maar kan later misschien gebruikt
+    //Wordt op dit moment gebruikt voor testing.
+    //Maar kan later misschien gebruikt worden.
     customerId: 1,
 
     modal: {
