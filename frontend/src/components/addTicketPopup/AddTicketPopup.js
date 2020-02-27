@@ -4,7 +4,7 @@ import "./AddTicketPopup.css";
 
 class AddTicketPopup extends React.Component {
   //  Om dit programma te laten werken moet deze code in de
-  //  class gaan staan waar deze component wordt toegevoegd
+  //  class gaan staan waar deze component wordt toegevoegd.
 
   // state = {
   //   display: "none"
