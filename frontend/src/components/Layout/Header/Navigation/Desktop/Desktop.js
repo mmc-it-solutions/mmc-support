@@ -10,6 +10,11 @@ const DesktopNavigation = () => {
           Home
         </NavLink>
       </li>
+      <li>
+        <NavLink to="/customers" className="nav-link">
+          Customers
+        </NavLink>
+      </li>
     </ul>
   );
 };
