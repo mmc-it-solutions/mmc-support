@@ -5,6 +5,7 @@ import "./ProductList.css";
 
 class ProductList extends React.Component {
   state = {
+    //dit is test data dit wordt later aangepast
     products: [
       {
         id: 1,
