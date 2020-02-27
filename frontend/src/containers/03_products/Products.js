@@ -5,6 +5,8 @@ import "./products.css";
 
 class Products extends React.Component {
   state = {
+    //wordt op dit moment gebruikt voor testing.
+    //Maar kan later misschien gebruikt
     customerId: 1,
 
     modal: {
@@ -29,32 +31,13 @@ class Products extends React.Component {
     });
   };
 
-  showPopUp = () => {
-    const { modal } = this.state;
-
-    let newDisplay = "";
-
-    if (modal.display === "none") {
-      newDisplay = "flex";
-    } else {
-      newDisplay = "none";
-    }
-
-    this.setState({
-      modal: {
-        ...modal,
-        display: newDisplay
-      }
-    });
-  };
-
-  removePopUp = () => {
+  changeDisplay = () => {
     const { modal } = this.state;
 
     this.setState({
       modal: {
         ...modal,
-        display: "none"
+        display: modal.display === "none" ? "flex" : "none"
       }
     });
   };
@@ -103,10 +86,13 @@ class Products extends React.Component {
 
     return (
       <div className="wrapper">
-        <button onClick={this.showPopUp.bind(this)}>Pop-Up</button>
+        <button onClick={this.changeDisplay.bind(this)}>Pop-Up</button>
 
         <div className="modal-wrap" style={{ display: modal.display }}>
-          <div className="achtergrond" onClick={this.removePopUp.bind(this)} />
+          <div
+            className="achtergrond"
+            onClick={this.changeDisplay.bind(this)}
+          />
           <div className="modal">
             <h2 className="modal__titel">Add product</h2>
             <form className="modal__form">
@@ -132,7 +118,7 @@ class Products extends React.Component {
               className="modal__form--kruisje"
               type="button"
               value="X"
-              onClick={this.removePopUp.bind(this)}
+              onClick={this.changeDisplay.bind(this)}
             />
           </div>
         </div>
