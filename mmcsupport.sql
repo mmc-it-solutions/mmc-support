@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 25 feb 2020 om 10:11
+-- Gegenereerd op: 14 feb 2020 om 11:29
 -- Serverversie: 10.1.37-MariaDB
 -- PHP-versie: 7.2.12
 
@@ -56,6 +56,8 @@ CREATE TABLE `customer_product` (
 CREATE TABLE `product` (
   `id` int(11) NOT NULL,
   `name` varchar(191) NOT NULL,
+  `description` text NOT NULL,
+  `type` varchar(191) NOT NULL,
   `is_archived` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
