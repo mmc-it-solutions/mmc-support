@@ -1,7 +1,13 @@
 import React from "react";
 
-const HomeScreen = () => {
-  return <h1>Home</h1>;
-};
+class HomeScreen extends React.Component {
+  render() {
+    return (
+      <div>
+        <h1>Home</h1>
+      </div>
+    );
+  }
+}
 
 export default HomeScreen;

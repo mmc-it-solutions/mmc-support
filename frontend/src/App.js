@@ -8,6 +8,8 @@ import store from "./store";
 import Header from "./components/Layout/Header/Header";
 import Footer from "./components/Layout/Footer/Footer";
 
+import "./App.css";
+
 const HomeScreen = React.lazy(() => import("./containers/01_home/Home"));
 
 class App extends React.Component {
