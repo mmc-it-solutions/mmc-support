@@ -11,6 +11,9 @@ import Footer from "./components/Layout/Footer/Footer";
 import "./App.css";
 
 const HomeScreen = React.lazy(() => import("./containers/01_home/Home"));
+const CustomerScreen = React.lazy(() =>
+  import("./containers/02_Customer/Customer")
+);
 
 class App extends React.Component {
   componentDidMount() {}
@@ -24,6 +27,7 @@ class App extends React.Component {
               <React.Suspense fallback={<div>loading..</div>}>
                 <Switch>
                   <Route path="/" exact={true} component={HomeScreen} />
+                  <Route path="/customers" component={CustomerScreen} />
                 </Switch>
               </React.Suspense>
             </main>
