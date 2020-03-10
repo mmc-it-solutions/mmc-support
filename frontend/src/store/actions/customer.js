@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { GET_CUSTOMERS, INSERT_CUSTOMER } from "./types";
 
-export const getCustomers = form => (dispatch, getState) => {
+export const getCustomers = () => (dispatch, getState) => {
   const config = {
     headers: {
       "Content-Type": "application/json"

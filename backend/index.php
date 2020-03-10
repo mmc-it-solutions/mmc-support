@@ -62,6 +62,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
                     $this->getTickets();
                 break;
 
+                case "getCustomer":
+                    $this->getCustomer();
+                break;
+
                 case "getCustomers":
                     $this->getCustomers();
                 break;
@@ -91,27 +95,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
             $data = $this->getData();
 
             $sql = "SELECT * FROM ticket WHERE id=?";
-            $value = $this->getCon()->prepare($sql)->execute($data['id']);
-            $returnArray[$data['id']] = [
-                 'id'            => $value['id'],
-                'titel'         => $value['titel'],
-                 'description'   => $value['description'],
-                 'status'        => $value['status'],
-                  'worktime'      => $value['worktime'],
-                 'is_archived'   => $value['is_archived'],
-                 'date_created'  => $value['date_created'] 
-            ];
-            echo json_encode($returnArray);
-        }
-
-        function getTickets(){
-            $sql = "SELECT * FROM ticket";
-            $statement = $this->getCon()->prepare($sql)->execute();
-            $returnArray = [];
-            foreach ($statement as $key => $value) {
-                $returnArray[$key] = [
+            $value = $this->getCon()->prepare($sql);
+            $value->execute([$data['ticketId']]);
+            $ticket = $value->fetchAll();
+            foreach ($ticket as $key => $value) {
+                $returnArray = [
                     'id'            => $value['id'],
-                    'titel'         => $value['titel'],
+                    'title'         => $value['title'],
                     'description'   => $value['description'],
                     'status'        => $value['status'],
                     'worktime'      => $value['worktime'],
@@ -122,6 +112,89 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
             echo json_encode($returnArray);
         }
 
+        function getTickets(){
+            $sql = "SELECT * FROM ticket";
+            $statement = $this->getCon()->prepare($sql);
+            $statement->execute();
+            $tickets = $statement->fetchAll();
+            $returnArray = [];
+            foreach ($tickets as $key => $value) {
+                $companyName = "none";
+
+                $sql = "SELECT * FROM ticket_customer WHERE `ticket_id`=?";
+                $statement = $this->getCon()->prepare($sql);
+                $statement->execute([$value['id']]);
+                $companyId = $statement->fetchAll();
+
+                if(!empty($companyId)){
+                    foreach ($companyId as $key2 => $value2) {
+
+                        $sql = "SELECT * FROM customer WHERE `id`=?";
+                        $statement = $this->getCon()->prepare($sql);
+                        $statement->execute([$value2['customer_id']]);
+                        $company = $statement->fetchAll();
+
+                        foreach ($company as $key3 => $value3) {
+                            $companyName = $value3['company_name'];
+                        }
+                    }
+                }
+
+                $employeeName = "none";
+
+                $sql = "SELECT * FROM user_ticket WHERE `ticket_id`=?";
+                $statement = $this->getCon()->prepare($sql);
+                $statement->execute([$value['id']]);
+                $userId = $statement->fetchAll();
+                
+                if(!empty($userId)){
+                    foreach ($userId as $key2 => $value2) {
+
+                        $sql = "SELECT * FROM user WHERE `id`=?";
+                        $statement = $this->getCon()->prepare($sql);
+                        $statement->execute([$value2['user_id']]);
+                        $employee = $statement->fetchAll();
+
+                        foreach ($employee as $key3 => $value3) {
+                            $sql = "SELECT * FROM `profile` WHERE `id`=?";
+                            $statement = $this->getCon()->prepare($sql);
+                            $statement->execute([$value3['profile_id']]);
+                            $profile = $statement->fetchAll();
+
+                            foreach ($profile as $key4 => $value4) {
+                                $employee = $value4['first_name']." ".$value4['last_name'];
+                            }
+                        }
+                    }
+                }
+
+                $returnArray[$key] = [
+                    'id'            => $value['id'],
+                    'name'          => $value['title'],
+                    'status'        => $value['status'],
+                    'company'       => $companyName,
+                    'employee'      => $employeeName
+                ];
+            }
+            echo json_encode($returnArray);
+        }
+
+        function getCustomer(){
+            $data = $this->getData();
+
+            $sql = "SELECT * FROM customer WHERE id=?";
+            $value = $this->getCon()->prepare($sql);
+            $value->execute($data['id']);
+            $returnArray[$data['id']] = [
+                'id'            => $value['id'],
+                'name'          => $value['name'],
+                'company_name'  => $value['company_name'],
+                'email'         => $value['email'],
+                'phone_number'  => $value['phone_number'],
+            ];
+            echo json_encode($returnArray);
+        }
+
         function getCustomers(){
             $sql = "SELECT * FROM customer";
             $statement = $this->getCon()->prepare($sql);
@@ -129,11 +202,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
             $customers = $statement->fetchAll();
             $returnArray = [];
             foreach ($customers as $key => $value) {
+                $sql = "SELECT COUNT(*) FROM customer_product WHERE `customer_id`=?";
+                $statement = $this->getCon()->prepare($sql);
+                $statement->execute([$value['id']]);
+                $amountProducts = $statement->fetchColumn();
+
                 $returnArray[$key] = [
                     'id'            => $value['id'],
                     'name'          => $value['company_name'],
                     'email'         => $value['email'],
-                    'products'      => 2,
+                    'products'      => $amountProducts,
                     'actions'       => ""
                 ];
             }
@@ -142,9 +220,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
         function getProducts(){
             $sql = "SELECT * FROM product";
-            $statement = $this->getCon()->prepare($sql)->execute();
+            $statement = $this->getCon()->prepare($sql);
+            $statement->execute();
+            $products = $statement->fetchAll();
             $returnArray = [];
-            foreach ($statement as $key => $value) {
+            foreach ($products as $key => $value) {
                 $returnArray[$key] = [
                     'id'            => $value['id'],
                     'name'         => $value['name'],
@@ -157,7 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
         function insertTicket(){
             $data = $this->getData();
 
-            $sql = "INSERT INTO ticket(`titel`, `description`, `status`, `worktime`,`is_archived`,`date_created`) 
+            $sql = "INSERT INTO ticket(`title`, `description`, `status`, `worktime`,`is_archived`,`date_created`) 
                     VALUES(?,?,?,?,?,?)";
             $statement = $this->getCon()->prepare($sql);
             $statement->execute([$data['title'],$data['description'],1,0,false,date("Y-m-d")]);
@@ -196,7 +276,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
                 $value = $this->getCon()->prepare($sql)->execute([$customerId]);
                 $returnArray[$data['id']] = [
                     'id'            => $value['id'],
-                    'titel'         => $value['titel'],
+                    'title'         => $value['title'],
                     'description'   => $value['description'],
                     'status'        => $value['status'],
                     'worktime'      => $value['worktime'],

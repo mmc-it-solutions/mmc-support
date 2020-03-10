@@ -80,7 +80,7 @@ CREATE TABLE `profiel` (
 
 CREATE TABLE `ticket` (
   `id` int(11) NOT NULL,
-  `titel` varchar(191) NOT NULL,
+  `title` varchar(191) NOT NULL,
   `description` text NOT NULL,
   `status` tinyint(1) NOT NULL,
   `worktime` float NOT NULL,
@@ -161,7 +161,7 @@ ALTER TABLE `product`
 --
 -- Indexen voor tabel `profiel`
 --
-ALTER TABLE `profiel`
+ALTER TABLE `profile`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -189,7 +189,7 @@ ALTER TABLE `ticket_product`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `index_fk_profiel` (`profiel_id`);
+  ADD KEY `index_fk_profile` (`profile_id`);
 
 --
 -- Indexen voor tabel `user_ticket`
@@ -217,7 +217,7 @@ ALTER TABLE `product`
 --
 -- AUTO_INCREMENT voor een tabel `profiel`
 --
-ALTER TABLE `profiel`
+ALTER TABLE `profile`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -246,8 +246,8 @@ ALTER TABLE `customer_product`
 --
 -- Beperkingen voor tabel `profiel`
 --
-ALTER TABLE `profiel`
-  ADD CONSTRAINT `profiel_ibfk_1` FOREIGN KEY (`id`) REFERENCES `user` (`profiel_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `profile`
+  ADD CONSTRAINT `profiel_ibfk_1` FOREIGN KEY (`id`) REFERENCES `user` (`profile_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Beperkingen voor tabel `ticket_customer`
@@ -267,7 +267,7 @@ ALTER TABLE `ticket_product`
 -- Beperkingen voor tabel `user`
 --
 ALTER TABLE `user`
-  ADD CONSTRAINT `fk_profiel_id` FOREIGN KEY (`profiel_id`) REFERENCES `profiel` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_profile_id` FOREIGN KEY (`profile_id`) REFERENCES `profile` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Beperkingen voor tabel `user_ticket`

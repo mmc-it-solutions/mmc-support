@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "./Customer.css";
-import "../../components/customers/AddCustomer.js";
+// import "../../components/customers/AddCustomer.js";
 import { NavLink } from "react-router-dom";
 
 import { connect } from "react-redux";
