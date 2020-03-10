@@ -58,6 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
                     $this->insertProduct();
                 break;
 
+                case "insertTicket":
+                    $this->insertTicket();
+                break;
+
                 default:
                 return null;
             }
@@ -79,7 +83,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
                 echo "Error adding customer_product: " . $fout->getMessage();
                 exit;
             }
+        }
 
+        function insertTicket(){
+            $data = $this->getData();
+
+            $sql = "INSERT INTO ticket(`titel`, `description`, `status`, `worktime`,`is_archived`,`date_created`) VALUES(?,?,?,?,?,?)";
+            $statement = $this->getCon()->prepare($sql);
+            $statement->execute([$data['title'],$data['description'],1,0,false,date("Y-m-d")]);
+
+            $value = $this->getCon()->lastInsertId();
+
+            if($data['customerId'] !== 0){
+                $sql = "INSERT INTO ticket_customer(`ticket_id`,`customer_id`) VALUES(?,?)";
+                $statement = $this->getCon()->prepare($sql);
+                $statement->execute([$value,$data['customerId']]);    
+            }
+            if($data['productId'] !== 0){
+                $sql = "INSERT INTO ticket_product(`ticket_id`,`product_id`) VALUES(?,?)";
+                $statement = $this->getCon()->prepare($sql);
+                $statement->execute([$value,$data['productId']]);    
+            }
         }
     }
 
