@@ -2,7 +2,7 @@ import React from "react";
 
 import "./AddTicketPopup.css";
 
-const AddTicketPopup = ({ modal, onClose, onChange }) => {
+const AddTicketPopup = ({ modal, onClose, onChange, addTicket }) => {
   //  Om dit programma te laten werken moet deze code in de
   //  class gaan staan waar deze component wordt toegevoegd.
 
@@ -11,8 +11,8 @@ const AddTicketPopup = ({ modal, onClose, onChange }) => {
   //     display: "flex",
   //     title: "",
   //     description: "",
-  //     customer: 1,
-  //     product: 1
+  //     customer: 0,
+  //     product: 0
   //   }
   // };
 
@@ -39,14 +39,59 @@ const AddTicketPopup = ({ modal, onClose, onChange }) => {
   //   });
   // };
 
+  // addTicket = event => {
+  //   event.preventDefault();
+
+  //   const { modal } = this.state;
+
+  //   let data = {
+  //     title: modal.title,
+  //     description: modal.description,
+  //     customerId: modal.customer,
+  //     productId: modal.product
+  //   };
+
+  //   let json = {
+  //     action: "insertTicket",
+  //     data: data
+  //   };
+
+  //   let config = {
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json, application/x-www-form-urlencoded"
+  //     }
+  //   };
+
+  //   axios
+  //     .post("http://localhost/mmcSupport/backend/", json, config)
+  //     .then(resp => {
+  //       this.setState({
+  //         modal: {
+  //           ...modal,
+  //           display: "none",
+  //           title: "",
+  //           description: "",
+  //           customer: "0",
+  //           product: "0",
+  //           disabled: true
+  //         }
+  //       });
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // };
+
   // Dit is de html code die in de render functie moet zitten
 
   // <button onClick={this.changeDisplay}>Popup</button>
-  //       <AddTicketPopup
-  //         modal={modal}
-  //         onClose={this.changeDisplay}
-  //         onChange={this.changeValue}
-  //       />
+  // <AddTicketPopup
+  //   modal={this.state.modal}
+  //   onClose={this.changeDisplay}
+  //   onChange={this.changeValue}
+  //   addTicket={this.addTicket}
+  // />
 
   return (
     <div className="modal-wrap" style={{ display: modal.display }}>
@@ -81,6 +126,7 @@ const AddTicketPopup = ({ modal, onClose, onChange }) => {
             value={modal.customer}
             onChange={onChange}
           >
+            <option value="0">none</option>
             <option value="1">1</option>
             <option value="2">2</option>
           </select>
@@ -93,14 +139,16 @@ const AddTicketPopup = ({ modal, onClose, onChange }) => {
             value={modal.product}
             onChange={onChange}
           >
-            <option value="3">3</option>
-            <option value="6">6</option>
+            <option value="0">none</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
           </select>
           <br />
           <input
             className="modal__form--submit"
             type="submit"
             value="Add Ticket"
+            onClick={addTicket}
           />
         </form>
         <input
