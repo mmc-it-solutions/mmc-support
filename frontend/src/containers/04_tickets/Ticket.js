@@ -50,31 +50,28 @@ class Ticket extends React.Component {
   render() {
     return (
       <div>
-        <div className="Ticket-List">Ticket List</div>
+        <div className="Ticket-List"> Ticket List 2 </div>{" "}
         <div>
           <table className="ticket-table">
             <tr>
-              <th>Id</th>
-              <th>Name</th>
-              <th>Company</th>
-              <th>Werker</th>
-              <th>status</th>
-            </tr>
+              <th> Id </th> <th> Name </th> <th> Company </th> <th> Werker </th>{" "}
+              <th> status </th>{" "}
+            </tr>{" "}
             <tbody>
+              {" "}
               {this.state.tickets.map(ticket => (
                 <tr>
-                  <td>{ticket.id}</td>
-                  <td>{ticket.name}</td>
-                  <td>{ticket.company}</td>
-                  <td>{ticket.werker}</td>
+                  <td> {ticket.id} </td> <td> {ticket.name} </td>{" "}
+                  <td> {ticket.company} </td> <td> {ticket.werker} </td>{" "}
                   <td className={"status_" + ticket.status}>
-                    {this.getStatus(ticket.status)}
-                  </td>
+                    {" "}
+                    {this.getStatus(ticket.status)}{" "}
+                  </td>{" "}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              ))}{" "}
+            </tbody>{" "}
+          </table>{" "}
+        </div>{" "}
       </div>
     );
   }
