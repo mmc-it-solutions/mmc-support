@@ -6,48 +6,21 @@ import "./Customer.css";
 import "../../components/customers/AddCustomer.js";
 import { NavLink } from "react-router-dom";
 
+import { connect } from "react-redux";
+import { getCustomers } from "../../store/actions/customer";
+
 class Customer extends React.Component {
-  state = {
-    //dit is allemaal maar test data die later moet met database automatisch
-    customers: [
-      {
-        id: 1,
-        name: "MMC-ITSolutions",
-        contact: "something@thismail.com",
-        products: 10,
-        actions: ""
-      },
-      {
-        id: 2,
-        name: "MMC-ITSolutions2",
-        contact: "something@thismail.com",
-        products: 1,
-        actions: ""
-      },
-      {
-        id: 3,
-        name: "MMC-ITSolutions3",
-        contact: "something@thismail.com",
-        products: 0,
-        actions: ""
-      },
-      {
-        id: 4,
-        name: "MMC-ITSolutions4",
-        contact: "something@thismail.com",
-        products: 20,
-        actions: ""
-      }
-    ]
-  };
+  componentDidMount() {
+    this.props.getCustomers();
+  }
 
   renderTableData() {
-    return this.state.customers.map(customers => {
-      const { id, name, contact, products } = customers;
+    return this.props.customers.map(customers => {
+      const { id, name, email, products } = customers;
       return (
         <tr key={id}>
           <td>{name}</td>
-          <td>{contact}</td>
+          <td>{email}</td>
           <td>{products}</td>
           <td className="FA">
             <NavLink to="#">
@@ -61,12 +34,14 @@ class Customer extends React.Component {
   }
 
   renderTableHeader() {
-    let header = Object.keys(this.state.customers[0]);
-    return header.map((key, index) => {
-      if (key.toUpperCase() !== "ID") {
-        return <th key={index}>{key.toUpperCase()}</th>;
-      }
-    });
+    if (typeof this.props.customers[0] !== "undefined") {
+      let header = Object.keys(this.props.customers[0]);
+      return header.map((key, index) => {
+        if (key.toUpperCase() !== "ID") {
+          return <th key={index}>{key.toUpperCase()}</th>;
+        }
+      });
+    }
   }
 
   render() {
@@ -91,4 +66,10 @@ class Customer extends React.Component {
   }
 }
 
-export default Customer;
+const mapStateProps = (state, ownProps) => ({
+  customers: state.customer.customers
+});
+
+const mapDispatchToProps = { getCustomers };
+
+export default connect(mapStateProps, mapDispatchToProps)(Customer);
