@@ -1,0 +1,119 @@
+.modal-wrap {
+  height: 100vh;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  z-index: 0;
+}
+
+.achtergrond {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.712);
+  z-index: 1;
+}
+
+.modal {
+  position: fixed;
+  background-color: white;
+  width: 80%;
+  padding: 10px 0;
+  border-radius: 20px;
+  z-index: 2;
+}
+
+.modal__titel {
+  text-align: center;
+  font-size: 34px;
+  margin-bottom: 50px;
+  color: #0283e5;
+}
+
+.modal__form {
+  margin: 0 auto;
+  width: 85%;
+}
+
+.modal__form--label {
+  font-size: 25px;
+  color: #54595e;
+}
+
+.modal__form--input {
+  padding: 10px;
+  font-size: 20px;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.modal__form--submit {
+  display: block;
+  margin: 20px auto 0 auto;
+  padding: 12px;
+  font-size: 25px;
+  border-radius: 24px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  background-color: #00d32b;
+  transition: linear 0.5s;
+}
+
+.modal__form--submit:hover {
+  color: #54595e;
+  background-color: #c8f6d0;
+}
+
+.modal__form--kruisje {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px 20px;
+  font-size: 30px;
+  border: none;
+  border-top-right-radius: 20px;
+  cursor: pointer;
+  color: white;
+  background-color: #00d32b;
+  transition: linear 0.5s;
+}
+
+.modal__form--kruisje:hover {
+  color: #54595e;
+  background-color: #c8f6d0;
+}
+
+@media (min-width: 768px) {
+  .modal {
+    width: 60%;
+  }
+
+  .modal__form {
+    width: 90%;
+  }
+
+  .container {
+    display: grid;
+    grid-template-columns: auto auto;
+  }
+
+  .modal1 {
+    padding-right: 20px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .modal {
+    width: 60%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .modal {
+    width: 60%;
+  }
+}

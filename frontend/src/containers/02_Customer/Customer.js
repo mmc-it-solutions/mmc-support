@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "./Customer.css";
+import AddCustomer from "../../components/customers/AddCustomer";
 import { NavLink } from "react-router-dom";
 
 class Customer extends React.Component {
@@ -35,7 +36,38 @@ class Customer extends React.Component {
         contact: "something@thismail.com",
         products: 20
       }
-    ]
+    ],
+    modal: {
+      display: "none",
+      title: "",
+      company: "",
+      name: "",
+      email: "",
+      phone: ""
+    }
+  };
+
+  changeValue = event => {
+    const { target } = event;
+    const { modal } = this.state;
+
+    this.setState({
+      modal: {
+        ...modal,
+        [target.name]: target.value
+      }
+    });
+  };
+
+  changeDisplay = () => {
+    const { modal } = this.state;
+
+    this.setState({
+      modal: {
+        ...modal,
+        display: modal.display === "none" ? "flex" : "none"
+      }
+    });
   };
 
   renderTableData() {
@@ -69,11 +101,15 @@ class Customer extends React.Component {
   render() {
     return (
       <div className="wrapper">
+        <AddCustomer
+          modal={this.state.modal}
+          onClose={this.changeDisplay}
+          onChange={this.changeValue}
+        />
         <h2 className="title">Company List</h2>
 
         <div className="content">
-          <button>Add Company</button>
-
+          <button onClick={this.changeDisplay}>Add Company</button>
           <input type="text" placeholder=" Search" />
         </div>
 
@@ -83,6 +119,7 @@ class Customer extends React.Component {
           </thead>
           <tbody>{this.renderTableData()}</tbody>
         </table>
+        {this.state.modalOpen ? <AddCustomer /> : null}
       </div>
     );
   }
