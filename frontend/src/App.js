@@ -8,8 +8,16 @@ import store from "./store";
 import Header from "./components/Layout/Header/Header";
 import Footer from "./components/Layout/Footer/Footer";
 
+import "./App.css";
+
 const HomeScreen = React.lazy(() => import("./containers/01_home/Home"));
 const TicketScreen = React.lazy(() => import("./containers/04_tickets/Ticket"));
+const CustomerScreen = React.lazy(() =>
+  import("./containers/02_Customer/Customer")
+);
+const CustomerInfo = React.lazy(() =>
+  import("./containers/02_Customer/CustomerInfo/CustomerInfo")
+);
 
 class App extends React.Component {
   render() {
@@ -23,6 +31,8 @@ class App extends React.Component {
                 <Switch>
                   <Route path="/" exact={true} component={HomeScreen} />
                   <Route path="/ticket" exact={true} component={TicketScreen} />
+                  <Route path="/customers" exact component={CustomerScreen} />
+                  <Route path="/customers/:id" component={CustomerInfo} />
                 </Switch>
               </React.Suspense>
             </main>

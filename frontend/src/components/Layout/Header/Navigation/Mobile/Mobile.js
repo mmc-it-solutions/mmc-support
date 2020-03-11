@@ -7,7 +7,7 @@ const MobileNavigation = () => {
     <ul className="mobile-menu">
       <li>
         <NavLink to="/" className="nav-link">
-          Home
+          Mobile Home
         </NavLink>
       </li>
     </ul>
