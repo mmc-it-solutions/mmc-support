@@ -1,13 +1,13 @@
 import React from "react";
 import "./AddCustomer.css";
 
-const AddCustomer = ({ modal, onClose, onChange }) => {
+const AddCustomer = ({ modal, onClose, onChange, submitHandler }) => {
   return (
     <div className="modal-wrap" style={{ display: modal.display }}>
       <div className="achtergrond" onClick={onClose} />
       <div className="modal">
         <h2 className="modal__titel">Add customer</h2>
-        <form className="modal__form">
+        <form className="modal__form" onSubmit={submitHandler}>
           <label className="modal__form--label">Company Name</label>
           <br />
           <input
@@ -16,6 +16,7 @@ const AddCustomer = ({ modal, onClose, onChange }) => {
             name="company"
             value={modal.company}
             onChange={onChange}
+            required
           />
           <label className="modal__form--label">Name</label>
           <br />
@@ -25,6 +26,7 @@ const AddCustomer = ({ modal, onClose, onChange }) => {
             name="name"
             value={modal.name}
             onChange={onChange}
+            required
           />
 
           <div className="container">
@@ -33,10 +35,11 @@ const AddCustomer = ({ modal, onClose, onChange }) => {
               <br />
               <input
                 className="modal__form--input"
-                type="text"
+                type="email"
                 name="email"
                 value={modal.email}
                 onChange={onChange}
+                required
               />
             </div>
 
@@ -49,6 +52,7 @@ const AddCustomer = ({ modal, onClose, onChange }) => {
                 name="phone"
                 value={modal.phone}
                 onChange={onChange}
+                required
               />
             </div>
           </div>
@@ -60,7 +64,7 @@ const AddCustomer = ({ modal, onClose, onChange }) => {
           />
         </form>
         <input
-          className="modal__form--kruisje"
+          className="modal__form--close"
           type="button"
           value="X"
           onClick={onClose}

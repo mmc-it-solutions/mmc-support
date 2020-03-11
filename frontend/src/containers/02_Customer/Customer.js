@@ -17,21 +17,21 @@ class Customer extends React.Component {
         actions: "yes"
       },
       {
-        id: 1,
+        id: 2,
         name: "MMC-ITSolutions2",
         contact: "something@thismail.com",
         products: 1,
         actions: "yes"
       },
       {
-        id: 1,
+        id: 3,
         name: "MMC-ITSolutions3",
         contact: "something@thismail.com",
         products: 0,
         actions: "yes"
       },
       {
-        id: 1,
+        id: 4,
         name: "MMC-ITSolutions4",
         contact: "something@thismail.com",
         products: 20
@@ -39,7 +39,6 @@ class Customer extends React.Component {
     ],
     modal: {
       display: "none",
-      title: "",
       company: "",
       name: "",
       email: "",
@@ -70,6 +69,20 @@ class Customer extends React.Component {
     });
   };
 
+  submitHandler = event => {
+    event.preventDefault();
+
+    this.setState({
+      modal: {
+        display: "none",
+        company: "",
+        name: "",
+        email: "",
+        phone: ""
+      }
+    });
+  };
+
   renderTableData() {
     return this.state.customers.map(customers => {
       const { id, name, contact, products } = customers;
@@ -79,7 +92,7 @@ class Customer extends React.Component {
           <td>{contact}</td>
           <td>{products}</td>
           <td className="FA">
-            <NavLink to="#">
+            <NavLink to={"/customers/" + id}>
               <FontAwesomeIcon icon={faEye} />
             </NavLink>
             <FontAwesomeIcon icon={faTrashAlt} />
@@ -105,6 +118,7 @@ class Customer extends React.Component {
           modal={this.state.modal}
           onClose={this.changeDisplay}
           onChange={this.changeValue}
+          submitHandler={this.submitHandler}
         />
         <h2 className="title">Company List</h2>
 
