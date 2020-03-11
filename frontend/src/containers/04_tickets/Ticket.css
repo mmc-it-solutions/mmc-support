@@ -1,0 +1,58 @@
+body {
+    border-radius: 25px;
+    padding: 20px;
+}
+
+.Ticket-List {
+    margin-bottom: 10px;
+    text-align: center;
+    color: #0283e5;
+    font-size: 25px;
+}
+
+.ticket-table {
+    margin: 0 auto;
+    border: 1px solid #080808;
+    border-collapse: collapse;
+    width: 80%;
+    padding: 20px;
+    font-size: 20px;
+}
+
+.ticket-table th {
+    padding: 3px;
+}
+
+.status_1 {
+    background-color: red;
+}
+
+.status_2 {
+    background-color: orange;
+}
+
+.status_3 {
+    background-color: green;
+}
+
+.ticket-table tbody tr td {
+    border: 1px solid #080808;
+    padding: 3px;
+}
+
+.ticket-table tr th {
+    color: white;
+    background-color: #0283e5;
+}
+
+@media(min-width:768px) {
+    .ticket-table {
+        width: 50%;
+    }
+}
+
+@media(min-width:1024px) {
+    .ticket-table {
+        width: 45%;
+    }
+}
