@@ -11,6 +11,7 @@ import Footer from "./components/Layout/Footer/Footer";
 import "./App.css";
 
 const HomeScreen = React.lazy(() => import("./containers/01_home/Home"));
+const TicketScreen = React.lazy(() => import("./containers/04_tickets/Ticket"));
 const CustomerScreen = React.lazy(() =>
   import("./containers/02_Customer/Customer")
 );
@@ -19,7 +20,6 @@ const CustomerInfo = React.lazy(() =>
 );
 
 class App extends React.Component {
-  componentDidMount() {}
   render() {
     return (
       <Provider store={store}>
@@ -27,9 +27,10 @@ class App extends React.Component {
           <React.Fragment>
             <Header />
             <main>
-              <React.Suspense fallback={<div>loading..</div>}>
+              <React.Suspense fallback={<div> loading.. </div>}>
                 <Switch>
                   <Route path="/" exact={true} component={HomeScreen} />
+                  <Route path="/ticket" exact={true} component={TicketScreen} />
                   <Route path="/customers" exact component={CustomerScreen} />
                   <Route path="/customers/:id" component={CustomerInfo} />
                 </Switch>
