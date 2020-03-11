@@ -1,4 +1,9 @@
-import { GET_CUSTOMER, GET_CUSTOMERS, INSERT_CUSTOMER } from "../actions/types";
+import {
+  GET_CUSTOMER,
+  GET_CUSTOMERS,
+  INSERT_CUSTOMER,
+  INSERT_PRODUCT
+} from "../actions/types";
 
 const initialState = {
   customer: [],
@@ -21,6 +26,14 @@ export default function(state = initialState, action) {
       return {
         ...state,
         customers: [...state.customers, action.payload]
+      };
+    case INSERT_PRODUCT:
+      return {
+        ...state,
+        customer: {
+          ...state.customer,
+          products: [...state.customer.products, action.payload]
+        }
       };
     default:
       return state;

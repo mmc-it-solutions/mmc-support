@@ -37,7 +37,7 @@ function getTickets($data,$con){
             }
         }
 
-        $userIdColoration = selectStatement($con, 'user_ticket', true, '`ticket_id`=?', [$value['id']]);
+        $userIdColoration = selectStatement($con, 'user_ticket', true, '`ticket_id`=?', [$ticketData['id']]);
         
         if(!empty($userIdColoration)){
             foreach ($userIdColoration as $userId) {
@@ -69,7 +69,7 @@ function insertTicket($data,$con){
     $values = [$data['title'],$data['description'],1,0,false,date("Y-m-d")];
     insertStatement($con, "ticket", $columnNames, $values);
 
-    $id = $this->getCon()->lastInsertId();
+    $id = $con->lastInsertId();
 
     if($data['customerId'] != 0){
         $columnNames = ['ticket_id', 'customer_id'];
@@ -79,11 +79,11 @@ function insertTicket($data,$con){
 
     if($data['productId'] != 0){
         $columnNames = ['ticket_id', 'product_id'];
-        $values = [$value,$data['productId']];
+        $values = [$id,$data['productId']];
         insertStatement($con, "ticket_product", $columnNames, $values);
     }
 
-    $tickets = selectStatement($con, 'ticket', true, '`id`=?', [$value]);
+    $tickets = selectStatement($con, 'ticket', true, '`id`=?', [$id]);
     foreach ($tickets as $ticketData) {
 
         $companyName = "none";
@@ -100,7 +100,7 @@ function insertTicket($data,$con){
                 }
             }
         }
-        $userIdColoration = selectStatement($con, 'user_ticket', true, '`ticket_id`=?', [$value['id']]);
+        $userIdColoration = selectStatement($con, 'user_ticket', true, '`ticket_id`=?', [$ticketData['id']]);
         
         if(!empty($userIdColoration)){
             foreach ($userIdColoration as $userId) {

@@ -11,10 +11,6 @@ import { connect } from "react-redux";
 import { getCustomers, createCustomer } from "../../store/actions/customer";
 
 class Customer extends React.Component {
-  componentDidMount() {
-    this.props.getCustomers();
-  }
-
   state = {
     modal: {
       display: "none",
@@ -24,6 +20,10 @@ class Customer extends React.Component {
       phone: ""
     }
   };
+
+  componentDidMount() {
+    this.props.getCustomers();
+  }
 
   changeValue = event => {
     const { target } = event;

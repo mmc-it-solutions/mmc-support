@@ -30,8 +30,16 @@ class App extends React.Component {
               <React.Suspense fallback={<div> loading.. </div>}>
                 <Switch>
                   <Route path="/" exact={true} component={HomeScreen} />
-                  <Route path="/ticket" exact={true} component={TicketScreen} />
-                  <Route path="/customers" exact component={CustomerScreen} />
+                  <Route
+                    path="/tickets"
+                    exact={true}
+                    component={TicketScreen}
+                  />
+                  <Route
+                    path="/customers"
+                    exact={true}
+                    component={CustomerScreen}
+                  />
                   <Route path="/customers/:id" component={CustomerInfo} />
                 </Switch>
               </React.Suspense>

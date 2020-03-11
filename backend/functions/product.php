@@ -1,33 +1,5 @@
 <?php
 
-function getProducts($data,$con){
-    $returnArray = [];
-
-    $products = selectStatement($con, 'product', false, null, null);
-
-    foreach ($products as $productData) {
-        $checker = false;
-        $products = selectStatement($con, 
-                                    'customer_product',
-                                    true,
-                                    'customer_id=? AND product_id=?',
-                                    [$data['customerId'],$productData['id']]
-                                );
-        for($i=0; count($products)<$i; $i++) {
-            $checker = true;
-        }
-
-        if($checker){
-            $returnArray[] = [
-                'id'            => $productData['id'],
-                'name'          => $productData['name'],
-                'is_archived'   => $productData['is_archived'],
-            ];
-        }
-    }
-    return $returnArray;
-}
-
 function insertProduct($data,$con){
     $columnNames = ['name', 'is_archived'];
     $values = [$data['name'],false];

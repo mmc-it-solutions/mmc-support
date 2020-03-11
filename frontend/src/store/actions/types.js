@@ -6,5 +6,4 @@ export const GET_CUSTOMER = "GET_CUSTOMER";
 export const GET_CUSTOMERS = "GET_CUSTOMERS";
 export const INSERT_CUSTOMER = "INSERT_CUSTOMER";
 
-export const GET_PRODUCTS = "GET_PRODUCTS";
 export const INSERT_PRODUCT = "INSERT_PRODUCT";

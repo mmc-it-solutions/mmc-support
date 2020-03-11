@@ -75,10 +75,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
                     echo json_encode(getCustomers($this->getData(),$this->getCon()));
                 break;
 
-                case "getProducts":
-                    echo json_encode(getProducts($this->getData(),$this->getCon()));
-                break;
-
                 case "insertProduct":
                     echo json_encode(insertProduct($this->getData(),$this->getCon()));
                 break;

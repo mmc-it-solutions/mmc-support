@@ -1,15 +1,31 @@
 <?php
 
 function getCustomer($data,$con){
+    $returnArray = [];
     $customer = selectStatement($con,'customer',true,'`id`=?',[$data['customerId']]);
 
     foreach ($customer as $customerData) {
+        $products = [];
+        $productIdColoration = selectStatement($con,'customer_product',true,'`customer_id`=?',[$data['customerId']]);
+        foreach ($productIdColoration as $productId) {
+            $product = selectStatement($con, 'product', true, '`id`=?', [$productId['product_id']]);
+            foreach ($product as $productData) {
+                $products[] = [
+                    'id'      => $productData['id'],
+                    'name'    => $productData['name']
+                ];
+            }
+        }
+
         $returnArray = [
             'id'            => $customerData['id'],
-            'name'          => $customerData['name'],
-            'company_name'  => $customerData['company_name'],
-            'email'         => $customerData['email'],
-            'phone_number'  => $customerData['phone_number'],
+            'name'          => $customerData['company_name'],
+            'contact'       => [
+                'name'          => $customerData['name'],
+                'email'         => $customerData['email'],
+                'phone'         => $customerData['phone_number']
+            ],
+            'products'      => $products
         ];
     }
 
