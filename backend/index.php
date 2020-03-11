@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
     require_once "./db.php";
     require_once "./statements/index.php";
+    
     require_once "./functions/ticket.php";
     require_once "./functions/customer.php";
     require_once "./functions/product.php";

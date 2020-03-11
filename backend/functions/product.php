@@ -5,23 +5,23 @@ function getProducts($data,$con){
 
     $products = selectStatement($con, 'product', false, null, null);
 
-    foreach ($products as $key => $value) {
+    foreach ($products as $productData) {
         $checker = false;
         $products = selectStatement($con, 
                                     'customer_product',
                                     true,
                                     'customer_id=? AND product_id=?',
-                                    [$data['customerId'],$value['id']]
+                                    [$data['customerId'],$productData['id']]
                                 );
-        foreach ($products as $key2 => $value2) {
+        for($i=0; count($products)<$i; $i++) {
             $checker = true;
         }
 
         if($checker){
-            $returnArray[$key] = [
-                'id'            => $value['id'],
-                'name'          => $value['name'],
-                'is_archived'   => $value['is_archived'],
+            $returnArray[] = [
+                'id'            => $productData['id'],
+                'name'          => $productData['name'],
+                'is_archived'   => $productData['is_archived'],
             ];
         }
     }
@@ -33,20 +33,20 @@ function insertProduct($data,$con){
     $values = [$data['name'],false];
     insertStatement($con,'product',$columnNames,$values);
 
-    $value = $con->lastInsertId();
+    $id = $con->lastInsertId();
 
     $columnNames = ['customer_id', 'product_id'];
-    $values = [$data['customerId'],$value];
+    $values = [$data['customerId'],$id];
     insertStatement($con,'customer_product',$columnNames,$values);
 
-    $products = selectStatement($con, 'product', true, "`id`=?", [$value]);
-    foreach ($products as $key => $value) {
+    $products = selectStatement($con, 'product', true, "`id`=?", [$id]);
+    foreach ($products as $productData) {
         $checker = false;
         $products = selectStatement($con, 
                                     'customer_product',
                                     true,
                                     'customer_id=? AND product_id=?',
-                                    [$data['customerId'],$value['id']]
+                                    [$data['customerId'],$productData['id']]
                                 );
         foreach ($products as $key2 => $value2) {
             $checker = true;
@@ -54,9 +54,9 @@ function insertProduct($data,$con){
 
         if($checker){
             $returnArray = [
-                'id'            => $value['id'],
-                'name'          => $value['name'],
-                'is_archived'   => $value['is_archived'],
+                'id'            => $productData['id'],
+                'name'          => $productData['name'],
+                'is_archived'   => $productData['is_archived'],
             ];
         }
     }

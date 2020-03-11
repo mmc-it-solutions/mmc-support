@@ -1,17 +1,16 @@
 <?php
 
-
 function getTicket($data,$con){
     $ticket = selectStatement($con, 'ticket', true, 'id=?', [$data['ticketId']]);
-    foreach ($ticket as $key => $value) {
+    foreach ($ticket as $ticketData) {
         $returnArray = [
-            'id'            => $value['id'],
-            'title'         => $value['title'],
-            'description'   => $value['description'],
-            'status'        => $value['status'],
-            'worktime'      => $value['worktime'],
-            'is_archived'   => $value['is_archived'],
-            'date_created'  => $value['date_created'] 
+            'id'            => $ticketData['id'],
+            'title'         => $ticketData['title'],
+            'description'   => $ticketData['description'],
+            'status'        => $ticketData['status'],
+            'worktime'      => $ticketData['worktime'],
+            'is_archived'   => $ticketData['is_archived'],
+            'date_created'  => $ticketData['date_created'] 
         ];
     }
     return $returnArray;
@@ -21,43 +20,43 @@ function getTickets($data,$con){
     $returnArray = [];
 
     $tickets = selectStatement($con,'ticket',false,null,null);
-    foreach ($tickets as $key => $value) {
+    foreach ($tickets as $ticketData) {
 
         $companyName = "none";
         $employeeName = "none";
 
-        $companyId = selectStatement($con, "ticket_customer",true,'`ticket_id`=?',[$value['id']]);
+        $companyIdColoration = selectStatement($con, "ticket_customer",true,'`ticket_id`=?',[$ticketData['id']]);
 
-        if(!empty($companyId)){
-            foreach ($companyId as $key2 => $value2) {
-                $company = selectStatement($con,'customer',true,'`id`=?',[$value2['customer_id']]);
+        if(!empty($companyIdColoration)){
+            foreach ($companyIdColoration as $companyId) {
+                $company = selectStatement($con,'customer',true,'`id`=?',[$companyId['customer_id']]);
 
-                foreach ($company as $key3 => $value3) {
-                    $companyName = $value3['company_name'];
+                foreach ($company as $companyData) {
+                    $companyName = $companyData['company_name'];
                 }
             }
         }
 
-        $userId = selectStatement($con, 'user_ticket', true, '`ticket_id`=?', [$value['id']]);
+        $userIdColoration = selectStatement($con, 'user_ticket', true, '`ticket_id`=?', [$value['id']]);
         
-        if(!empty($userId)){
-            foreach ($userId as $key2 => $value2) {
-                $employee = selectStatement($con, 'user', true, '`id`=?', [$value2['user_id']]);
+        if(!empty($userIdColoration)){
+            foreach ($userIdColoration as $userId) {
+                $employee = selectStatement($con, 'user', true, '`id`=?', [$userId['user_id']]);
 
-                foreach ($employee as $key3 => $value3) {
-                    $profile = selectStatement($con, 'profile',true,'`id`=?',[$value3['profile_id']]);
+                foreach ($employee as $employeeData) {
+                    $profile = selectStatement($con, 'profile',true,'`id`=?',[$employeeData['profile_id']]);
 
-                    foreach ($profile as $key4 => $value4) {
-                        $employeeName = $value4['first_name']." ".$value4['last_name'];
+                    foreach ($profile as $profileData) {
+                        $employeeName = $profileData['first_name']." ".$profileData['last_name'];
                     }
                 }
             }
         }
 
-        $returnArray[$key] = [
-            'id'            => $value['id'],
-            'name'          => $value['title'],
-            'status'        => $value['status'],
+        $returnArray[] = [
+            'id'            => $ticketData['id'],
+            'name'          => $ticketData['title'],
+            'status'        => $ticketData['status'],
             'company'       => $companyName,
             'employee'      => $employeeName
         ];
@@ -70,11 +69,11 @@ function insertTicket($data,$con){
     $values = [$data['title'],$data['description'],1,0,false,date("Y-m-d")];
     insertStatement($con, "ticket", $columnNames, $values);
 
-    $value = $this->getCon()->lastInsertId();
+    $id = $this->getCon()->lastInsertId();
 
     if($data['customerId'] != 0){
         $columnNames = ['ticket_id', 'customer_id'];
-        $values = [$value,$data['customerId']];
+        $values = [$id,$data['customerId']];
         insertStatement($con, "ticket_customer", $columnNames, $values);
     }
 
@@ -85,42 +84,42 @@ function insertTicket($data,$con){
     }
 
     $tickets = selectStatement($con, 'ticket', true, '`id`=?', [$value]);
-    foreach ($tickets as $key => $value) {
+    foreach ($tickets as $ticketData) {
 
         $companyName = "none";
         $employeeName = "none";
 
-        $companyId = selectStatement($con, "ticket_customer",true,'`ticket_id`=?',[$value['id']]);
+        $companyIdColoration = selectStatement($con, "ticket_customer",true,'`ticket_id`=?',[$ticketData['id']]);
 
-        if(!empty($companyId)){
-            foreach ($companyId as $key2 => $value2) {
-                $company = selectStatement($con,'customer',true,'`id`=?',[$value2['customer_id']]);
+        if(!empty($companyIdColoration)){
+            foreach ($companyIdColoration as $companyId) {
+                $company = selectStatement($con,'customer',true,'`id`=?',[$companyId['customer_id']]);
 
-                foreach ($company as $key3 => $value3) {
-                    $companyName = $value3['company_name'];
+                foreach ($company as $companyData) {
+                    $companyName = $companyData['company_name'];
                 }
             }
         }
-        $userId = selectStatement($con, 'user_ticket', true, '`ticket_id`=?', [$value['id']]);
+        $userIdColoration = selectStatement($con, 'user_ticket', true, '`ticket_id`=?', [$value['id']]);
         
-        if(!empty($userId)){
-            foreach ($userId as $key2 => $value2) {
-                $employee = selectStatement($con, 'user', true, '`id`=?', [$value2['user_id']]);
+        if(!empty($userIdColoration)){
+            foreach ($userIdColoration as $userId) {
+                $employee = selectStatement($con, 'user', true, '`id`=?', [$userId['user_id']]);
 
-                foreach ($employee as $key3 => $value3) {
-                    $profile = selectStatement($con, 'profile',true,'`id`=?',[$value3['profile_id']]);
+                foreach ($employee as $employeeData) {
+                    $profile = selectStatement($con, 'profile',true,'`id`=?',[$employeeData['profile_id']]);
 
-                    foreach ($profile as $key4 => $value4) {
-                        $employeeName = $value4['first_name']." ".$value4['last_name'];
+                    foreach ($profile as $profileData) {
+                        $employeeName = $profileData['first_name']." ".$profileData['last_name'];
                     }
                 }
             }
         }
 
         $returnArray = [
-            'id'            => $value['id'],
-            'name'          => $value['title'],
-            'status'        => $value['status'],
+            'id'            => $ticketData['id'],
+            'name'          => $ticketData['title'],
+            'status'        => $ticketData['status'],
             'company'       => $companyName,
             'employee'      => $employeeName
         ];

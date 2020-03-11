@@ -3,13 +3,13 @@
 function getCustomer($data,$con){
     $customer = selectStatement($con,'customer',true,'`id`=?',[$data['customerId']]);
 
-    foreach ($customer as $key => $value) {
+    foreach ($customer as $customerData) {
         $returnArray = [
-            'id'            => $value['id'],
-            'name'          => $value['name'],
-            'company_name'  => $value['company_name'],
-            'email'         => $value['email'],
-            'phone_number'  => $value['phone_number'],
+            'id'            => $customerData['id'],
+            'name'          => $customerData['name'],
+            'company_name'  => $customerData['company_name'],
+            'email'         => $customerData['email'],
+            'phone_number'  => $customerData['phone_number'],
         ];
     }
 
@@ -21,16 +21,16 @@ function getCustomers($data,$con){
 
     $customers = selectStatement($con,'customer', false, null, null);
 
-    foreach ($customers as $key => $value) {
+    foreach ($customers as $customerData) {
         $sql = "SELECT COUNT(*) FROM customer_product WHERE `customer_id`=?";
         $statement = $con->prepare($sql);
-        $statement->execute([$value['id']]);
+        $statement->execute([$customerData['id']]);
         $amountProducts = $statement->fetchColumn();
 
-        $returnArray[$key] = [
-            'id'            => $value['id'],
-            'name'          => $value['company_name'],
-            'email'         => $value['email'],
+        $returnArray[] = [
+            'id'            => $customerData['id'],
+            'name'          => $customerData['company_name'],
+            'email'         => $customerData['email'],
             'products'      => $amountProducts,
             'actions'       => ""
         ];
@@ -48,20 +48,20 @@ function insertCustomer($data,$con){
         ];
     insertStatement($con,'customer',$columnNames,$values);
 
-    $customerId = $con->lastInsertId();
+    $id = $con->lastInsertId();
 
-    $customer = selectStatement($con, 'customer', true, '`id`=?', [$customerId]);
+    $customer = selectStatement($con, 'customer', true, '`id`=?', [$id]);
 
-    foreach ($customer as $key => $value) {
+    foreach ($customer as $customerData) {
         $sql = "SELECT COUNT(*) FROM customer_product WHERE `customer_id`=?";
         $statement = $con->prepare($sql);
-        $statement->execute([$value['id']]);
+        $statement->execute([$customerData['id']]);
         $amountProducts = $statement->fetchColumn();
 
         $returnArray = [
-            'id'            => $value['id'],
-            'name'          => $value['company_name'],
-            'email'         => $value['email'],
+            'id'            => $customerData['id'],
+            'name'          => $customerData['company_name'],
+            'email'         => $customerData['email'],
             'products'      => $amountProducts,
             'actions'       => ""
         ];

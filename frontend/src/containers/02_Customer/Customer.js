@@ -8,12 +8,13 @@ import AddCustomer from "../../components/customers/AddCustomer";
 import { NavLink } from "react-router-dom";
 
 import { connect } from "react-redux";
-import { getCustomers } from "../../store/actions/customer";
+import { getCustomers, createCustomer } from "../../store/actions/customer";
 
 class Customer extends React.Component {
   componentDidMount() {
     this.props.getCustomers();
   }
+
   state = {
     modal: {
       display: "none",
@@ -49,6 +50,16 @@ class Customer extends React.Component {
 
   submitHandler = event => {
     event.preventDefault();
+    const { modal } = this.state;
+
+    let form = {
+      name: modal.name,
+      company_name: modal.company,
+      email: modal.email,
+      phone_number: modal.phone
+    };
+
+    this.props.createCustomer(form);
 
     this.setState({
       modal: {
@@ -123,6 +134,6 @@ const mapStateProps = (state, ownProps) => ({
   customers: state.customer.customers
 });
 
-const mapDispatchToProps = { getCustomers };
+const mapDispatchToProps = { getCustomers, createCustomer };
 
 export default connect(mapStateProps, mapDispatchToProps)(Customer);
