@@ -116,7 +116,7 @@ const AddProductPopup = ({ modal, changeValue, changeDisplay, addProduct }) => {
             />
           </form>
           <input
-            className="modal__form--kruisje"
+            className="modal__form--close"
             type="button"
             value="X"
             onClick={changeDisplay}

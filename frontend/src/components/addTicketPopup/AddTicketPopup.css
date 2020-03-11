@@ -82,7 +82,7 @@
   background-color: #c8f6d0;
 }
 
-.modal__form--kruisje {
+.modal__form--close {
   position: absolute;
   top: 0;
   right: 0;
@@ -96,7 +96,7 @@
   transition: linear 0.5s;
 }
 
-.modal__form--kruisje:hover {
+.modal__form--close:hover {
   color: #54595e;
   background-color: #c8f6d0;
 }

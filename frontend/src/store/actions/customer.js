@@ -1,6 +1,31 @@
 import axios from "axios";
 
-import { GET_CUSTOMERS, INSERT_CUSTOMER } from "./types";
+import { GET_CUSTOMER, GET_CUSTOMERS, INSERT_CUSTOMER } from "./types";
+
+export const getCustomer = form => (dispatch, getState) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
+  const body = {
+    action: "getCustomer",
+    data: { customerId: form.customerId }
+  };
+
+  axios
+    .post("http://localhost/mmcSupport/backend/", body, config)
+    .then(res => {
+      dispatch({
+        type: GET_CUSTOMER,
+        payload: res.data
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+};
 
 export const getCustomers = () => (dispatch, getState) => {
   const config = {

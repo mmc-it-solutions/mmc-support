@@ -62,10 +62,10 @@ export const createTicket = form => (dispatch, getState) => {
   const body = {
     action: "insertTicket",
     data: {
-      name: form["titel"],
-      company_name: form["description"],
-      email: form["customerId"],
-      phone_number: form["productId"]
+      title: form["title"],
+      description: form["description"],
+      customerId: form["customerId"],
+      productId: form["productId"]
     }
   };
 

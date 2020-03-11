@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
     require_once "./db.php";
+    require_once "./statements/index.php";
 
     class Api{
         private $action;
@@ -55,35 +56,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
         function whichAction(){
             switch($this->getAction()){
                 case "getTicket":
-                    $this->getTicket();
+                    echo json_encode($this->getTicket());
                 break;
 
                 case "getTickets":
-                    $this->getTickets();
+                    echo json_encode($this->getTickets());
                 break;
 
                 case "getCustomer":
-                    $this->getCustomer();
+                    echo json_encode($this->getCustomer());
                 break;
 
                 case "getCustomers":
-                    $this->getCustomers();
+                    echo json_encode($this->getCustomers());
                 break;
 
                 case "getProducts":
-                    $this->getProducts();
+                    echo json_encode($this->getProducts());
                 break;
 
                 case "insertProduct":
-                    $this->insertProduct();
+                    echo json_encode($this->insertProduct());
                 break;
 
                 case "insertCustomer":
-                    $this->insertCustomer();
+                    echo json_encode($this->insertCustomer());
                 break;
 
                 case "insertTicket":
-                    $this->insertTicket();
+                    echo json_encode($this->insertTicket());
                 break;
 
                 default:
@@ -93,11 +94,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
         function getTicket(){
             $data = $this->getData();
+            $con = $this->getCon();
 
-            $sql = "SELECT * FROM ticket WHERE id=?";
-            $value = $this->getCon()->prepare($sql);
-            $value->execute([$data['ticketId']]);
-            $ticket = $value->fetchAll();
+            $ticket = selectStatement($con, 'ticket', true, 'id=?', [$data['ticketId']]);
             foreach ($ticket as $key => $value) {
                 $returnArray = [
                     'id'            => $value['id'],
@@ -109,30 +108,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
                     'date_created'  => $value['date_created'] 
                 ];
             }
-            echo json_encode($returnArray);
+            return $returnArray;
         }
 
         function getTickets(){
-            $sql = "SELECT * FROM ticket";
-            $statement = $this->getCon()->prepare($sql);
-            $statement->execute();
-            $tickets = $statement->fetchAll();
+            $con = $this->getCon();
             $returnArray = [];
-            foreach ($tickets as $key => $value) {
-                $companyName = "none";
 
-                $sql = "SELECT * FROM ticket_customer WHERE `ticket_id`=?";
-                $statement = $this->getCon()->prepare($sql);
-                $statement->execute([$value['id']]);
-                $companyId = $statement->fetchAll();
+            $tickets = selectStatement($con,'ticket',false,null,null);
+            foreach ($tickets as $key => $value) {
+
+                $companyName = "none";
+                $employeeName = "none";
+
+                $companyId = selectStatement($con, "ticket_customer",true,'`ticket_id`=?',[$value['id']]);
 
                 if(!empty($companyId)){
                     foreach ($companyId as $key2 => $value2) {
-
-                        $sql = "SELECT * FROM customer WHERE `id`=?";
-                        $statement = $this->getCon()->prepare($sql);
-                        $statement->execute([$value2['customer_id']]);
-                        $company = $statement->fetchAll();
+                        $company = selectStatement($con,'customer',true,'`id`=?',[$value2['customer_id']]);
 
                         foreach ($company as $key3 => $value3) {
                             $companyName = $value3['company_name'];
@@ -140,29 +133,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
                     }
                 }
 
-                $employeeName = "none";
-
-                $sql = "SELECT * FROM user_ticket WHERE `ticket_id`=?";
-                $statement = $this->getCon()->prepare($sql);
-                $statement->execute([$value['id']]);
-                $userId = $statement->fetchAll();
+                $userId = selectStatement($con, 'user_ticket', true, '`ticket_id`=?', [$value['id']]);
                 
                 if(!empty($userId)){
                     foreach ($userId as $key2 => $value2) {
-
-                        $sql = "SELECT * FROM user WHERE `id`=?";
-                        $statement = $this->getCon()->prepare($sql);
-                        $statement->execute([$value2['user_id']]);
-                        $employee = $statement->fetchAll();
+                        $employee = selectStatement($con, 'user', true, '`id`=?', [$value2['user_id']]);
 
                         foreach ($employee as $key3 => $value3) {
-                            $sql = "SELECT * FROM `profile` WHERE `id`=?";
-                            $statement = $this->getCon()->prepare($sql);
-                            $statement->execute([$value3['profile_id']]);
-                            $profile = $statement->fetchAll();
+                            $profile = selectStatement($con, 'profile',true,'`id`=?',[$value3['profile_id']]);
 
                             foreach ($profile as $key4 => $value4) {
-                                $employee = $value4['first_name']." ".$value4['last_name'];
+                                $employeeName = $value4['first_name']." ".$value4['last_name'];
                             }
                         }
                     }
@@ -176,31 +157,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
                     'employee'      => $employeeName
                 ];
             }
-            echo json_encode($returnArray);
+            return $returnArray;
         }
 
         function getCustomer(){
             $data = $this->getData();
+            $con = $this->getCon();
+            
+            $customer = selectStatement($con,'customer',true,'`id`=?',[$data['customerId']]);
 
-            $sql = "SELECT * FROM customer WHERE id=?";
-            $value = $this->getCon()->prepare($sql);
-            $value->execute($data['id']);
-            $returnArray[$data['id']] = [
-                'id'            => $value['id'],
-                'name'          => $value['name'],
-                'company_name'  => $value['company_name'],
-                'email'         => $value['email'],
-                'phone_number'  => $value['phone_number'],
-            ];
-            echo json_encode($returnArray);
+            foreach ($customer as $key => $value) {
+                $returnArray = [
+                    'id'            => $value['id'],
+                    'name'          => $value['name'],
+                    'company_name'  => $value['company_name'],
+                    'email'         => $value['email'],
+                    'phone_number'  => $value['phone_number'],
+                ];
+            }
+
+            return $returnArray;
         }
 
         function getCustomers(){
-            $sql = "SELECT * FROM customer";
-            $statement = $this->getCon()->prepare($sql);
-            $statement->execute();
-            $customers = $statement->fetchAll();
+            $con = $this->getCon();
             $returnArray = [];
+
+            $customers = selectStatement($con,'customer', false, null, null);
+
             foreach ($customers as $key => $value) {
                 $sql = "SELECT COUNT(*) FROM customer_product WHERE `customer_id`=?";
                 $statement = $this->getCon()->prepare($sql);
@@ -215,96 +199,178 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
                     'actions'       => ""
                 ];
             }
-            echo json_encode($returnArray);
+            return $returnArray;
         }
 
         function getProducts(){
-            $sql = "SELECT * FROM product";
-            $statement = $this->getCon()->prepare($sql);
-            $statement->execute();
-            $products = $statement->fetchAll();
+            $con = $this->getCon();
+            $data = $this->getData();
             $returnArray = [];
+
+            $products = selectStatement($con, 'product', false, null, null);
+
             foreach ($products as $key => $value) {
-                $returnArray[$key] = [
-                    'id'            => $value['id'],
-                    'name'         => $value['name'],
-                    'is_archived'   => $value['is_archived'],
-                ];
+                $checker = false;
+                $products = selectStatement($con, 
+                                            'customer_product',
+                                            true,
+                                            'customer_id=? AND product_id=?',
+                                            [$data['customerId'],$value['id']]
+                                        );
+                foreach ($products as $key2 => $value2) {
+                    $checker = true;
+                }
+
+                if($checker){
+                    $returnArray[$key] = [
+                        'id'            => $value['id'],
+                        'name'          => $value['name'],
+                        'is_archived'   => $value['is_archived'],
+                    ];
+                }
             }
-            echo json_encode($returnArray);
+            return $returnArray;
         }
 
         function insertTicket(){
+            $con = $this->getCon();
             $data = $this->getData();
 
-            $sql = "INSERT INTO ticket(`title`, `description`, `status`, `worktime`,`is_archived`,`date_created`) 
-                    VALUES(?,?,?,?,?,?)";
-            $statement = $this->getCon()->prepare($sql);
-            $statement->execute([$data['title'],$data['description'],1,0,false,date("Y-m-d")]);
+            $columnNames = ['title', 'description', 'status', 'worktime','is_archived','date_created'];
+            $values = [$data['title'],$data['description'],1,0,false,date("Y-m-d")];
+            insertStatement($con, "ticket", $columnNames, $values);
 
             $value = $this->getCon()->lastInsertId();
 
-            if($data['customerId'] !== 0){
-                $sql = "INSERT INTO ticket_customer(`ticket_id`,`customer_id`) 
-                        VALUES(?,?)";
-                $statement = $this->getCon()->prepare($sql);
-                $statement->execute([$value,$data['customerId']]);    
+            if($data['customerId'] != 0){
+                $columnNames = ['ticket_id', 'customer_id'];
+                $values = [$value,$data['customerId']];
+                insertStatement($con, "ticket_customer", $columnNames, $values);
             }
-            if($data['productId'] !== 0){
-                $sql = "INSERT INTO ticket_product(`ticket_id`,`product_id`) 
-                        VALUES(?,?)";
-                $statement = $this->getCon()->prepare($sql);
-                $statement->execute([$value,$data['productId']]);    
+
+            if($data['productId'] != 0){
+                $columnNames = ['ticket_id', 'product_id'];
+                $values = [$value,$data['productId']];
+                insertStatement($con, "ticket_product", $columnNames, $values);
             }
+
+            $tickets = selectStatement($con, 'ticket', true, '`id`=?', [$value]);
+            foreach ($tickets as $key => $value) {
+
+                $companyName = "none";
+                $employeeName = "none";
+
+                $companyId = selectStatement($con, "ticket_customer",true,'`ticket_id`=?',[$value['id']]);
+
+                if(!empty($companyId)){
+                    foreach ($companyId as $key2 => $value2) {
+                        $company = selectStatement($con,'customer',true,'`id`=?',[$value2['customer_id']]);
+
+                        foreach ($company as $key3 => $value3) {
+                            $companyName = $value3['company_name'];
+                        }
+                    }
+                }
+                $userId = selectStatement($con, 'user_ticket', true, '`ticket_id`=?', [$value['id']]);
+                
+                if(!empty($userId)){
+                    foreach ($userId as $key2 => $value2) {
+                        $employee = selectStatement($con, 'user', true, '`id`=?', [$value2['user_id']]);
+
+                        foreach ($employee as $key3 => $value3) {
+                            $profile = selectStatement($con, 'profile',true,'`id`=?',[$value3['profile_id']]);
+
+                            foreach ($profile as $key4 => $value4) {
+                                $employeeName = $value4['first_name']." ".$value4['last_name'];
+                            }
+                        }
+                    }
+                }
+
+                $returnArray = [
+                    'id'            => $value['id'],
+                    'name'          => $value['title'],
+                    'status'        => $value['status'],
+                    'company'       => $companyName,
+                    'employee'      => $employeeName
+                ];
+            }
+
+            return $returnArray;
         }
 
         function insertCustomer(){
+            $con = $this->getCon();
             $data = $this->getData();
 
-            $sql = "INSERT INTO `customer`(`name`, `company_name`, `email`, `phone_number`) 
-                    VALUES (?,?,?,?)";
-            $statement = $this->getCon()->prepare($sql);
-            $statement->execute([
+            $columnNames = ['name', 'company_name', 'email', 'phone_number'];
+            $values = [
                 $data['name'],
                 $data['company_name'],
                 $data['email'],
                 $data['phone_number']
-                ]);
-                $customerId = $this->getCon()->lastInsertId();
+                ];
+            insertStatement($con,'customer',$columnNames,$values);
 
-                $sql = "SELECT * FROM customer WHERE id=?";
-                $value = $this->getCon()->prepare($sql)->execute([$customerId]);
-                $returnArray[$data['id']] = [
+            $customerId = $this->getCon()->lastInsertId();
+
+            $customer = selectStatement($con, 'customer', true, '`id`=?', [$customerId]);
+
+            foreach ($customer as $key => $value) {
+                $sql = "SELECT COUNT(*) FROM customer_product WHERE `customer_id`=?";
+                $statement = $this->getCon()->prepare($sql);
+                $statement->execute([$value['id']]);
+                $amountProducts = $statement->fetchColumn();
+
+                $returnArray = [
                     'id'            => $value['id'],
-                    'title'         => $value['title'],
-                    'description'   => $value['description'],
-                    'status'        => $value['status'],
-                    'worktime'      => $value['worktime'],
-                    'is_archived'   => $value['is_archived'],
-                    'date_created'  => $value['date_created'] 
-               ];
+                    'name'          => $value['company_name'],
+                    'email'         => $value['email'],
+                    'products'      => $amountProducts,
+                    'actions'       => ""
+                ];
+            }
 
-                echo json_encode($statement);
+            return $returnArray;
         }
 
         function insertProduct(){
+            $con = $this->getCon();
             $data = $this->getData();
 
-            $sql = "INSERT INTO product(name,`is_archived`) 
-                    VALUES(?,?)";
-            $statement = $this->getCon()->prepare($sql);
-            $statement->execute([$data['name'],false]);
+            $columnNames = ['name', 'is_archived'];
+            $values = [$data['name'],false];
+            insertStatement($con,'product',$columnNames,$values);
 
-            try {
-                $value = $this->getCon()->lastInsertId();
-                $sql = "INSERT INTO customer_product(`customer_id`,`product_id`) 
-                        VALUES(?,?)";
-                $statement = $this->getCon()->prepare($sql);
-                $statement->execute([$data['customerId'],$value]);            
-            } catch (Exception $fout) {
-                echo "Error adding customer_product: " . $fout->getMessage();
-                exit;
+            $value = $con->lastInsertId();
+
+            $columnNames = ['customer_id', 'product_id'];
+            $values = [$data['customerId'],$value];
+            insertStatement($con,'customer_product',$columnNames,$values);
+
+            $products = selectStatement($con, 'product', true, "`id`=?", [$value]);
+            foreach ($products as $key => $value) {
+                $checker = false;
+                $products = selectStatement($con, 
+                                            'customer_product',
+                                            true,
+                                            'customer_id=? AND product_id=?',
+                                            [$data['customerId'],$value['id']]
+                                        );
+                foreach ($products as $key2 => $value2) {
+                    $checker = true;
+                }
+
+                if($checker){
+                    $returnArray = [
+                        'id'            => $value['id'],
+                        'name'          => $value['name'],
+                        'is_archived'   => $value['is_archived'],
+                    ];
+                }
             }
+
+            return $returnArray;
         }
     }
 

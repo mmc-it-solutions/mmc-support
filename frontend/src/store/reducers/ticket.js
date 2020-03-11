@@ -20,7 +20,7 @@ export default function(state = initialState, action) {
     case INSERT_TICKET:
       return {
         ...state,
-        tickets: [state.tickets, ...action.payload]
+        tickets: [...state.tickets, action.payload]
       };
     default:
       return state;
