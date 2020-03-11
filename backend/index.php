@@ -19,6 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
     require_once "./db.php";
     require_once "./statements/index.php";
+    require_once "./functions/ticket.php";
+    require_once "./functions/customer.php";
+    require_once "./functions/product.php";
 
     class Api{
         private $action;
@@ -56,321 +59,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
         function whichAction(){
             switch($this->getAction()){
                 case "getTicket":
-                    echo json_encode($this->getTicket());
+                    echo json_encode(getTicket($this->getData(),$this->getCon()));
                 break;
 
                 case "getTickets":
-                    echo json_encode($this->getTickets());
+                    echo json_encode(getTickets($this->getData(),$this->getCon()));
                 break;
 
                 case "getCustomer":
-                    echo json_encode($this->getCustomer());
+                    echo json_encode(getCustomer($this->getData(),$this->getCon()));
                 break;
 
                 case "getCustomers":
-                    echo json_encode($this->getCustomers());
+                    echo json_encode(getCustomers($this->getData(),$this->getCon()));
                 break;
 
                 case "getProducts":
-                    echo json_encode($this->getProducts());
+                    echo json_encode(getProducts($this->getData(),$this->getCon()));
                 break;
 
                 case "insertProduct":
-                    echo json_encode($this->insertProduct());
+                    echo json_encode(insertProduct($this->getData(),$this->getCon()));
                 break;
 
                 case "insertCustomer":
-                    echo json_encode($this->insertCustomer());
+                    echo json_encode(insertCustomer($this->getData(),$this->getCon()));
                 break;
 
                 case "insertTicket":
-                    echo json_encode($this->insertTicket());
+                    echo json_encode(insertTicket($this->getData(),$this->getCon()));
                 break;
 
                 default:
                 return null;
             }
-        }
-
-        function getTicket(){
-            $data = $this->getData();
-            $con = $this->getCon();
-
-            $ticket = selectStatement($con, 'ticket', true, 'id=?', [$data['ticketId']]);
-            foreach ($ticket as $key => $value) {
-                $returnArray = [
-                    'id'            => $value['id'],
-                    'title'         => $value['title'],
-                    'description'   => $value['description'],
-                    'status'        => $value['status'],
-                    'worktime'      => $value['worktime'],
-                    'is_archived'   => $value['is_archived'],
-                    'date_created'  => $value['date_created'] 
-                ];
-            }
-            return $returnArray;
-        }
-
-        function getTickets(){
-            $con = $this->getCon();
-            $returnArray = [];
-
-            $tickets = selectStatement($con,'ticket',false,null,null);
-            foreach ($tickets as $key => $value) {
-
-                $companyName = "none";
-                $employeeName = "none";
-
-                $companyId = selectStatement($con, "ticket_customer",true,'`ticket_id`=?',[$value['id']]);
-
-                if(!empty($companyId)){
-                    foreach ($companyId as $key2 => $value2) {
-                        $company = selectStatement($con,'customer',true,'`id`=?',[$value2['customer_id']]);
-
-                        foreach ($company as $key3 => $value3) {
-                            $companyName = $value3['company_name'];
-                        }
-                    }
-                }
-
-                $userId = selectStatement($con, 'user_ticket', true, '`ticket_id`=?', [$value['id']]);
-                
-                if(!empty($userId)){
-                    foreach ($userId as $key2 => $value2) {
-                        $employee = selectStatement($con, 'user', true, '`id`=?', [$value2['user_id']]);
-
-                        foreach ($employee as $key3 => $value3) {
-                            $profile = selectStatement($con, 'profile',true,'`id`=?',[$value3['profile_id']]);
-
-                            foreach ($profile as $key4 => $value4) {
-                                $employeeName = $value4['first_name']." ".$value4['last_name'];
-                            }
-                        }
-                    }
-                }
-
-                $returnArray[$key] = [
-                    'id'            => $value['id'],
-                    'name'          => $value['title'],
-                    'status'        => $value['status'],
-                    'company'       => $companyName,
-                    'employee'      => $employeeName
-                ];
-            }
-            return $returnArray;
-        }
-
-        function getCustomer(){
-            $data = $this->getData();
-            $con = $this->getCon();
-            
-            $customer = selectStatement($con,'customer',true,'`id`=?',[$data['customerId']]);
-
-            foreach ($customer as $key => $value) {
-                $returnArray = [
-                    'id'            => $value['id'],
-                    'name'          => $value['name'],
-                    'company_name'  => $value['company_name'],
-                    'email'         => $value['email'],
-                    'phone_number'  => $value['phone_number'],
-                ];
-            }
-
-            return $returnArray;
-        }
-
-        function getCustomers(){
-            $con = $this->getCon();
-            $returnArray = [];
-
-            $customers = selectStatement($con,'customer', false, null, null);
-
-            foreach ($customers as $key => $value) {
-                $sql = "SELECT COUNT(*) FROM customer_product WHERE `customer_id`=?";
-                $statement = $this->getCon()->prepare($sql);
-                $statement->execute([$value['id']]);
-                $amountProducts = $statement->fetchColumn();
-
-                $returnArray[$key] = [
-                    'id'            => $value['id'],
-                    'name'          => $value['company_name'],
-                    'email'         => $value['email'],
-                    'products'      => $amountProducts,
-                    'actions'       => ""
-                ];
-            }
-            return $returnArray;
-        }
-
-        function getProducts(){
-            $con = $this->getCon();
-            $data = $this->getData();
-            $returnArray = [];
-
-            $products = selectStatement($con, 'product', false, null, null);
-
-            foreach ($products as $key => $value) {
-                $checker = false;
-                $products = selectStatement($con, 
-                                            'customer_product',
-                                            true,
-                                            'customer_id=? AND product_id=?',
-                                            [$data['customerId'],$value['id']]
-                                        );
-                foreach ($products as $key2 => $value2) {
-                    $checker = true;
-                }
-
-                if($checker){
-                    $returnArray[$key] = [
-                        'id'            => $value['id'],
-                        'name'          => $value['name'],
-                        'is_archived'   => $value['is_archived'],
-                    ];
-                }
-            }
-            return $returnArray;
-        }
-
-        function insertTicket(){
-            $con = $this->getCon();
-            $data = $this->getData();
-
-            $columnNames = ['title', 'description', 'status', 'worktime','is_archived','date_created'];
-            $values = [$data['title'],$data['description'],1,0,false,date("Y-m-d")];
-            insertStatement($con, "ticket", $columnNames, $values);
-
-            $value = $this->getCon()->lastInsertId();
-
-            if($data['customerId'] != 0){
-                $columnNames = ['ticket_id', 'customer_id'];
-                $values = [$value,$data['customerId']];
-                insertStatement($con, "ticket_customer", $columnNames, $values);
-            }
-
-            if($data['productId'] != 0){
-                $columnNames = ['ticket_id', 'product_id'];
-                $values = [$value,$data['productId']];
-                insertStatement($con, "ticket_product", $columnNames, $values);
-            }
-
-            $tickets = selectStatement($con, 'ticket', true, '`id`=?', [$value]);
-            foreach ($tickets as $key => $value) {
-
-                $companyName = "none";
-                $employeeName = "none";
-
-                $companyId = selectStatement($con, "ticket_customer",true,'`ticket_id`=?',[$value['id']]);
-
-                if(!empty($companyId)){
-                    foreach ($companyId as $key2 => $value2) {
-                        $company = selectStatement($con,'customer',true,'`id`=?',[$value2['customer_id']]);
-
-                        foreach ($company as $key3 => $value3) {
-                            $companyName = $value3['company_name'];
-                        }
-                    }
-                }
-                $userId = selectStatement($con, 'user_ticket', true, '`ticket_id`=?', [$value['id']]);
-                
-                if(!empty($userId)){
-                    foreach ($userId as $key2 => $value2) {
-                        $employee = selectStatement($con, 'user', true, '`id`=?', [$value2['user_id']]);
-
-                        foreach ($employee as $key3 => $value3) {
-                            $profile = selectStatement($con, 'profile',true,'`id`=?',[$value3['profile_id']]);
-
-                            foreach ($profile as $key4 => $value4) {
-                                $employeeName = $value4['first_name']." ".$value4['last_name'];
-                            }
-                        }
-                    }
-                }
-
-                $returnArray = [
-                    'id'            => $value['id'],
-                    'name'          => $value['title'],
-                    'status'        => $value['status'],
-                    'company'       => $companyName,
-                    'employee'      => $employeeName
-                ];
-            }
-
-            return $returnArray;
-        }
-
-        function insertCustomer(){
-            $con = $this->getCon();
-            $data = $this->getData();
-
-            $columnNames = ['name', 'company_name', 'email', 'phone_number'];
-            $values = [
-                $data['name'],
-                $data['company_name'],
-                $data['email'],
-                $data['phone_number']
-                ];
-            insertStatement($con,'customer',$columnNames,$values);
-
-            $customerId = $this->getCon()->lastInsertId();
-
-            $customer = selectStatement($con, 'customer', true, '`id`=?', [$customerId]);
-
-            foreach ($customer as $key => $value) {
-                $sql = "SELECT COUNT(*) FROM customer_product WHERE `customer_id`=?";
-                $statement = $this->getCon()->prepare($sql);
-                $statement->execute([$value['id']]);
-                $amountProducts = $statement->fetchColumn();
-
-                $returnArray = [
-                    'id'            => $value['id'],
-                    'name'          => $value['company_name'],
-                    'email'         => $value['email'],
-                    'products'      => $amountProducts,
-                    'actions'       => ""
-                ];
-            }
-
-            return $returnArray;
-        }
-
-        function insertProduct(){
-            $con = $this->getCon();
-            $data = $this->getData();
-
-            $columnNames = ['name', 'is_archived'];
-            $values = [$data['name'],false];
-            insertStatement($con,'product',$columnNames,$values);
-
-            $value = $con->lastInsertId();
-
-            $columnNames = ['customer_id', 'product_id'];
-            $values = [$data['customerId'],$value];
-            insertStatement($con,'customer_product',$columnNames,$values);
-
-            $products = selectStatement($con, 'product', true, "`id`=?", [$value]);
-            foreach ($products as $key => $value) {
-                $checker = false;
-                $products = selectStatement($con, 
-                                            'customer_product',
-                                            true,
-                                            'customer_id=? AND product_id=?',
-                                            [$data['customerId'],$value['id']]
-                                        );
-                foreach ($products as $key2 => $value2) {
-                    $checker = true;
-                }
-
-                if($checker){
-                    $returnArray = [
-                        'id'            => $value['id'],
-                        'name'          => $value['name'],
-                        'is_archived'   => $value['is_archived'],
-                    ];
-                }
-            }
-
-            return $returnArray;
         }
     }
 
