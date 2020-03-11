@@ -14,6 +14,9 @@ const HomeScreen = React.lazy(() => import("./containers/01_home/Home"));
 const CustomerScreen = React.lazy(() =>
   import("./containers/02_Customer/Customer")
 );
+const TicketZienScreen = React.lazy(() =>
+  import("./containers/05_ticket/Ticketzien")
+);
 
 class App extends React.Component {
   componentDidMount() {}
@@ -24,16 +27,17 @@ class App extends React.Component {
           <React.Fragment>
             <Header />
             <main>
-              <React.Suspense fallback={<div>loading..</div>}>
+              <React.Suspense fallback={<div> loading.. </div>}>
                 <Switch>
-                  <Route path="/" exact={true} component={HomeScreen} />
-                  <Route path="/customers" component={CustomerScreen} />
-                </Switch>
-              </React.Suspense>
-            </main>
+                  <Route path="/" exact={true} component={HomeScreen} />{" "}
+                  <Route path="/customers" component={CustomerScreen} />{" "}
+                  <Route path="/ticket/:id" component={TicketZienScreen} />{" "}
+                </Switch>{" "}
+              </React.Suspense>{" "}
+            </main>{" "}
             <Footer />
-          </React.Fragment>
-        </Router>
+          </React.Fragment>{" "}
+        </Router>{" "}
       </Provider>
     );
   }

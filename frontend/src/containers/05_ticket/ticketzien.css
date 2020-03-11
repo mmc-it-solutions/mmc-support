@@ -1,0 +1,16 @@
+table,
+thead,
+th {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+h2 {
+    color: #0283e5;
+}
+
+tr,
+th {
+    padding: 10px;
+    color: #0283e5;
+}
