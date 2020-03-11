@@ -4,37 +4,40 @@ import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "./Customer.css";
 import AddCustomer from "../../components/customers/AddCustomer";
+
 import { NavLink } from "react-router-dom";
 
 class Customer extends React.Component {
   state = {
+    //dit is allemaal maar test data die later moet met database automatisch
     customers: [
       {
         id: 1,
         name: "MMC-ITSolutions",
         contact: "something@thismail.com",
         products: 10,
-        actions: "yes"
+        actions: ""
       },
       {
         id: 2,
         name: "MMC-ITSolutions2",
         contact: "something@thismail.com",
         products: 1,
-        actions: "yes"
+        actions: ""
       },
       {
         id: 3,
         name: "MMC-ITSolutions3",
         contact: "something@thismail.com",
         products: 0,
-        actions: "yes"
+        actions: ""
       },
       {
         id: 4,
         name: "MMC-ITSolutions4",
         contact: "something@thismail.com",
-        products: 20
+        products: 20,
+        actions: ""
       }
     ],
     modal: {
