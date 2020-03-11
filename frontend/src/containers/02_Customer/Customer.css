@@ -50,5 +50,12 @@ button {
 }
 
 .FA svg:hover {
-  color: rgb(2, 131, 229);
+  color: #4c56af;
+}
+
+@media (max-width: 767px) {
+  #customers tr {
+    grid-template-columns: 2.7fr 4.4fr 2.4fr 1.7fr;
+    font-size: 3vw;
+  }
 }
