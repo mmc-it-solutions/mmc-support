@@ -1,16 +1,67 @@
 <?php
 
 function getTicket($data,$con){
+    $customerInfo = [
+        'id' => 0,
+        'company_name'=> "None"
+    ];
+    $productInfo = [
+        'id' => 0,
+        'product_name' => 'None'
+    ];
+    $userInfo = [
+        'id' => 0,
+        'user_name' => "None"
+    ];
+    
+    $customerIdColoration = selectStatement($con,'ticket_customer', true, '`ticket_id`=?', [$data['ticketId']]);
+    foreach ($customerIdColoration as $customerId) {
+        $customer = selectStatement($con, 'customer', true, '`id`=?', [$customerId['customer_id']]);
+        foreach ($customer as $customerData) {
+            $customerInfo = [
+                'id' => $customerData['id'],
+                'company_name' => $customerData['company_name']
+            ];
+        }
+    }
+    
+    $productIdColoration = selectStatement($con,'ticket_product', true, '`ticket_id`=?', [$data['ticketId']]);
+    foreach ($productIdColoration as $productId) {
+        $product = selectStatement($con, 'product', true, '`id`=?', [$productId['product_id']]);
+        foreach ($product as $productData) {
+            $productInfo = [
+                'id' => $productData['id'],
+                'product_name' => $productData['name']
+            ];
+        }
+    }
+
+    $userIdColoration = selectStatement($con,'user_ticket', true, '`ticket_id`=?', [$data['ticketId']]);
+    foreach ($userIdColoration as $userId) {
+        $user = selectStatement($con, 'user', true, '`id`=?', [$userId['user_id']]);
+        foreach ($user as $userData) {
+            $profile = selectStatement($con, 'profile', true, '`id`=?', [$userData['profile_id']]);
+            foreach ($profile as $profileData) {
+                $userInfo = [
+                    'id' => $userData['id'],
+                    'user_name' => $profileData['first_name'] . ' ' . $profileData['last_name']
+                ];
+            }
+        }
+    }
+
+
     $ticket = selectStatement($con, 'ticket', true, 'id=?', [$data['ticketId']]);
     foreach ($ticket as $ticketData) {
         $returnArray = [
-            'id'            => $ticketData['id'],
             'title'         => $ticketData['title'],
             'description'   => $ticketData['description'],
             'status'        => $ticketData['status'],
             'worktime'      => $ticketData['worktime'],
-            'is_archived'   => $ticketData['is_archived'],
-            'date_created'  => $ticketData['date_created'] 
+            'date_created'  => $ticketData['date_created'],
+            'customer'      => $customerInfo,
+            'product'       => $productInfo,
+            'user'          => $userInfo
         ];
     }
     return $returnArray;
