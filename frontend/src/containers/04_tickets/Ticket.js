@@ -116,7 +116,11 @@ class Ticket extends React.Component {
           submitHandler={this.submitHandler}
         />
         <div className="Ticket-List"> Ticket List </div>
-        <button onClick={this.changeDisplay}>Popup</button>
+        <div className="popup-button-div">
+          <button className="popup-button" onClick={this.changeDisplay}>
+            Popup
+          </button>
+        </div>
         <div>
           <table className="ticket-table">
             <thead>
