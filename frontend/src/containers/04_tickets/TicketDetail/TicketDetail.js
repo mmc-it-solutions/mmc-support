@@ -1,6 +1,8 @@
 import React from "react";
 import "./TicketDetail.css";
 
+import { NavLink } from "react-router-dom";
+
 import { connect } from "react-redux";
 import { getTicket } from "../../../store/actions/ticket";
 
@@ -38,9 +40,20 @@ class TicketDetail extends React.Component {
                 <h3>Product</h3>
                 <p> {ticket.product.product_name} </p>
               </div>
-              <div>
-                <h3>Company</h3>
-                <p> {ticket.customer.company_name} </p>
+              <div className="extra-info-customer">
+                {ticket.customer.id == 0 ? (
+                  <React.Fragment>
+                    <h3>Company</h3>
+                    <p> {ticket.customer.company_name} </p>
+                  </React.Fragment>
+                ) : (
+                  <NavLink to={"/customers/" + ticket.customer.id}>
+                    <React.Fragment>
+                      <h3>Company</h3>
+                      <p> {ticket.customer.company_name} </p>
+                    </React.Fragment>
+                  </NavLink>
+                )}
               </div>
               <div>
                 <h3>User</h3>

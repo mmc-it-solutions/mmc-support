@@ -39,6 +39,11 @@ h2 {
   margin: 10px;
 }
 
+.extra-info-customer a {
+  color: black;
+  text-decoration: none;
+}
+
 .description-tekst {
   color: black;
 }
