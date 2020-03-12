@@ -7,39 +7,11 @@ import AddCustomer from "../../components/customers/AddCustomer";
 
 import { NavLink } from "react-router-dom";
 
+import { connect } from "react-redux";
+import { getCustomers, createCustomer } from "../../store/actions/customer";
+
 class Customer extends React.Component {
   state = {
-    //dit is allemaal maar test data die later moet met database automatisch
-    customers: [
-      {
-        id: 1,
-        name: "MMC-ITSolutions",
-        contact: "something@thismail.com",
-        products: 10,
-        actions: ""
-      },
-      {
-        id: 2,
-        name: "MMC-ITSolutions2",
-        contact: "something@thismail.com",
-        products: 1,
-        actions: ""
-      },
-      {
-        id: 3,
-        name: "MMC-ITSolutions3",
-        contact: "something@thismail.com",
-        products: 0,
-        actions: ""
-      },
-      {
-        id: 4,
-        name: "MMC-ITSolutions4",
-        contact: "something@thismail.com",
-        products: 20,
-        actions: ""
-      }
-    ],
     modal: {
       display: "none",
       company: "",
@@ -48,6 +20,10 @@ class Customer extends React.Component {
       phone: ""
     }
   };
+
+  componentDidMount() {
+    this.props.getCustomers();
+  }
 
   changeValue = event => {
     const { target } = event;
@@ -74,6 +50,16 @@ class Customer extends React.Component {
 
   submitHandler = event => {
     event.preventDefault();
+    const { modal } = this.state;
+
+    let form = {
+      name: modal.name,
+      company_name: modal.company,
+      email: modal.email,
+      phone_number: modal.phone
+    };
+
+    this.props.createCustomer(form);
 
     this.setState({
       modal: {
@@ -87,12 +73,12 @@ class Customer extends React.Component {
   };
 
   renderTableData() {
-    return this.state.customers.map(customers => {
-      const { id, name, contact, products } = customers;
+    return this.props.customers.map(customers => {
+      const { id, name, email, products } = customers;
       return (
         <tr key={id}>
           <td>{name}</td>
-          <td>{contact}</td>
+          <td>{email}</td>
           <td>{products}</td>
           <td className="FA">
             <NavLink to={"/customers/" + id}>
@@ -105,14 +91,16 @@ class Customer extends React.Component {
     });
   }
 
-    renderTableHeader() {
-        let header = Object.keys(this.state.customers[0]);
-        return header.map((key, index) => {
-            if (key.toUpperCase() !== "ID") {
-                return <th key = { index } > { key.toUpperCase() } < /th>;
-            }
-        });
+  renderTableHeader() {
+    if (typeof this.props.customers[0] !== "undefined") {
+      let header = Object.keys(this.props.customers[0]);
+      return header.map((key, index) => {
+        if (key.toUpperCase() !== "ID") {
+          return <th key={index}>{key.toUpperCase()}</th>;
+        }
+      });
     }
+  }
 
   render() {
     return (
@@ -142,4 +130,10 @@ class Customer extends React.Component {
   }
 }
 
-export default Customer;
+const mapStateProps = (state, ownProps) => ({
+  customers: state.customer.customers
+});
+
+const mapDispatchToProps = { getCustomers, createCustomer };
+
+export default connect(mapStateProps, mapDispatchToProps)(Customer);

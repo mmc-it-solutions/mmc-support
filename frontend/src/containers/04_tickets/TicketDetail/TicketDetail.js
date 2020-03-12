@@ -1,60 +1,76 @@
 import React from "react";
 import "./TicketDetail.css";
 
-class TicketDetail extends React.Component {
-  // status heeft drie verschillende uitkomsten
-  // uitkomsten: to do,doing,done
-  // product, customer en user bij null zeg dat het er geen heeft
+import { NavLink } from "react-router-dom";
 
-  state = {
-    ticket: {
-      title: "Ticket title",
-      description: "hello world",
-      status: "1",
-      worktime: "10:00",
-      date_created: "01-04-2002",
-      product: {
-        product_name: "product name"
-      },
-      customer: {
-        company_name: "company name"
-      },
-      user: {
-        user_name: "user name"
-      }
-    }
-  };
+import { connect } from "react-redux";
+import { getTicket } from "../../../store/actions/ticket";
+
+class TicketDetail extends React.Component {
+  componentDidMount() {
+    let data = {
+      ticketId: this.props.match.params.id
+    };
+
+    this.props.getTicket(data);
+  }
 
   render() {
-    const { ticket } = this.state;
-    return (
-      <div className="ticketzien">
-        <h2> {ticket.title} </h2>
-        <div className="grid">
-          <div className="description">
-            <h3> Desription </h3>
-            <p className="description-tekst"> {ticket.description} </p>
-          </div>
-          <div className="info">
-            <p> Status: {ticket.status} </p>
-            <p> Work time: {ticket.worktime} </p>
-            <p> Date created: {ticket.date_created} </p>
-          </div>
-          <div className="extra-info">
-            <div>
-              <p> {ticket.product.product_name} </p>
+    const { ticket } = this.props;
+    if (!Array.isArray(ticket)) {
+      return (
+        <div className="ticketzien">
+          <h2> {ticket.title} </h2>
+          <div className="grid">
+            <div className="description">
+              <h3> Desription </h3>
+              <p className="description-tekst"> {ticket.description} </p>
             </div>
-            <div>
-              <p> {ticket.customer.company_name} </p>
+            <div className="info">
+              <p> Status:</p>
+              <p> {ticket.status} </p>
+              <p> Work time:</p>
+              <p> {ticket.worktime} </p>
+              <p> Date created:</p>
+              <p> {ticket.date_created} </p>
             </div>
-            <div>
-              <p> {ticket.user.user_name} </p>
+            <div className="extra-info">
+              <div>
+                <h3>Product</h3>
+                <p> {ticket.product.product_name} </p>
+              </div>
+              <div className="extra-info-customer">
+                {ticket.customer.id == 0 ? (
+                  <React.Fragment>
+                    <h3>Company</h3>
+                    <p> {ticket.customer.company_name} </p>
+                  </React.Fragment>
+                ) : (
+                  <NavLink to={"/customers/" + ticket.customer.id}>
+                    <React.Fragment>
+                      <h3>Company</h3>
+                      <p> {ticket.customer.company_name} </p>
+                    </React.Fragment>
+                  </NavLink>
+                )}
+              </div>
+              <div>
+                <h3>User</h3>
+                <p> {ticket.user.user_name} </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
+    return "Error 404";
   }
 }
 
-export default TicketDetail;
+const mapStateProps = (state, ownProps) => ({
+  ticket: state.ticket.ticket
+});
+
+const mapDispatchToProps = { getTicket };
+
+export default connect(mapStateProps, mapDispatchToProps)(TicketDetail);

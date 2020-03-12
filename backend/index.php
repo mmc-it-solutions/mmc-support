@@ -18,6 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
     require_once "./db.php";
+    require_once "./statements/index.php";
+    
+    require_once "./functions/ticket.php";
+    require_once "./functions/customer.php";
+    require_once "./functions/product.php";
 
     class Api{
         private $action;
@@ -54,55 +59,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
         function whichAction(){
             switch($this->getAction()){
+                case "getTicket":
+                    echo json_encode(getTicket($this->getData(),$this->getCon()));
+                break;
+
+                case "getTickets":
+                    echo json_encode(getTickets($this->getData(),$this->getCon()));
+                break;
+
+                case "getCustomer":
+                    echo json_encode(getCustomer($this->getData(),$this->getCon()));
+                break;
+
+                case "getCustomers":
+                    echo json_encode(getCustomers($this->getData(),$this->getCon()));
+                break;
+
                 case "insertProduct":
-                    $this->insertProduct();
+                    echo json_encode(insertProduct($this->getData(),$this->getCon()));
+                break;
+
+                case "insertCustomer":
+                    echo json_encode(insertCustomer($this->getData(),$this->getCon()));
                 break;
 
                 case "insertTicket":
-                    $this->insertTicket();
+                    echo json_encode(insertTicket($this->getData(),$this->getCon()));
                 break;
 
                 default:
                 return null;
-            }
-        }
-
-        function insertProduct(){
-            $data = $this->getData();
-
-            $sql = "INSERT INTO product(name,`is_archived`) VALUES(?,?)";
-            $statement = $this->getCon()->prepare($sql);
-            $statement->execute([$data['name'],false]);
-
-            try {
-                $value = $this->getCon()->lastInsertId();
-                $sql = "INSERT INTO customer_product(`customer_id`,`product_id`) VALUES(?,?)";
-                $statement = $this->getCon()->prepare($sql);
-                $statement->execute([$data['customerId'],$value]);            
-            } catch (Exception $fout) {
-                echo "Error adding customer_product: " . $fout->getMessage();
-                exit;
-            }
-        }
-
-        function insertTicket(){
-            $data = $this->getData();
-
-            $sql = "INSERT INTO ticket(`titel`, `description`, `status`, `worktime`,`is_archived`,`date_created`) VALUES(?,?,?,?,?,?)";
-            $statement = $this->getCon()->prepare($sql);
-            $statement->execute([$data['title'],$data['description'],1,0,false,date("Y-m-d")]);
-
-            $value = $this->getCon()->lastInsertId();
-
-            if($data['customerId'] !== 0){
-                $sql = "INSERT INTO ticket_customer(`ticket_id`,`customer_id`) VALUES(?,?)";
-                $statement = $this->getCon()->prepare($sql);
-                $statement->execute([$value,$data['customerId']]);    
-            }
-            if($data['productId'] !== 0){
-                $sql = "INSERT INTO ticket_product(`ticket_id`,`product_id`) VALUES(?,?)";
-                $statement = $this->getCon()->prepare($sql);
-                $statement->execute([$value,$data['productId']]);    
             }
         }
     }

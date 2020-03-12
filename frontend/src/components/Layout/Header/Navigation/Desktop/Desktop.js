@@ -11,6 +11,11 @@ const DesktopNavigation = () => {
         </NavLink>
       </li>
       <li>
+        <NavLink to="/tickets" className="nav-link">
+          Tickets
+        </NavLink>
+      </li>
+      <li>
         <NavLink to="/customers" className="nav-link">
           Customers
         </NavLink>

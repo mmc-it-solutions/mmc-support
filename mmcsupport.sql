@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 25 feb 2020 om 10:11
+-- Gegenereerd op: 10 mrt 2020 om 15:15
 -- Serverversie: 10.1.37-MariaDB
 -- PHP-versie: 7.2.12
 
@@ -36,6 +36,14 @@ CREATE TABLE `customer` (
   `phone_number` varchar(191) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Gegevens worden geëxporteerd voor tabel `customer`
+--
+
+INSERT INTO `customer` (`id`, `name`, `company_name`, `email`, `phone_number`) VALUES
+(1, 'hello1', 'hello1', 'hello1', '1023'),
+(2, 'hello2', 'hello2', 'hello2', '1233');
+
 -- --------------------------------------------------------
 
 --
@@ -46,6 +54,15 @@ CREATE TABLE `customer_product` (
   `customer_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `customer_product`
+--
+
+INSERT INTO `customer_product` (`customer_id`, `product_id`) VALUES
+(1, 1),
+(1, 2),
+(2, 1);
 
 -- --------------------------------------------------------
 
@@ -59,13 +76,21 @@ CREATE TABLE `product` (
   `is_archived` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Gegevens worden geëxporteerd voor tabel `product`
+--
+
+INSERT INTO `product` (`id`, `name`, `is_archived`) VALUES
+(1, 'hel', 0),
+(2, 'ha', 0);
+
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `profiel`
+-- Tabelstructuur voor tabel `profile`
 --
 
-CREATE TABLE `profiel` (
+CREATE TABLE `profile` (
   `id` int(11) NOT NULL,
   `first_name` varchar(191) NOT NULL,
   `last_name` varchar(191) NOT NULL,
@@ -80,13 +105,25 @@ CREATE TABLE `profiel` (
 
 CREATE TABLE `ticket` (
   `id` int(11) NOT NULL,
-  `titel` varchar(191) NOT NULL,
+  `title` varchar(191) NOT NULL,
   `description` text NOT NULL,
   `status` tinyint(1) NOT NULL,
   `worktime` float NOT NULL,
   `is_archived` tinyint(1) NOT NULL,
   `date_created` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `ticket`
+--
+
+INSERT INTO `ticket` (`id`, `title`, `description`, `status`, `worktime`, `is_archived`, `date_created`) VALUES
+(1, 'hello', 'hello', 1, 0, 0, '2020-03-10'),
+(2, 'hello', 'hello', 1, 0, 0, '2020-03-10'),
+(3, 'hello', 'hello1', 1, 0, 0, '2020-03-10'),
+(4, 'hello', 'hello', 1, 0, 0, '2020-03-10'),
+(5, 'hello3', 'hello3', 1, 0, 0, '2020-03-10'),
+(6, 'hello4', 'hello5', 1, 0, 0, '2020-03-10');
 
 -- --------------------------------------------------------
 
@@ -99,6 +136,15 @@ CREATE TABLE `ticket_customer` (
   `customer_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Gegevens worden geëxporteerd voor tabel `ticket_customer`
+--
+
+INSERT INTO `ticket_customer` (`ticket_id`, `customer_id`) VALUES
+(2, 2),
+(5, 2),
+(6, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -109,6 +155,16 @@ CREATE TABLE `ticket_product` (
   `ticket_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `ticket_product`
+--
+
+INSERT INTO `ticket_product` (`ticket_id`, `product_id`) VALUES
+(2, 1),
+(2, 1),
+(5, 1),
+(6, 1);
 
 -- --------------------------------------------------------
 
@@ -121,7 +177,7 @@ CREATE TABLE `user` (
   `email` varchar(191) NOT NULL,
   `password` varchar(191) NOT NULL,
   `is_admin` tinyint(1) NOT NULL,
-  `profiel_id` int(11) NOT NULL
+  `profile_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -159,9 +215,9 @@ ALTER TABLE `product`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexen voor tabel `profiel`
+-- Indexen voor tabel `profile`
 --
-ALTER TABLE `profiel`
+ALTER TABLE `profile`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -189,7 +245,7 @@ ALTER TABLE `ticket_product`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `index_fk_profiel` (`profiel_id`);
+  ADD KEY `index_fk_profiel` (`profile_id`);
 
 --
 -- Indexen voor tabel `user_ticket`
@@ -206,31 +262,31 @@ ALTER TABLE `user_ticket`
 -- AUTO_INCREMENT voor een tabel `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT voor een tabel `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT voor een tabel `profiel`
+-- AUTO_INCREMENT voor een tabel `profile`
 --
-ALTER TABLE `profiel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `profile`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT voor een tabel `ticket`
 --
 ALTER TABLE `ticket`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT voor een tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Beperkingen voor geëxporteerde tabellen
@@ -244,10 +300,10 @@ ALTER TABLE `customer_product`
   ADD CONSTRAINT `fk_product_customer_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Beperkingen voor tabel `profiel`
+-- Beperkingen voor tabel `profile`
 --
-ALTER TABLE `profiel`
-  ADD CONSTRAINT `profiel_ibfk_1` FOREIGN KEY (`id`) REFERENCES `user` (`profiel_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `profile`
+  ADD CONSTRAINT `profile_ibfk_1` FOREIGN KEY (`id`) REFERENCES `user` (`profile_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Beperkingen voor tabel `ticket_customer`
@@ -267,7 +323,7 @@ ALTER TABLE `ticket_product`
 -- Beperkingen voor tabel `user`
 --
 ALTER TABLE `user`
-  ADD CONSTRAINT `fk_profiel_id` FOREIGN KEY (`profiel_id`) REFERENCES `profiel` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_profiel_id` FOREIGN KEY (`profile_id`) REFERENCES `profile` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Beperkingen voor tabel `user_ticket`
