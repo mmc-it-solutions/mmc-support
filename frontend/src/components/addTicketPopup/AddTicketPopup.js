@@ -8,9 +8,9 @@ const AddTicketPopup = ({
   modal,
   onClose,
   onChange,
+  onChangeCustomer,
   submitHandler
 }) => {
-  console.log(customer);
   return (
     <div className="modal-wrap" style={{ display: modal.display }}>
       <div className="achtergrond" onClick={onClose} />
@@ -42,7 +42,7 @@ const AddTicketPopup = ({
             className="modal__form--select"
             name="customer"
             value={modal.customer}
-            onChange={onChange}
+            onChange={onChangeCustomer}
           >
             <option value="0">none</option>
             {customers.map(customer => (
@@ -61,9 +61,11 @@ const AddTicketPopup = ({
             onChange={onChange}
           >
             <option value="0">none</option>
-            {/* {customer.products.map(product => {
-              return <option>test</option>;
-            })} */}
+            {Array.isArray(customer)
+              ? null
+              : customer.products.map(product => {
+                  return <option value={product.id}>{product.name}</option>;
+                })}
           </select>
           <br />
           <input

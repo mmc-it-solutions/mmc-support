@@ -1,6 +1,12 @@
 import React from "react";
 import "./Ticket.css";
 
+import { NavLink } from "react-router-dom";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+
 import AddTicketPopup from "../../components/addTicketPopup/AddTicketPopup";
 
 import { connect } from "react-redux";
@@ -19,13 +25,8 @@ class Ticket extends React.Component {
   };
 
   componentDidMount() {
-    let data = {
-      customerId: 1
-    };
-
     this.props.getTickets();
     this.props.getCustomers();
-    this.props.getCustomer(data);
   }
 
   getStatus = status => {
@@ -54,6 +55,16 @@ class Ticket extends React.Component {
         [target.name]: target.value
       }
     });
+  };
+
+  onChangeCustomer = event => {
+    this.changeValue(event);
+
+    let data = {
+      customerId: event.target.value
+    };
+
+    this.props.getCustomer(data);
   };
 
   changeDisplay = () => {
@@ -101,6 +112,7 @@ class Ticket extends React.Component {
           modal={this.state.modal}
           onClose={this.changeDisplay}
           onChange={this.changeValue}
+          onChangeCustomer={this.onChangeCustomer}
           submitHandler={this.submitHandler}
         />
         <div className="Ticket-List"> Ticket List </div>
@@ -114,6 +126,7 @@ class Ticket extends React.Component {
                 <th> Company </th>
                 <th> Employee </th>
                 <th> Status </th>
+                <th> Actions </th>
               </tr>
             </thead>
             <tbody>
@@ -125,6 +138,12 @@ class Ticket extends React.Component {
                   <td> {ticket.employee} </td>
                   <td className={"status_" + ticket.status}>
                     {this.getStatus(ticket.status)}
+                  </td>
+                  <td className="FA">
+                    <NavLink to={"/tickets/" + ticket.id}>
+                      <FontAwesomeIcon icon={faEye} />
+                    </NavLink>
+                    <FontAwesomeIcon icon={faTrashAlt} />
                   </td>
                 </tr>
               ))}
