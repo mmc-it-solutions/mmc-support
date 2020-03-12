@@ -118,7 +118,7 @@ class Ticket extends React.Component {
         <div className="Ticket-List"> Ticket List </div>
         <div className="popup-button-div">
           <button className="popup-button" onClick={this.changeDisplay}>
-            Popup
+            Add Ticket
           </button>
         </div>
         <div>
