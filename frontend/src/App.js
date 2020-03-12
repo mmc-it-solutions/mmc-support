@@ -15,11 +15,10 @@ const CustomerScreen = React.lazy(() =>
   import("./containers/02_Customer/Customer")
 );
 const TicketZienScreen = React.lazy(() =>
-  import("./containers/05_ticket/Ticketzien")
+  import("./containers/04_tickets/TicketZien/Ticketzien")
 );
 
 class App extends React.Component {
-  componentDidMount() {}
   render() {
     return (
       <Provider store={store}>
@@ -32,12 +31,12 @@ class App extends React.Component {
                   <Route path="/" exact={true} component={HomeScreen} />{" "}
                   <Route path="/customers" component={CustomerScreen} />{" "}
                   <Route path="/ticket/:id" component={TicketZienScreen} />{" "}
-                </Switch>{" "}
-              </React.Suspense>{" "}
-            </main>{" "}
+                </Switch>
+              </React.Suspense>
+            </main>
             <Footer />
-          </React.Fragment>{" "}
-        </Router>{" "}
+          </React.Fragment>
+        </Router>
       </Provider>
     );
   }
