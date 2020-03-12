@@ -15,6 +15,19 @@ class TicketDetail extends React.Component {
     this.props.getTicket(data);
   }
 
+  getStatus = status => {
+    switch (status) {
+      case 1:
+        return "To Do";
+
+      case 2:
+        return "Doing";
+
+      case 3:
+        return "Done";
+    }
+  };
+
   render() {
     const { ticket } = this.props;
     if (!Array.isArray(ticket)) {
@@ -28,7 +41,7 @@ class TicketDetail extends React.Component {
             </div>
             <div className="info">
               <p> Status:</p>
-              <p> {ticket.status} </p>
+              <p> {this.getStatus(ticket.status)} </p>
               <p> Work time:</p>
               <p> {ticket.worktime} </p>
               <p> Date created:</p>
