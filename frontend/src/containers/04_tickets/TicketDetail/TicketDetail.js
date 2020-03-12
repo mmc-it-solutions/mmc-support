@@ -18,7 +18,6 @@ class TicketDetail extends React.Component {
   render() {
     const { ticket } = this.props;
     if (!Array.isArray(ticket)) {
-      console.log(ticket);
       return (
         <div className="ticketzien">
           <h2> {ticket.title} </h2>
