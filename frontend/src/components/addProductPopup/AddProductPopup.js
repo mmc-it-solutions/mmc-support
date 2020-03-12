@@ -1,6 +1,6 @@
 import React from "react";
 
-import "./AddProductPopup.css";
+import "../Layout/Modal/Modal.css";
 
 const AddProductPopup = ({ modal, changeValue, changeDisplay, addProduct }) => {
   return (
