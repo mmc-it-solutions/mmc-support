@@ -7,22 +7,13 @@
   font-size: 25px;
   text-align: center;
   background-color: #0283e5;
-  padding: 0.5px;
+  padding: 11.2px;
   color: white;
 }
 
 .productsList__table {
   width: 100%;
   border-collapse: collapse;
-}
-
-.productsList__table--rowHead {
-  color: white;
-  background-color: #0283e5;
-}
-
-.productsList__table--itemHead {
-  text-align: center;
 }
 
 .productsList__table--itemHead:nth-child(1) {
