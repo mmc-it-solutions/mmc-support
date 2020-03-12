@@ -105,14 +105,14 @@ class Customer extends React.Component {
     });
   }
 
-  renderTableHeader() {
-    let header = Object.keys(this.state.customers[0]);
-    return header.map((key, index) => {
-      if (key.toUpperCase() !== "ID") {
-        return <th key={index}>{key.toUpperCase()}</th>;
-      }
-    });
-  }
+    renderTableHeader() {
+        let header = Object.keys(this.state.customers[0]);
+        return header.map((key, index) => {
+            if (key.toUpperCase() !== "ID") {
+                return <th key = { index } > { key.toUpperCase() } < /th>;
+            }
+        });
+    }
 
   render() {
     return (
