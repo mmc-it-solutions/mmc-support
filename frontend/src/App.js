@@ -14,8 +14,8 @@ const HomeScreen = React.lazy(() => import("./containers/01_home/Home"));
 const CustomerScreen = React.lazy(() =>
   import("./containers/02_Customer/Customer")
 );
-const TicketZienScreen = React.lazy(() =>
-  import("./containers/04_tickets/TicketZien/Ticketzien")
+const TicketDetailScreen = React.lazy(() =>
+  import("./containers/04_tickets/TicketDetail/TicketDetail")
 );
 
 class App extends React.Component {
@@ -30,7 +30,7 @@ class App extends React.Component {
                 <Switch>
                   <Route path="/" exact={true} component={HomeScreen} />{" "}
                   <Route path="/customers" component={CustomerScreen} />{" "}
-                  <Route path="/ticket/:id" component={TicketZienScreen} />{" "}
+                  <Route path="/ticket/:id" component={TicketDetailScreen} />{" "}
                 </Switch>
               </React.Suspense>
             </main>
