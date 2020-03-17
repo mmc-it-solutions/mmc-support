@@ -7,3 +7,8 @@ export const GET_CUSTOMERS = "GET_CUSTOMERS";
 export const INSERT_CUSTOMER = "INSERT_CUSTOMER";
 
 export const INSERT_PRODUCT = "INSERT_PRODUCT";
+
+export const LOGIN = "LOGIN";
+
+export const GET_USER = "GET_USER";
+export const GET_USERS = "GET_USERS";

@@ -1,7 +1,7 @@
 import React from "react";
 import "./TicketDetail.css";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, Redirect } from "react-router-dom";
 
 import { connect } from "react-redux";
 import { getTicket } from "../../../store/actions/ticket";
@@ -30,6 +30,11 @@ class TicketDetail extends React.Component {
 
   render() {
     const { ticket } = this.props;
+
+    if (!this.props.authantication) {
+      return <Redirect to={"/"} />;
+    }
+
     if (!Array.isArray(ticket)) {
       return (
         <div className="ticketzien">
@@ -81,6 +86,7 @@ class TicketDetail extends React.Component {
 }
 
 const mapStateProps = (state, ownProps) => ({
+  authantication: state.user.authantication,
   ticket: state.ticket.ticket
 });
 
