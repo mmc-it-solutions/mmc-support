@@ -31,9 +31,10 @@ class TicketDetail extends React.Component {
   render() {
     const { ticket } = this.props;
 
-    if (!this.props.authantication) {
-      return <Redirect to={"/"} />;
-    }
+    // Dit is nodig als er een login is
+    // if (!this.props.authantication) {
+    //   return <Redirect to={"/"} />;
+    // }
 
     if (!Array.isArray(ticket)) {
       return (

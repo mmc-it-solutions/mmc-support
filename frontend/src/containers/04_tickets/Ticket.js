@@ -104,9 +104,10 @@ class Ticket extends React.Component {
   };
 
   render() {
-    if (!this.props.authantication) {
-      return <Redirect to={"/"} />;
-    }
+    // Dit is nodig als er een login is
+    // if (!this.props.authantication) {
+    //   return <Redirect to={"/"} />;
+    // }
 
     return (
       <div>
