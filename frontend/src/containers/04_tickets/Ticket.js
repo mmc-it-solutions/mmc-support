@@ -1,7 +1,7 @@
 import React from "react";
 import "./Ticket.css";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, Redirect } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
@@ -104,6 +104,10 @@ class Ticket extends React.Component {
   };
 
   render() {
+    if (!this.props.authantication) {
+      return <Redirect to={"/"} />;
+    }
+
     return (
       <div>
         <AddTicketPopup
@@ -160,6 +164,7 @@ class Ticket extends React.Component {
 }
 
 const mapStateProps = (state, ownProps) => ({
+  authantication: state.user.authantication,
   tickets: state.ticket.tickets,
   customers: state.customer.customers,
   customer: state.customer.customer

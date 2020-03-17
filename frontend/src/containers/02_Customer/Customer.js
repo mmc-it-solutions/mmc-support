@@ -5,7 +5,7 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "./Customer.css";
 import AddCustomer from "../../components/customers/AddCustomer";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, Redirect } from "react-router-dom";
 
 import { connect } from "react-redux";
 import { getCustomers, createCustomer } from "../../store/actions/customer";
@@ -103,6 +103,9 @@ class Customer extends React.Component {
   }
 
   render() {
+    if (!this.props.authantication) {
+      return <Redirect to={"/"} />;
+    }
     return (
       <div className="wrapper">
         <AddCustomer
@@ -131,6 +134,7 @@ class Customer extends React.Component {
 }
 
 const mapStateProps = (state, ownProps) => ({
+  authantication: state.user.authantication,
   customers: state.customer.customers
 });
 

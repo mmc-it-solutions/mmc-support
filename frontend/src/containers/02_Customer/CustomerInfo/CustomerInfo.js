@@ -4,6 +4,8 @@ import "./CustomerInfo.css";
 import ProductList from "../../../components/productList/ProductList";
 import AddProductPopup from "../../../components/addProductPopup/AddProductPopup";
 
+import { Redirect } from "react-router-dom";
+
 import { connect } from "react-redux";
 import { getCustomer } from "../../../store/actions/customer";
 import { createProduct } from "../../../store/actions/product";
@@ -76,6 +78,11 @@ class CustomerInfo extends React.Component {
 
   render() {
     const { customer } = this.props;
+
+    if (!this.props.authantication) {
+      return <Redirect to={"/"} />;
+    }
+
     if (!Array.isArray(customer)) {
       const { name, contact, products } = this.props.customer;
       return (
@@ -130,6 +137,7 @@ class CustomerInfo extends React.Component {
 }
 
 const mapStateProps = (state, ownProps) => ({
+  authantication: state.user.authantication,
   customer: state.customer.customer
 });
 
