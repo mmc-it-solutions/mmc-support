@@ -178,3 +178,12 @@ function insertTicket($data,$con){
 
     return $returnArray;
 }
+
+function updateTicketStatus($data, $con){
+
+    $sql = "UPDATE ticket SET `status`=? WHERE id=?";
+    $statement = $con->prepare($sql);
+    $statement->execute([$data['newStatus'],$data['id']]);
+
+    return getTickets($data, $con);
+}

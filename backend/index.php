@@ -87,6 +87,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
                     echo json_encode(insertTicket($this->getData(),$this->getCon()));
                 break;
 
+                case "updateTicketStatus":
+                    echo json_encode(updateTicketStatus($this->getData(),$this->getCon()));
+                break;
+
                 default:
                 return null;
             }

@@ -33,5 +33,4 @@
                 VALUES($sqlValues)";
         $statement = $con->prepare($sql);
         $statement->execute($values);
-        return $sql;
     }
