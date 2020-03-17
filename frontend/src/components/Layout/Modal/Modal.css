@@ -21,7 +21,7 @@
   position: fixed;
   background-color: white;
   width: 80%;
-  padding: 80px 0;
+  padding: 10px 0;
   border-radius: 20px;
   z-index: 2;
 }
@@ -35,24 +35,28 @@
 
 .modal__form {
   margin: 0 auto;
-  width: 60%;
+  width: 85%;
 }
 
 .modal__form--label {
-  font-size: 20px;
+  font-size: 25px;
   color: #54595e;
 }
 
-.modal__form--input {
-  padding: 10px;
-  font-size: 15px;
+.modal__form--input,
+.modal__form--textarea,
+.modal__form--select {
+  padding: 13px;
+  font-size: 20px;
+  margin-bottom: 15px;
+  width: 100%;
 }
 
 .modal__form--submit {
   display: block;
   margin: 20px auto 0 auto;
   padding: 12px;
-  font-size: 20px;
+  font-size: 25px;
   border-radius: 24px;
   border: none;
   cursor: pointer;
@@ -91,18 +95,27 @@
   }
 
   .modal__form {
-    width: 40%;
+    width: 90%;
+  }
+
+  .container {
+    display: grid;
+    grid-template-columns: auto auto;
+  }
+
+  .modal1 {
+    padding-right: 20px;
   }
 }
 
 @media (min-width: 1024px) {
   .modal {
-    width: 50%;
+    width: 60%;
   }
 }
 
 @media (min-width: 1200px) {
   .modal {
-    width: 40%;
+    width: 60%;
   }
 }

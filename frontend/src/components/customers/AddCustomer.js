@@ -1,5 +1,6 @@
 import React from "react";
-import "./AddCustomer.css";
+
+import "../Layout/Modal/Modal.css";
 
 const AddCustomer = ({ modal, onClose, onChange, submitHandler }) => {
   return (

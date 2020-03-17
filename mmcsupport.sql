@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 10 mrt 2020 om 15:15
+-- Gegenereerd op: 12 mrt 2020 om 13:57
 -- Serverversie: 10.1.37-MariaDB
 -- PHP-versie: 7.2.12
 
@@ -41,8 +41,9 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`id`, `name`, `company_name`, `email`, `phone_number`) VALUES
-(1, 'hello1', 'hello1', 'hello1', '1023'),
-(2, 'hello2', 'hello2', 'hello2', '1233');
+(1, 'Nevin', 'MMC IT Solutions', 'n.lenior@mmc-itsolutions.nl', '065863212'),
+(3, 'Sundar Pichai', 'Google', 'google@gmail.com', '06123456789'),
+(4, 'Test Test', 'Test Company', 'test@test.com', '123456789');
 
 -- --------------------------------------------------------
 
@@ -61,8 +62,12 @@ CREATE TABLE `customer_product` (
 
 INSERT INTO `customer_product` (`customer_id`, `product_id`) VALUES
 (1, 1),
-(1, 2),
-(2, 1);
+(3, 2),
+(3, 3),
+(3, 4),
+(3, 5),
+(4, 6),
+(4, 7);
 
 -- --------------------------------------------------------
 
@@ -81,8 +86,13 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `name`, `is_archived`) VALUES
-(1, 'hel', 0),
-(2, 'ha', 0);
+(1, 'MMC IT Support', 0),
+(2, 'Google Home', 0),
+(3, 'Google earth', 0),
+(4, 'Google world', 0),
+(5, 'Google company', 0),
+(6, 'Test software', 0),
+(7, 'test world', 0);
 
 -- --------------------------------------------------------
 
@@ -96,6 +106,15 @@ CREATE TABLE `profile` (
   `last_name` varchar(191) NOT NULL,
   `position` varchar(191) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `profile`
+--
+
+INSERT INTO `profile` (`id`, `first_name`, `last_name`, `position`) VALUES
+(1, 'Joep', 'Janssen', 'Head Developer'),
+(2, 'John', 'Jong Tjen Fa', 'Developer'),
+(3, 'Filemon', 'Teame', 'Developer');
 
 -- --------------------------------------------------------
 
@@ -118,12 +137,9 @@ CREATE TABLE `ticket` (
 --
 
 INSERT INTO `ticket` (`id`, `title`, `description`, `status`, `worktime`, `is_archived`, `date_created`) VALUES
-(1, 'hello', 'hello', 1, 0, 0, '2020-03-10'),
-(2, 'hello', 'hello', 1, 0, 0, '2020-03-10'),
-(3, 'hello', 'hello1', 1, 0, 0, '2020-03-10'),
-(4, 'hello', 'hello', 1, 0, 0, '2020-03-10'),
-(5, 'hello3', 'hello3', 1, 0, 0, '2020-03-10'),
-(6, 'hello4', 'hello5', 1, 0, 0, '2020-03-10');
+(1, 'MMC IT Solutions', 'Make the website better', 1, 0, 0, '2020-03-12'),
+(2, 'Test', 'test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test ', 1, 0, 0, '2020-03-12'),
+(3, 'Google fix', 'Fix Google', 1, 0, 0, '2020-03-12');
 
 -- --------------------------------------------------------
 
@@ -141,9 +157,9 @@ CREATE TABLE `ticket_customer` (
 --
 
 INSERT INTO `ticket_customer` (`ticket_id`, `customer_id`) VALUES
-(2, 2),
-(5, 2),
-(6, 1);
+(1, 1),
+(2, 4),
+(3, 3);
 
 -- --------------------------------------------------------
 
@@ -161,10 +177,8 @@ CREATE TABLE `ticket_product` (
 --
 
 INSERT INTO `ticket_product` (`ticket_id`, `product_id`) VALUES
-(2, 1),
-(2, 1),
-(5, 1),
-(6, 1);
+(1, 1),
+(2, 6);
 
 -- --------------------------------------------------------
 
@@ -180,6 +194,15 @@ CREATE TABLE `user` (
   `profile_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Gegevens worden geëxporteerd voor tabel `user`
+--
+
+INSERT INTO `user` (`id`, `email`, `password`, `is_admin`, `profile_id`) VALUES
+(1, 'j.janssen@mmc-itsolutions.nl', 'Joep', 1, 1),
+(2, 'J.jong-tjien-fa@mmc-itsolutions.nl', 'John', 0, 2),
+(3, 'f.teame@mmc-itsolutions.nl', 'Filemon', 0, 3);
+
 -- --------------------------------------------------------
 
 --
@@ -190,6 +213,14 @@ CREATE TABLE `user_ticket` (
   `user_id` int(11) NOT NULL,
   `ticket_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `user_ticket`
+--
+
+INSERT INTO `user_ticket` (`user_id`, `ticket_id`) VALUES
+(1, 1),
+(2, 3);
 
 --
 -- Indexen voor geëxporteerde tabellen
@@ -262,31 +293,31 @@ ALTER TABLE `user_ticket`
 -- AUTO_INCREMENT voor een tabel `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT voor een tabel `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT voor een tabel `profile`
 --
 ALTER TABLE `profile`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT voor een tabel `ticket`
 --
 ALTER TABLE `ticket`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT voor een tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Beperkingen voor geëxporteerde tabellen
@@ -298,12 +329,6 @@ ALTER TABLE `user`
 ALTER TABLE `customer_product`
   ADD CONSTRAINT `fk_customer_product_id` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_product_customer_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Beperkingen voor tabel `profile`
---
-ALTER TABLE `profile`
-  ADD CONSTRAINT `profile_ibfk_1` FOREIGN KEY (`id`) REFERENCES `user` (`profile_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Beperkingen voor tabel `ticket_customer`

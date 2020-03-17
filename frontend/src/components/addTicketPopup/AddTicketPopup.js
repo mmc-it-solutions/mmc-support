@@ -1,6 +1,6 @@
 import React from "react";
 
-import "./AddTicketPopup.css";
+import "../Layout/Modal/Modal.css";
 
 const AddTicketPopup = ({
   customers,

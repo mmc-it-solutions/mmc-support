@@ -92,7 +92,7 @@ class CustomerInfo extends React.Component {
             <div className="containment_contacts">
               <div className="contained_contacts">
                 <h2 className="h2">Contact</h2>
-                <h3>Name Onwer:</h3>
+                <h3>Name Owner:</h3>
                 <h3>{contact.name}</h3>
                 <h3>Email:</h3>
                 <h3> {contact.email}</h3>
