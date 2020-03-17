@@ -2,10 +2,10 @@
 
 function login($data,$con) {
 
-    $users = selectStatement($con,'user',false,null,null);
 
-    foreach ($users as $userData) {
-        if ($userData['email'] === $data['username'] && password_verify($data['password'], $userData['password'])) {
+    $user = selectStatement($con,'user',true,'`email`=?',[$data['username']]);
+    if(!empty($user)){
+        if (password_verify(base64_decode($data['password']), $user[0]['password'])) {
             return true;
         }    
     }

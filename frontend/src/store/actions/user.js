@@ -13,7 +13,7 @@ export const login = form => (dispatch, getState) => {
     action: "login",
     data: {
       username: form.username,
-      password: form.password
+      password: btoa(form.password)
     }
   };
 
