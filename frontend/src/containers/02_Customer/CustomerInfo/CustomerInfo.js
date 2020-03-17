@@ -79,9 +79,10 @@ class CustomerInfo extends React.Component {
   render() {
     const { customer } = this.props;
 
-    if (!this.props.authantication) {
-      return <Redirect to={"/"} />;
-    }
+    // Dit is nodig als er een login is
+    // if (!this.props.authantication) {
+    //   return <Redirect to={"/"} />;
+    // }
 
     if (!Array.isArray(customer)) {
       const { name, contact, products } = this.props.customer;
