@@ -32,11 +32,20 @@ h2 {
   border-top: none;
 }
 
-.extra-info div {
+.extra-info div:not(.extra-info-button) {
   border: 1px solid black;
   padding: 20px;
   text-align: center;
   margin: 10px;
+}
+
+.extra-info-button {
+  text-align: center;
+}
+
+.extra-info-button button {
+  margin: 10px;
+  padding: 10px;
 }
 
 .extra-info-customer a {

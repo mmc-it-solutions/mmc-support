@@ -54,6 +54,15 @@ class TicketDetail extends React.Component {
               <p> {ticket.date_created} </p>
             </div>
             <div className="extra-info">
+              <div className="extra-info-button">
+                <button>Change Product</button>
+              </div>
+              <div className="extra-info-button">
+                <button>Change Company</button>
+              </div>
+              <div className="extra-info-button">
+                <button>Change User</button>
+              </div>
               <div>
                 <h3>Product</h3>
                 <p> {ticket.product.product_name} </p>
