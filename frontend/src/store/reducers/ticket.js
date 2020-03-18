@@ -14,6 +14,7 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case GET_TICKET:
+    case UPDATE_TICKETSTATUS:
     case UPDATE_CUSTOMER_OF_TICKET:
       return {
         ...state,
@@ -28,11 +29,6 @@ export default function(state = initialState, action) {
       return {
         ...state,
         tickets: [...state.tickets, action.payload]
-      };
-    case UPDATE_TICKETSTATUS:
-      return {
-        ...state,
-        tickets: action.payload
       };
     default:
       return state;

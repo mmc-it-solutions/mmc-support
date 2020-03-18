@@ -2,13 +2,13 @@
 
 function getCustomer($data,$con){
     $returnArray = [];
-    $customer = selectStatement($con,'customer',true,'`id`=?',[$data['customerId']]);
+    $customer = selectStatement($con,'customer',true,['id'],[$data['customerId']]);
 
     foreach ($customer as $customerData) {
         $products = [];
-        $productIdColoration = selectStatement($con,'customer_product',true,'`customer_id`=?',[$data['customerId']]);
+        $productIdColoration = selectStatement($con,'customer_product',true,['customer_id'],[$data['customerId']]);
         foreach ($productIdColoration as $productId) {
-            $product = selectStatement($con, 'product', true, '`id`=?', [$productId['product_id']]);
+            $product = selectStatement($con, 'product', true, ['id'], [$productId['product_id']]);
             foreach ($product as $productData) {
                 $products[] = [
                     'id'      => $productData['id'],
@@ -66,7 +66,7 @@ function insertCustomer($data,$con){
 
     $id = $con->lastInsertId();
 
-    $customer = selectStatement($con, 'customer', true, '`id`=?', [$id]);
+    $customer = selectStatement($con, 'customer', true, ['id'], [$id]);
 
     foreach ($customer as $customerData) {
         $sql = "SELECT COUNT(*) FROM customer_product WHERE `customer_id`=?";

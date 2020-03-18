@@ -11,13 +11,13 @@ function insertProduct($data,$con){
     $values = [$data['customerId'],$id];
     insertStatement($con,'customer_product',$columnNames,$values);
 
-    $products = selectStatement($con, 'product', true, "`id`=?", [$id]);
+    $products = selectStatement($con, 'product', true, ['id'], [$id]);
     foreach ($products as $productData) {
         $checker = false;
         $products = selectStatement($con, 
                                     'customer_product',
                                     true,
-                                    'customer_id=? AND product_id=?',
+                                    ['customer_id','product_id'],
                                     [$data['customerId'],$productData['id']]
                                 );
         foreach ($products as $key2 => $value2) {

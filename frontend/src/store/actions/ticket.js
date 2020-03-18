@@ -98,7 +98,7 @@ export const updateTicketStatus = form => (dispatch, getState) => {
   const body = {
     action: "updateTicketStatus",
     data: {
-      id: form["id"],
+      ticketId: form["ticketId"],
       newStatus: form["newStatus"]
     }
   };
