@@ -72,6 +72,11 @@ class TicketDetail extends React.Component {
         break;
 
       case "company":
+        let data = {
+          ticketId: this.props.match.params.id,
+          customerId: newId
+        };
+        this.props.updateCustomerOfTicket(data);
         break;
 
       case "user":

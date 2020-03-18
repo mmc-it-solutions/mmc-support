@@ -187,3 +187,28 @@ function updateTicketStatus($data, $con){
 
     return getTickets($data, $con);
 }
+
+function updateCustomerOfTicket($data, $con){
+    if($data['customerId'] == 0) {
+        $sql = "DELETE FROM `ticket_customer` WHERE `ticket_id`=?";
+        $statement = $con->prepare($sql);
+        $statement->execute([$data['ticketId']]);
+    } else {
+        $sql = "SELECT * FROM ticket_customer WHERE `ticket_id`=?";
+        $statement = $con->prepare($sql);
+        $statement->execute([$data['ticketId']]);
+        $ticketColaration = $statement->fetchAll();
+
+        if(empty($ticketColaration)){
+            $columnNames = ['ticket_id','customer_id'];
+            $values = [$data['ticketId'],$data['customerId']];
+            insertStatement($con, "ticket_customer", $columnNames, $values);
+        } else {
+            $sql = "UPDATE `ticket_customer` SET `customer_id`=? WHERE `ticket_id`=?";
+            $statement = $con->prepare($sql);
+            $statement->execute([$data['customerId'],$data['ticketId']]);
+        }
+    }
+
+    return getTicket($data, $con);
+}

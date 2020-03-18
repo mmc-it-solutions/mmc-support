@@ -24,9 +24,11 @@ const ChangeCompanyPopUp = ({
             value={companyId}
             onChange={event => setCompanyId(event.target.value)}
           >
-            <option value={0}>none</option>
+            <option value={0}>None</option>
             {customers.map(customer => (
-              <option value={customer.id}>{customer.name}</option>
+              <option key={customer.id} value={customer.id}>
+                {customer.name}
+              </option>
             ))}
           </select>
           <input
