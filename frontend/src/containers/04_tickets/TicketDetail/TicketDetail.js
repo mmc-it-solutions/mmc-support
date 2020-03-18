@@ -4,7 +4,7 @@ import "./TicketDetail.css";
 import { NavLink, Redirect } from "react-router-dom";
 
 import { connect } from "react-redux";
-import { getTicket } from "../../../store/actions/ticket";
+import { getTicket, updateTicketStatus } from "../../../store/actions/ticket";
 
 class TicketDetail extends React.Component {
   componentDidMount() {
@@ -15,17 +15,13 @@ class TicketDetail extends React.Component {
     this.props.getTicket(data);
   }
 
-  getStatus = status => {
-    switch (status) {
-      case 1:
-        return "To Do";
+  changeHandler = event => {
+    let data = {
+      ticketId: this.props.match.params.id,
+      newStatus: event.target.value
+    };
 
-      case 2:
-        return "Doing";
-
-      case 3:
-        return "Done";
-    }
+    this.props.updateTicketStatus(data);
   };
 
   render() {
@@ -47,7 +43,13 @@ class TicketDetail extends React.Component {
             </div>
             <div className="info">
               <p> Status:</p>
-              <p> {this.getStatus(ticket.status)} </p>
+              <div>
+                <select value={ticket.status} onChange={this.changeHandler}>
+                  <option value="1">To Do</option>
+                  <option value="2">Doing</option>
+                  <option value="3">Done</option>
+                </select>
+              </div>
               <p> Work time:</p>
               <p> {ticket.worktime} </p>
               <p> Date created:</p>
@@ -91,6 +93,6 @@ const mapStateProps = (state, ownProps) => ({
   ticket: state.ticket.ticket
 });
 
-const mapDispatchToProps = { getTicket };
+const mapDispatchToProps = { getTicket, updateTicketStatus };
 
 export default connect(mapStateProps, mapDispatchToProps)(TicketDetail);

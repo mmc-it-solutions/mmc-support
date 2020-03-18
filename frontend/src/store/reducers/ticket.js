@@ -30,7 +30,7 @@ export default function(state = initialState, action) {
     case UPDATE_TICKETSTATUS:
       return {
         ...state,
-        tickets: action.payload
+        ticket: action.payload
       };
     default:
       return state;
