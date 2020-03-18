@@ -1,18 +1,31 @@
 import React from "react";
 import "./TicketDetail.css";
 
+import ChangeCompanyPopUp from "../../../components/changeCompanyPopUp/ChangeCompanyPopUp";
+
 import { NavLink, Redirect } from "react-router-dom";
 
 import { connect } from "react-redux";
-import { getTicket } from "../../../store/actions/ticket";
+import {
+  getTicket,
+  updateCustomerOfTicket
+} from "../../../store/actions/ticket";
+import { getCustomers } from "../../../store/actions/customer";
 
 class TicketDetail extends React.Component {
+  state = {
+    companyModal: {
+      display: "none"
+    }
+  };
+
   componentDidMount() {
     let data = {
       ticketId: this.props.match.params.id
     };
 
     this.props.getTicket(data);
+    this.props.getCustomers();
   }
 
   getStatus = status => {
@@ -28,6 +41,53 @@ class TicketDetail extends React.Component {
     }
   };
 
+  modalDisplayChange = modal => {
+    const { companyModal } = this.state;
+
+    switch (modal) {
+      case "product":
+        break;
+
+      case "company":
+        this.setState({
+          companyModal: {
+            display: companyModal.display === "none" ? "flex" : "none"
+          }
+        });
+        break;
+
+      case "user":
+        break;
+
+      default:
+        console.log("There is an error");
+    }
+  };
+
+  submitHandler = (modal, newId, event) => {
+    event.preventDefault();
+
+    switch (modal) {
+      case "product":
+        break;
+
+      case "company":
+        break;
+
+      case "user":
+        break;
+
+      default:
+        console.log("There is an error");
+    }
+
+    this.setState({
+      companyModal: {
+        display: "none"
+      }
+    });
+  };
+
   render() {
     const { ticket } = this.props;
 
@@ -39,6 +99,13 @@ class TicketDetail extends React.Component {
     if (!Array.isArray(ticket)) {
       return (
         <div className="ticketzien">
+          <ChangeCompanyPopUp
+            modal={this.state.companyModal}
+            onClose={this.modalDisplayChange.bind(this, "company")}
+            submitHandler={this.submitHandler}
+            customerId={this.props.ticket.customer.id}
+            customers={this.props.customers}
+          />
           <h2> {ticket.title} </h2>
           <div className="grid">
             <div className="description">
@@ -58,7 +125,9 @@ class TicketDetail extends React.Component {
                 <button>Change Product</button>
               </div>
               <div className="extra-info-button">
-                <button>Change Company</button>
+                <button onClick={this.modalDisplayChange.bind(this, "company")}>
+                  Change Company
+                </button>
               </div>
               <div className="extra-info-button">
                 <button>Change User</button>
@@ -97,9 +166,10 @@ class TicketDetail extends React.Component {
 
 const mapStateProps = (state, ownProps) => ({
   authantication: state.user.authantication,
-  ticket: state.ticket.ticket
+  ticket: state.ticket.ticket,
+  customers: state.customer.customers
 });
 
-const mapDispatchToProps = { getTicket };
+const mapDispatchToProps = { getTicket, updateCustomerOfTicket, getCustomers };
 
 export default connect(mapStateProps, mapDispatchToProps)(TicketDetail);
