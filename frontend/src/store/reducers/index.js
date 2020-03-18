@@ -3,9 +3,11 @@ import { combineReducers } from "redux";
 import customer from "./customer";
 import ticket from "./ticket";
 import product from "./product";
+import user from "./user";
 
 export default combineReducers({
   customer,
   ticket,
-  product
+  product,
+  user
 });

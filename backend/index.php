@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     // Decide if the origin in $_SERVER['HTTP_ORIGIN'] is one
     // you want to allow, and if so:
@@ -23,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     require_once "./functions/ticket.php";
     require_once "./functions/customer.php";
     require_once "./functions/product.php";
+    require_once "./functions/user.php";
 
     class Api{
         private $action;
@@ -59,6 +62,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
         function whichAction(){
             switch($this->getAction()){
+                case "login":
+                    echo json_encode(login($this->getData(),$this->getCon()));
+                break;
+
                 case "getTicket":
                     echo json_encode(getTicket($this->getData(),$this->getCon()));
                 break;
