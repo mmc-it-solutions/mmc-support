@@ -71,3 +71,19 @@
         $statement = $con->prepare($sql);
         $statement->execute($allValues);
     }
+
+    function deleteStatement($con, $tableName, $whereColumns, $whereValues) {
+        $sqlWhere = "";
+
+        foreach ($whereColumns as $key => $column) {
+            if($key !== 0){
+                $sqlWhere .= " AND ";
+            }
+            $sqlWhere .= "`$column`=?";
+        }
+
+        $sql = "DELETE FROM $tableName
+                WHERE $sqlWhere";
+        $statement = $con->prepare($sql);
+        $statement->execute($whereValues);
+    }

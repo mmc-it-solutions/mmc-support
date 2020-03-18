@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import "../Layout/Modal/Modal.css";
 
@@ -9,7 +9,22 @@ const ChangeProductPopUp = ({
   productId,
   customer
 }) => {
-  const [productId, setProductId] = useState(productId);
+  const [productIdHook, setProductIdHook] = useState(productId);
+
+  useEffect(() => {
+    let checker = false;
+
+    customer.products.forEach(product => {
+      if (product.id === productId) {
+        checker = true;
+      }
+    });
+
+    if (checker) {
+      setProductIdHook(0);
+    }
+  });
+
   return (
     <div className="modal-wrap" style={{ display: modal.display }}>
       <div className="achtergrond" onClick={onClose} />
@@ -17,24 +32,24 @@ const ChangeProductPopUp = ({
         <h2 className="modal__titel">Change Product</h2>
         <form
           className="modal__form"
-          onSubmit={submitHandler.bind(this, "produc", productId)}
+          onSubmit={submitHandler.bind(this, "product", productIdHook)}
         >
           <select
             className="modal__form--select"
-            value={productId}
-            onChange={event => setproducId(event.target.value)}
+            value={productIdHook}
+            onChange={event => setProductIdHook(event.target.value)}
           >
             <option value={0}>None</option>
-            {customers.map(product => (
-              <option key={produc.id} value={produc.id}>
-                {produc.name}
+            {customer.products.map(product => (
+              <option key={product.id} value={product.id}>
+                {product.name}
               </option>
             ))}
           </select>
           <input
             className="modal__form--submit"
             type="submit"
-            value="Select Company"
+            value="Select Product"
           />
         </form>
         <input

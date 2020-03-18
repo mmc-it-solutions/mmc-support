@@ -3,7 +3,8 @@ import {
   GET_TICKETS,
   INSERT_TICKET,
   UPDATE_TICKETSTATUS,
-  UPDATE_CUSTOMER_OF_TICKET
+  UPDATE_CUSTOMER_OF_TICKET,
+  UPDATE_PRODUCT_OF_TICKET
 } from "../actions/types";
 
 const initialState = {
@@ -16,6 +17,7 @@ export default function(state = initialState, action) {
     case GET_TICKET:
     case UPDATE_TICKETSTATUS:
     case UPDATE_CUSTOMER_OF_TICKET:
+    case UPDATE_PRODUCT_OF_TICKET:
       return {
         ...state,
         ticket: action.payload

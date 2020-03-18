@@ -2,6 +2,7 @@ import React from "react";
 import "./TicketDetail.css";
 
 import ChangeCompanyPopUp from "../../../components/changeCompanyPopUp/ChangeCompanyPopUp";
+import ChangeProductPopUp from "../../../components/changeProductPopUp/ChangeProductPopUp";
 
 import { NavLink, Redirect } from "react-router-dom";
 
@@ -9,12 +10,16 @@ import { connect } from "react-redux";
 import {
   getTicket,
   updateTicketStatus,
-  updateCustomerOfTicket
+  updateCustomerOfTicket,
+  updateProductOfTicket
 } from "../../../store/actions/ticket";
-import { getCustomers } from "../../../store/actions/customer";
+import { getCustomer, getCustomers } from "../../../store/actions/customer";
 
 class TicketDetail extends React.Component {
   state = {
+    productModal: {
+      display: "none"
+    },
     companyModal: {
       display: "none"
     }
@@ -39,10 +44,15 @@ class TicketDetail extends React.Component {
   };
 
   modalDisplayChange = modal => {
-    const { companyModal } = this.state;
+    const { companyModal, productModal } = this.state;
 
     switch (modal) {
       case "product":
+        this.setState({
+          productModal: {
+            display: productModal.display === "none" ? "flex" : "none"
+          }
+        });
         break;
 
       case "company":
@@ -66,14 +76,19 @@ class TicketDetail extends React.Component {
 
     switch (modal) {
       case "product":
+        let dataProduct = {
+          ticketId: this.props.match.params.id,
+          productId: newId
+        };
+        this.props.updateProductOfTicket(dataProduct);
         break;
 
       case "company":
-        let data = {
+        let dataCompany = {
           ticketId: this.props.match.params.id,
           customerId: newId
         };
-        this.props.updateCustomerOfTicket(data);
+        this.props.updateCustomerOfTicket(dataCompany);
         break;
 
       case "user":
@@ -85,6 +100,9 @@ class TicketDetail extends React.Component {
 
     this.setState({
       companyModal: {
+        display: "none"
+      },
+      productModal: {
         display: "none"
       }
     });
@@ -108,6 +126,13 @@ class TicketDetail extends React.Component {
             customerId={this.props.ticket.customer.id}
             customers={this.props.customers}
           />
+          <ChangeProductPopUp
+            modal={this.state.productModal}
+            onClose={this.modalDisplayChange.bind(this, "product")}
+            submitHandler={this.submitHandler}
+            productId={this.props.ticket.product.id}
+            customer={this.props.ticket.customer}
+          />
           <h2> {ticket.title} </h2>
           <div className="grid">
             <div className="description">
@@ -130,7 +155,9 @@ class TicketDetail extends React.Component {
             </div>
             <div className="extra-info">
               <div className="extra-info-button">
-                <button>Change Product</button>
+                <button onClick={this.modalDisplayChange.bind(this, "product")}>
+                  Change Product
+                </button>
               </div>
               <div className="extra-info-button">
                 <button onClick={this.modalDisplayChange.bind(this, "company")}>
@@ -148,13 +175,13 @@ class TicketDetail extends React.Component {
                 {ticket.customer.id == 0 ? (
                   <React.Fragment>
                     <h3>Company</h3>
-                    <p> {ticket.customer.company_name} </p>
+                    <p> {ticket.customer.name} </p>
                   </React.Fragment>
                 ) : (
                   <NavLink to={"/customers/" + ticket.customer.id}>
                     <React.Fragment>
                       <h3>Company</h3>
-                      <p> {ticket.customer.company_name} </p>
+                      <p> {ticket.customer.name} </p>
                     </React.Fragment>
                   </NavLink>
                 )}
@@ -175,13 +202,16 @@ class TicketDetail extends React.Component {
 const mapStateProps = (state, ownProps) => ({
   authantication: state.user.authantication,
   ticket: state.ticket.ticket,
+  customer: state.customer.customer,
   customers: state.customer.customers
 });
 
 const mapDispatchToProps = {
   getTicket,
   updateCustomerOfTicket,
+  updateProductOfTicket,
   updateTicketStatus,
+  getCustomer,
   getCustomers
 };
 

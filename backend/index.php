@@ -102,6 +102,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
                     echo json_encode(updateCustomerOfTicket($this->getData(),$this->getCon()));
                 break;
 
+                case "updateProductOfTicket":
+                    echo json_encode(updateProductOfTicket($this->getData(),$this->getCon()));
+                break;
+
                 default:
                 return null;
             }

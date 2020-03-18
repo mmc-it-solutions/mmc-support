@@ -16,13 +16,10 @@ function getTicket($data,$con){
     
     $customerIdColoration = selectStatement($con,'ticket_customer', true, ['ticket_id'], [$data['ticketId']]);
     foreach ($customerIdColoration as $customerId) {
-        $customer = selectStatement($con, 'customer', true, ['id'], [$customerId['customer_id']]);
-        foreach ($customer as $customerData) {
-            $customerInfo = [
-                'id' => $customerData['id'],
-                'company_name' => $customerData['company_name']
-            ];
-        }
+        $data2 = [
+            "customerId" => $customerId['customer_id']
+        ];
+        $customerInfo = getCustomer($data2, $con);
     }
     
     $productIdColoration = selectStatement($con,'ticket_product', true, ['ticket_id'], [$data['ticketId']]);
@@ -186,18 +183,35 @@ function updateTicketStatus($data, $con){
 }
 
 function updateCustomerOfTicket($data, $con){
+    deleteStatement($con,'ticket_product',['ticket_id'],[$data['ticketId']]);
+
     if($data['customerId'] == 0) {
-        $sql = "DELETE FROM `ticket_customer` WHERE `ticket_id`=?";
-        $statement = $con->prepare($sql);
-        $statement->execute([$data['ticketId']]);
+        deleteStatement($con,'ticket_customer',['ticket_id'],[$data['ticketId']]);
     } else {
-        $ticketColaration = selectStatement($con, 'ticket_customer', true, ['ticket_id'], [$data['ticketId']]);
-        if(empty($ticketColaration)){
+        $ticketCustomerColaration = selectStatement($con, 'ticket_customer', true, ['ticket_id'], [$data['ticketId']]);
+        if(empty($ticketCustomerColaration)){
             $columnNames = ['ticket_id','customer_id'];
             $values = [$data['ticketId'],$data['customerId']];
             insertStatement($con, "ticket_customer", $columnNames, $values);
         } else {
             updateStatement($con,'ticket_customer',['customer_id'],[$data['customerId']],['ticket_id'],[$data['ticketId']]);
+        }
+    }
+
+    return getTicket($data, $con);
+}
+
+function updateProductOfTicket($data, $con){
+    if($data['productId'] == 0) {
+        deleteStatement($con,'ticket_product',['ticket_id'],[$data['ticketId']]);
+    } else {
+        $ticketColaration = selectStatement($con, 'ticket_product', true, ['ticket_id'], [$data['ticketId']]);
+        if(empty($ticketColaration)){
+            $columnNames = ['ticket_id','product_id'];
+            $values = [$data['ticketId'],$data['productId']];
+            insertStatement($con, "ticket_product", $columnNames, $values);
+        } else {
+            updateStatement($con,'ticket_product',['product_id'],[$data['productId']],['ticket_id'],[$data['ticketId']]);
         }
     }
 
