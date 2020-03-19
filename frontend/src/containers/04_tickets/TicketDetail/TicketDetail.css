@@ -45,8 +45,14 @@ h2 {
 
 .extra-info-button button {
   margin: 10px;
-  padding: 10px;
-  font-size: 15px;
+  padding: 10px 20px;
+  font-size: 14px;
+  background-color: #00d32b;
+  color: #54595e;
+  border: none;
+  border-radius: 12px;
+  outline: none;
+  cursor: pointer;
 }
 
 .extra-info-customer a {
