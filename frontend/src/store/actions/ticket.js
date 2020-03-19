@@ -1,6 +1,11 @@
 import axios from "axios";
 
-import { GET_TICKET, GET_TICKETS, INSERT_TICKET } from "./types";
+import {
+  GET_TICKET,
+  GET_TICKETS,
+  INSERT_TICKET,
+  UPDATE_TICKETSTATUS
+} from "./types";
 
 export const getTicket = form => (dispatch, getState) => {
   const config = {
@@ -74,6 +79,34 @@ export const createTicket = form => (dispatch, getState) => {
     .then(res => {
       dispatch({
         type: INSERT_TICKET,
+        payload: res.data
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+};
+
+export const updateTicketStatus = form => (dispatch, getState) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
+  const body = {
+    action: "updateTicketStatus",
+    data: {
+      ticketId: form["ticketId"],
+      newStatus: form["newStatus"]
+    }
+  };
+
+  axios
+    .post("http://localhost/mmcSupport/backend/", body, config)
+    .then(res => {
+      dispatch({
+        type: UPDATE_TICKETSTATUS,
         payload: res.data
       });
     })

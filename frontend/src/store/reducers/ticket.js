@@ -1,4 +1,9 @@
-import { GET_TICKET, GET_TICKETS, INSERT_TICKET } from "../actions/types";
+import {
+  GET_TICKET,
+  GET_TICKETS,
+  INSERT_TICKET,
+  UPDATE_TICKETSTATUS
+} from "../actions/types";
 
 const initialState = {
   ticket: [],
@@ -8,6 +13,7 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case GET_TICKET:
+    case UPDATE_TICKETSTATUS:
       return {
         ...state,
         ticket: action.payload
