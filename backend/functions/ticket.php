@@ -217,3 +217,20 @@ function updateProductOfTicket($data, $con){
 
     return getTicket($data, $con);
 }
+
+function updateUserOfTicket($data, $con){
+    if($data['userId'] == 0) {
+        deleteStatement($con,'user_ticket',['ticket_id'],[$data['ticketId']]);
+    } else {
+        $ticketColaration = selectStatement($con, 'user_ticket', true, ['ticket_id'], [$data['ticketId']]);
+        if(empty($ticketColaration)){
+            $columnNames = ['ticket_id','user_id'];
+            $values = [$data['ticketId'],$data['userId']];
+            insertStatement($con, "user_ticket", $columnNames, $values);
+        } else {
+            updateStatement($con,'user_ticket',['user_id'],[$data['userId']],['ticket_id'],[$data['ticketId']]);
+        }
+    }
+
+    return getTicket($data, $con);
+}

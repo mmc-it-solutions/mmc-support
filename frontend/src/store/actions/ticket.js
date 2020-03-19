@@ -6,7 +6,8 @@ import {
   INSERT_TICKET,
   UPDATE_TICKETSTATUS,
   UPDATE_CUSTOMER_OF_TICKET,
-  UPDATE_PRODUCT_OF_TICKET
+  UPDATE_PRODUCT_OF_TICKET,
+  UPDATE_USER_OF_TICKET
 } from "./types";
 
 export const getTicket = form => (dispatch, getState) => {
@@ -165,6 +166,34 @@ export const updateProductOfTicket = form => (dispatch, getState) => {
     .then(res => {
       dispatch({
         type: UPDATE_PRODUCT_OF_TICKET,
+        payload: res.data
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+};
+
+export const updateUserOfTicket = form => (dispatch, getState) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
+  const body = {
+    action: "updateUserOfTicket",
+    data: {
+      ticketId: form["ticketId"],
+      userId: form["userId"]
+    }
+  };
+
+  axios
+    .post("http://localhost/mmcSupport/backend/", body, config)
+    .then(res => {
+      dispatch({
+        type: UPDATE_USER_OF_TICKET,
         payload: res.data
       });
     })

@@ -20,7 +20,7 @@ const ChangeProductPopUp = ({
       }
     });
 
-    if (checker) {
+    if (!checker && productId !== 0) {
       setProductIdHook(0);
     }
   });

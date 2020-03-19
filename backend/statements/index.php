@@ -2,14 +2,13 @@
     function selectStatement($con, $tableName,$where,$whereColumns,$whereValues){
         if($where){
             $whereStatement = "";
-
             foreach ($whereColumns as $key => $column) {
                 if($key !== 0){
                     $whereStatement .= ", ";
                 }
                 $whereStatement .= "`$column`=?";
             }
-
+            
             $sql = "SELECT * FROM $tableName WHERE $whereStatement";
         } else {
             $sql = "SELECT * FROM $tableName";

@@ -3,16 +3,16 @@ import React, { useState } from "react";
 import "../Layout/Modal/Modal.css";
 
 const ChangeUserPopUp = ({ modal, onClose, submitHandler, userId, users }) => {
-  const [userIdHook, setUserIdHook] = useState(productId);
+  const [userIdHook, setUserIdHook] = useState(userId);
 
   return (
     <div className="modal-wrap" style={{ display: modal.display }}>
       <div className="achtergrond" onClick={onClose} />
       <div className="modal">
-        <h2 className="modal__titel">Change Product</h2>
+        <h2 className="modal__titel">Change User</h2>
         <form
           className="modal__form"
-          onSubmit={submitHandler.bind(this, "product", userIdHook)}
+          onSubmit={submitHandler.bind(this, "user", userIdHook)}
         >
           <select
             className="modal__form--select"
@@ -20,16 +20,16 @@ const ChangeUserPopUp = ({ modal, onClose, submitHandler, userId, users }) => {
             onChange={event => setUserIdHook(event.target.value)}
           >
             <option value={0}>None</option>
-            {/* {users.products.map(user => (
+            {users.map(user => (
               <option key={user.id} value={user.id}>
-                {user.name}
+                {user.profile.first_name} {user.profile.last_name}
               </option>
-            ))} */}
+            ))}
           </select>
           <input
             className="modal__form--submit"
             type="submit"
-            value="Select Product"
+            value="Select User"
           />
         </form>
         <input
@@ -43,4 +43,4 @@ const ChangeUserPopUp = ({ modal, onClose, submitHandler, userId, users }) => {
   );
 };
 
-export default ChangeProductPopUp;
+export default ChangeUserPopUp;

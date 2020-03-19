@@ -12,7 +12,8 @@ import {
   getTicket,
   updateTicketStatus,
   updateCustomerOfTicket,
-  updateProductOfTicket
+  updateProductOfTicket,
+  updateUserOfTicket
 } from "../../../store/actions/ticket";
 import { getCustomer, getCustomers } from "../../../store/actions/customer";
 import { getUsers } from "../../../store/actions/user";
@@ -24,6 +25,9 @@ class TicketDetail extends React.Component {
     },
     companyModal: {
       display: "none"
+    },
+    userModal: {
+      display: "none"
     }
   };
 
@@ -31,8 +35,8 @@ class TicketDetail extends React.Component {
     let data = {
       ticketId: this.props.match.params.id
     };
-
     this.props.getTicket(data);
+
     this.props.getCustomers();
     this.props.getUsers();
   }
@@ -47,7 +51,7 @@ class TicketDetail extends React.Component {
   };
 
   modalDisplayChange = modal => {
-    const { companyModal, productModal } = this.state;
+    const { companyModal, productModal, userModal } = this.state;
 
     switch (modal) {
       case "product":
@@ -67,6 +71,11 @@ class TicketDetail extends React.Component {
         break;
 
       case "user":
+        this.setState({
+          userModal: {
+            display: userModal.display === "none" ? "flex" : "none"
+          }
+        });
         break;
 
       default:
@@ -95,6 +104,11 @@ class TicketDetail extends React.Component {
         break;
 
       case "user":
+        let dataUser = {
+          ticketId: this.props.match.params.id,
+          userId: newId
+        };
+        this.props.updateUserOfTicket(dataUser);
         break;
 
       default:
@@ -106,6 +120,9 @@ class TicketDetail extends React.Component {
         display: "none"
       },
       productModal: {
+        display: "none"
+      },
+      userModal: {
         display: "none"
       }
     });
@@ -135,6 +152,13 @@ class TicketDetail extends React.Component {
             submitHandler={this.submitHandler}
             productId={this.props.ticket.product.id}
             customer={this.props.ticket.customer}
+          />
+          <ChangeUserPopUp
+            modal={this.state.userModal}
+            onClose={this.modalDisplayChange.bind(this, "user")}
+            submitHandler={this.submitHandler}
+            userId={this.props.ticket.user.id}
+            users={this.props.users}
           />
           <h2> {ticket.title} </h2>
           <div className="grid">
@@ -168,7 +192,9 @@ class TicketDetail extends React.Component {
                 </button>
               </div>
               <div className="extra-info-button">
-                <button>Change User</button>
+                <button onClick={this.modalDisplayChange.bind(this, "user")}>
+                  Change User
+                </button>
               </div>
               <div>
                 <h3>Product</h3>
@@ -214,6 +240,7 @@ const mapDispatchToProps = {
   getTicket,
   updateCustomerOfTicket,
   updateProductOfTicket,
+  updateUserOfTicket,
   updateTicketStatus,
   getCustomer,
   getCustomers,
