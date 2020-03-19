@@ -2,14 +2,13 @@
     function selectStatement($con, $tableName,$where,$whereColumns,$whereValues){
         if($where){
             $whereStatement = "";
-
             foreach ($whereColumns as $key => $column) {
                 if($key !== 0){
                     $whereStatement .= ", ";
                 }
                 $whereStatement .= "`$column`=?";
             }
-
+            
             $sql = "SELECT * FROM $tableName WHERE $whereStatement";
         } else {
             $sql = "SELECT * FROM $tableName";
@@ -70,4 +69,20 @@
                 WHERE $sqlWhere";
         $statement = $con->prepare($sql);
         $statement->execute($allValues);
+    }
+
+    function deleteStatement($con, $tableName, $whereColumns, $whereValues) {
+        $sqlWhere = "";
+
+        foreach ($whereColumns as $key => $column) {
+            if($key !== 0){
+                $sqlWhere .= " AND ";
+            }
+            $sqlWhere .= "`$column`=?";
+        }
+
+        $sql = "DELETE FROM $tableName
+                WHERE $sqlWhere";
+        $statement = $con->prepare($sql);
+        $statement->execute($whereValues);
     }
