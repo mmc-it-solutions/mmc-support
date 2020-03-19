@@ -3,6 +3,7 @@ import "./TicketDetail.css";
 
 import ChangeCompanyPopUp from "../../../components/changeCompanyPopUp/ChangeCompanyPopUp";
 import ChangeProductPopUp from "../../../components/changeProductPopUp/ChangeProductPopUp";
+import ChangeUserPopUp from "../../../components/changeUserPopUp/ChangeUserPopUp";
 
 import { NavLink, Redirect } from "react-router-dom";
 
@@ -14,6 +15,7 @@ import {
   updateProductOfTicket
 } from "../../../store/actions/ticket";
 import { getCustomer, getCustomers } from "../../../store/actions/customer";
+import { getUsers } from "../../../store/actions/user";
 
 class TicketDetail extends React.Component {
   state = {
@@ -32,6 +34,7 @@ class TicketDetail extends React.Component {
 
     this.props.getTicket(data);
     this.props.getCustomers();
+    this.props.getUsers();
   }
 
   changeHandler = event => {
@@ -203,7 +206,8 @@ const mapStateProps = (state, ownProps) => ({
   authantication: state.user.authantication,
   ticket: state.ticket.ticket,
   customer: state.customer.customer,
-  customers: state.customer.customers
+  customers: state.customer.customers,
+  users: state.user.users
 });
 
 const mapDispatchToProps = {
@@ -212,7 +216,8 @@ const mapDispatchToProps = {
   updateProductOfTicket,
   updateTicketStatus,
   getCustomer,
-  getCustomers
+  getCustomers,
+  getUsers
 };
 
 export default connect(mapStateProps, mapDispatchToProps)(TicketDetail);
