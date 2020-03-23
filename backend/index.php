@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     // Decide if the origin in $_SERVER['HTTP_ORIGIN'] is one
     // you want to allow, and if so:
@@ -81,9 +79,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
                 case "getCustomers":
                     echo json_encode(getCustomers($this->getData(),$this->getCon()));
                 break;
+                
+                case "getUser":
+                    echo json_encode(getUser($this->getData(),$this->getCon()));
+                break;
+
+                case "getUsers":
+                    echo json_encode(getUsers($this->getData(),$this->getCon()));
+                break;
+
+                case "getProducts":
+                    echo json_encode(getProducts($this->getData(),$this->getCon()));
+                break;
 
                 case "insertProduct":
                     echo json_encode(insertProduct($this->getData(),$this->getCon()));
+                break;
+
+                case "insertExistingProduct":
+                    echo json_encode(insertExistingProduct($this->getData(),$this->getCon()));
                 break;
 
                 case "insertCustomer":
@@ -94,8 +108,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
                     echo json_encode(insertTicket($this->getData(),$this->getCon()));
                 break;
 
+                case "insertUser":
+                    echo json_encode(insertUser($this->getData(),$this->getCon()));
+                break;
+
                 case "updateTicketStatus":
                     echo json_encode(updateTicketStatus($this->getData(),$this->getCon()));
+                break;
+
+                case "updateCustomerOfTicket":
+                    echo json_encode(updateCustomerOfTicket($this->getData(),$this->getCon()));
+                break;
+
+                case "updateProductOfTicket":
+                    echo json_encode(updateProductOfTicket($this->getData(),$this->getCon()));
+                break;
+
+                case "updateUserOfTicket":
+                    echo json_encode(updateUserOfTicket($this->getData(),$this->getCon()));
+                break;
+
+                case "updateCustomer":
+                    echo json_encode(updateCustomer($this->getData(),$this->getCon()));
                 break;
 
                 default:

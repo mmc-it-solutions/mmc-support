@@ -1,5 +1,36 @@
 <?php
 
+function getProducts($data,$con){
+    $returnArray = [];
+
+    $products = selectStatement($con,'product',false,null,null);
+    $customer = getCustomer($data,$con);
+
+    if($data['productIdRemove'] !== 0){
+        $customer['products'][] = [
+            'id' => intval($data['productIdRemove']),
+        ];
+    }
+
+    foreach ($products as $productData) {
+        $sameProduct = false; 
+        foreach ($customer['products'] as $customerProductData) {
+            if($customerProductData['id'] === $productData['id']){
+                $sameProduct = true;
+            }
+        }
+
+        if(!$sameProduct){
+            $returnArray[] = [
+                'id'            => $productData['id'],
+                'name'          => $productData['name'],
+            ];
+        }
+    }
+
+    return $returnArray;
+}
+
 function insertProduct($data,$con){
     $columnNames = ['name', 'is_archived'];
     $values = [$data['name'],false];
@@ -11,26 +42,37 @@ function insertProduct($data,$con){
     $values = [$data['customerId'],$id];
     insertStatement($con,'customer_product',$columnNames,$values);
 
-    $products = selectStatement($con, 'product', true, "`id`=?", [$id]);
-    foreach ($products as $productData) {
-        $checker = false;
-        $products = selectStatement($con, 
-                                    'customer_product',
-                                    true,
-                                    'customer_id=? AND product_id=?',
-                                    [$data['customerId'],$productData['id']]
-                                );
-        foreach ($products as $key2 => $value2) {
-            $checker = true;
-        }
+    $productIdColoration = selectStatement($con,'customer_product',true,['customer_id'],[$data['customerId']]);
+    foreach ($productIdColoration as $productId) {
+        $product = selectStatement($con, 'product', true, ['id'], [$productId['product_id']]);
+        foreach ($product as $productData) {
+             $returnArray[] = [
+                 'id'      => $productData['id'],
+                 'name'    => $productData['name']
+             ];
+          }
+    }
 
-        if($checker){
-            $returnArray = [
-                'id'            => $productData['id'],
-                'name'          => $productData['name'],
-                'is_archived'   => $productData['is_archived'],
+    return $returnArray;
+}
+
+function insertExistingProduct($data,$con){
+    $returnArray = [];
+    if($data['productId'] !== 0){
+        $columnNames = ['customer_id', 'product_id'];
+        $values = [$data['customerId'],$data['productId']];
+        insertStatement($con,'customer_product',$columnNames,$values);
+    }
+
+    $productIdColoration = selectStatement($con,'customer_product',true,['customer_id'],[$data['customerId']]);
+    foreach ($productIdColoration as $productId) {
+        $product = selectStatement($con, 'product', true, ['id'], [$productId['product_id']]);
+        foreach ($product as $productData) {
+            $returnArray[] = [
+                'id'      => $productData['id'],
+                'name'    => $productData['name']
             ];
-        }
+          }
     }
 
     return $returnArray;
