@@ -4,7 +4,7 @@
             $whereStatement = "";
             foreach ($whereColumns as $key => $column) {
                 if($key !== 0){
-                    $whereStatement .= ", ";
+                    $whereStatement .= " AND ";
                 }
                 $whereStatement .= "`$column`=?";
             }
