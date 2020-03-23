@@ -2,7 +2,8 @@ import {
   GET_CUSTOMER,
   GET_CUSTOMERS,
   INSERT_CUSTOMER,
-  INSERT_PRODUCT
+  INSERT_PRODUCT,
+  INSERT_EXISTING_PRODUCT
 } from "../actions/types";
 
 const initialState = {
@@ -27,12 +28,13 @@ export default function(state = initialState, action) {
         ...state,
         customers: [...state.customers, action.payload]
       };
+    case INSERT_EXISTING_PRODUCT:
     case INSERT_PRODUCT:
       return {
         ...state,
         customer: {
           ...state.customer,
-          products: [...state.customer.products, action.payload]
+          products: action.payload
         }
       };
     default:

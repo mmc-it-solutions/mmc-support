@@ -8,7 +8,11 @@ import { Redirect } from "react-router-dom";
 
 import { connect } from "react-redux";
 import { getCustomer } from "../../../store/actions/customer";
-import { createProduct } from "../../../store/actions/product";
+import {
+  createProduct,
+  createExistingProduct,
+  getProducts
+} from "../../../store/actions/product";
 
 class CustomerInfo extends React.Component {
   state = {
@@ -23,10 +27,12 @@ class CustomerInfo extends React.Component {
 
   componentDidMount() {
     let data = {
-      customerId: this.props.match.params.id
+      customerId: this.props.match.params.id,
+      productIdRemove: 0
     };
 
     this.props.getCustomer(data);
+    this.props.getProducts(data);
   }
 
   changeValue = event => {
@@ -76,6 +82,29 @@ class CustomerInfo extends React.Component {
     });
   };
 
+  addExistingProduct = (event, productId) => {
+    event.preventDefault();
+
+    const { customerId } = this.state;
+
+    let data = {
+      customerId: customerId,
+      productId: productId,
+      productIdRemove: productId
+    };
+
+    this.props.createExistingProduct(data);
+    this.props.getProducts(data);
+
+    this.setState({
+      modal: {
+        display: "none",
+        name: "",
+        disabled: true
+      }
+    });
+  };
+
   render() {
     const { customer } = this.props;
 
@@ -86,6 +115,7 @@ class CustomerInfo extends React.Component {
 
     if (!Array.isArray(customer)) {
       const { name, contact, products } = this.props.customer;
+
       return (
         <div className="Wrapped_containers">
           <AddProductPopup
@@ -93,6 +123,8 @@ class CustomerInfo extends React.Component {
             changeDisplay={this.changeDisplay}
             changeValue={this.changeValue}
             addProduct={this.addProduct}
+            addExistingProduct={this.addExistingProduct}
+            products={this.props.products}
           />
           <h1 className="clientName">{name}</h1>
 
@@ -119,7 +151,7 @@ class CustomerInfo extends React.Component {
                 onClick={this.changeDisplay}
                 className="product_button buttons"
               >
-                Add Products
+                Add Product
               </button>
             </div>
             <div className="archive_button-div ">
@@ -139,9 +171,15 @@ class CustomerInfo extends React.Component {
 
 const mapStateProps = (state, ownProps) => ({
   authantication: state.user.authantication,
-  customer: state.customer.customer
+  customer: state.customer.customer,
+  products: state.product.products
 });
 
-const mapDispatchToProps = { getCustomer, createProduct };
+const mapDispatchToProps = {
+  getCustomer,
+  createProduct,
+  getProducts,
+  createExistingProduct
+};
 
 export default connect(mapStateProps, mapDispatchToProps)(CustomerInfo);
