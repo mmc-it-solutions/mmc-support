@@ -3,6 +3,7 @@ import "./CustomerInfo.css";
 
 import ProductList from "../../../components/productList/ProductList";
 import AddProductPopup from "../../../components/addProductPopup/AddProductPopup";
+import UpdateCustomerPopup from "../../../components/updateCustomerPopup/UpdateCustomerPopup";
 
 import { Redirect } from "react-router-dom";
 
@@ -14,10 +15,14 @@ class CustomerInfo extends React.Component {
   state = {
     customerId: this.props.match.params.id,
 
-    modal: {
+    addProductModal: {
       display: "none",
       name: "",
       disabled: true
+    },
+
+    updateModal: {
+      display: "none"
     }
   };
 
@@ -31,28 +36,41 @@ class CustomerInfo extends React.Component {
 
   changeValue = event => {
     const { target } = event;
-    const { modal } = this.state;
+    const { addProductModal } = this.state;
 
-    let newValue = modal.name === "" ? true : false;
+    let newValue = addProductModal.name === "" ? true : false;
 
     this.setState({
-      modal: {
-        ...modal,
+      addProductModal: {
+        ...addProductModal,
         [target.name]: target.value,
         disabled: newValue
       }
     });
   };
 
-  changeDisplay = () => {
-    const { modal } = this.state;
+  changeDisplay = section => {
+    const { addProductModal, updateModal } = this.state;
 
-    this.setState({
-      modal: {
-        ...modal,
-        display: modal.display === "none" ? "flex" : "none"
-      }
-    });
+    switch (section) {
+      case "addProduct":
+        this.setState({
+          addProductModal: {
+            ...addProductModal,
+            display: addProductModal.display === "none" ? "flex" : "none"
+          }
+        });
+        break;
+
+      case "update":
+        this.setState({
+          updateModal: {
+            ...updateModal,
+            display: updateModal.display === "none" ? "flex" : "none"
+          }
+        });
+        break;
+    }
   };
 
   addProduct = event => {
@@ -68,10 +86,53 @@ class CustomerInfo extends React.Component {
     this.props.createProduct(data);
 
     this.setState({
-      modal: {
+      addProductModal: {
         display: "none",
         name: "",
         disabled: true
+      }
+    });
+  };
+
+  addExistingProduct = (event, productId) => {
+    event.preventDefault();
+
+    const { customerId } = this.state;
+
+    let data = {
+      customerId: customerId,
+      productId: productId,
+      productIdRemove: productId
+    };
+
+    this.props.createExistingProduct(data);
+    this.props.getProducts(data);
+
+    this.setState({
+      addProductModal: {
+        display: "none",
+        name: "",
+        disabled: true
+      }
+    });
+  };
+
+  updateCustomer = (companyName, name, email, phoneNumber, event) => {
+    event.preventDefault();
+    const { customerId } = this.state;
+
+    let data = {
+      companyName: companyName,
+      name: name,
+      email: email,
+      phoneNumber: phoneNumber
+    };
+
+    this.props.updateCustomer(data);
+
+    this.setState({
+      updateModal: {
+        display: "none"
       }
     });
   };
@@ -89,10 +150,17 @@ class CustomerInfo extends React.Component {
       return (
         <div className="Wrapped_containers">
           <AddProductPopup
-            modal={this.state.modal}
-            changeDisplay={this.changeDisplay}
+            modal={this.state.addProductModal}
+            changeDisplay={this.changeDisplay.bind(this, "addProduct")}
             changeValue={this.changeValue}
             addProduct={this.addProduct}
+          />
+          <UpdateCustomerPopup
+            modal={this.state.updateModal}
+            changeDisplay={this.changeDisplay.bind(this, "update")}
+            changeValue={this.changeValue}
+            updateCustomer={this.updateCustomer}
+            customer={this.props.customer}
           />
           <h1 className="clientName">{name}</h1>
 
@@ -116,13 +184,19 @@ class CustomerInfo extends React.Component {
             </div>
             <div>
               <button
-                onClick={this.changeDisplay}
+                onClick={this.changeDisplay.bind(this, "addProduct")}
                 className="product_button buttons"
               >
                 Add Products
               </button>
             </div>
-            <div className="archive_button-div ">
+            <div className="buttons-div">
+              <button
+                className="update_button buttons"
+                onClick={this.changeDisplay.bind(this, "update")}
+              >
+                Update
+              </button>
               <button className="archive_button buttons">Archive</button>
             </div>
           </div>
