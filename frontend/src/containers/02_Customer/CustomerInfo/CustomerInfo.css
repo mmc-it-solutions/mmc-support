@@ -41,6 +41,7 @@
   font-size: 16px;
   margin: 10px 30%;
   cursor: pointer;
+  outline: none;
 }
 
 .buttons:hover {
@@ -48,11 +49,12 @@
   color: white;
 }
 
-.archive_button-div {
+.buttons-div {
   grid-row: 2/3;
 }
 
-.archive_button {
+.archive_button,
+.update_button {
   border: 2px solid rgb(0, 211, 43);
   background: white;
   color: rgb(0, 211, 43);
@@ -70,12 +72,16 @@
   .buttons {
     margin: 10px 25%;
   }
+  .archive_button,
+  .update_button {
+    margin: 10px 5%;
+  }
 
   .contained {
     border-bottom: 1px solid black;
   }
 
-  .archive_button-div {
+  .buttons-div {
     grid-column: 2/2;
   }
 
@@ -83,6 +89,10 @@
     .buttons {
       width: 25%;
       margin: 25px 25%;
+    }
+    .archive_button,
+    .update_button {
+      margin: 25px 10%;
     }
   }
 }

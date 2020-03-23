@@ -3,7 +3,8 @@ import {
   GET_CUSTOMERS,
   INSERT_CUSTOMER,
   INSERT_PRODUCT,
-  INSERT_EXISTING_PRODUCT
+  INSERT_EXISTING_PRODUCT,
+  UPDATE_CUSTOMER
 } from "../actions/types";
 
 const initialState = {
@@ -13,6 +14,7 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case UPDATE_CUSTOMER:
     case GET_CUSTOMER:
       return {
         ...state,

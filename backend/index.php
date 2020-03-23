@@ -108,6 +108,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
                     echo json_encode(insertTicket($this->getData(),$this->getCon()));
                 break;
 
+                case "insertUser":
+                    echo json_encode(insertUser($this->getData(),$this->getCon()));
+                break;
+
                 case "updateTicketStatus":
                     echo json_encode(updateTicketStatus($this->getData(),$this->getCon()));
                 break;
@@ -123,9 +127,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
                 case "updateUserOfTicket":
                     echo json_encode(updateUserOfTicket($this->getData(),$this->getCon()));
                 break;
-                
-                case "insertUser":
-                    echo json_encode(insertUser($this->getData(),$this->getCon()));
+
+                case "updateCustomer":
+                    echo json_encode(updateCustomer($this->getData(),$this->getCon()));
                 break;
 
                 default:

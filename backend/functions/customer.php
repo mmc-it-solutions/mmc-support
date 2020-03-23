@@ -85,3 +85,13 @@ function insertCustomer($data,$con){
 
     return $returnArray;
 }
+
+function updateCustomer($data,$con){
+    $updateColumns = ['company_name','name','email','phone_number'];
+    $updateValues = [$data['company_name'],$data['name'],$data['email'],$data['phone_number']];
+    $whereColumns = ['id']; 
+    $whereValues = [$data['customerId']];
+    updateStatement($con,'customer',$updateColumns,$updateValues,$whereColumns,$whereValues);
+
+    return getCustomer($data, $con);
+}
