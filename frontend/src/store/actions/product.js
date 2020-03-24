@@ -1,6 +1,11 @@
 import axios from "axios";
 
-import { INSERT_PRODUCT, GET_PRODUCTS, INSERT_EXISTING_PRODUCT } from "./types";
+import {
+  INSERT_PRODUCT,
+  GET_PRODUCTS,
+  INSERT_EXISTING_PRODUCT,
+  UPDATE_PRODUCT
+} from "./types";
 
 export const getProducts = form => (dispatch, getState) => {
   const config = {
@@ -78,6 +83,35 @@ export const createExistingProduct = form => (dispatch, getState) => {
     .then(res => {
       dispatch({
         type: INSERT_EXISTING_PRODUCT,
+        payload: res.data
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+};
+
+export const updateProduct = form => (dispatch, getState) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
+  const body = {
+    action: "updateProduct",
+    data: {
+      customerId: form["customerId"],
+      productId: form["productId"],
+      name: form["name"]
+    }
+  };
+
+  axios
+    .post("http://localhost/mmcSupport/backend/", body, config)
+    .then(res => {
+      dispatch({
+        type: UPDATE_PRODUCT,
         payload: res.data
       });
     })

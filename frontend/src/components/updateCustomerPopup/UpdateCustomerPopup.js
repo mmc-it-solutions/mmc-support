@@ -5,7 +5,6 @@ import "../Layout/Modal/Modal.css";
 const UpdateCustomerPopup = ({
   modal,
   changeDisplay,
-  changeValue,
   updateCustomer,
   customer
 }) => {
