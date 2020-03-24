@@ -4,7 +4,8 @@ import {
   INSERT_CUSTOMER,
   INSERT_PRODUCT,
   INSERT_EXISTING_PRODUCT,
-  UPDATE_CUSTOMER
+  UPDATE_CUSTOMER,
+  UPDATE_PRODUCT
 } from "../actions/types";
 
 const initialState = {
@@ -14,8 +15,9 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case UPDATE_CUSTOMER:
     case GET_CUSTOMER:
+    case UPDATE_CUSTOMER:
+    case UPDATE_PRODUCT:
       return {
         ...state,
         customer: action.payload

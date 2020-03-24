@@ -77,3 +77,13 @@ function insertExistingProduct($data,$con){
 
     return $returnArray;
 }
+
+function updateProduct($data, $con){
+    $updateColumns = ['name'];
+    $updateValues = [$data['name']];
+    $whereColumns = ['id']; 
+    $whereValues = [$data['productId']];
+    updateStatement($con,'product',$updateColumns,$updateValues,$whereColumns,$whereValues);
+
+    return getCustomer($data, $con);
+}
