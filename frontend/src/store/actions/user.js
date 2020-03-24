@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import { URL } from "../connection/vars";
+
 import { LOGIN, GET_USER, GET_USERS, INSERT_USER } from "./types";
 
 export const login = form => (dispatch, getState) => {
@@ -18,7 +20,7 @@ export const login = form => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: LOGIN,
@@ -45,7 +47,7 @@ export const getUser = form => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: GET_USER,
@@ -70,7 +72,7 @@ export const getUsers = form => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: GET_USERS,
@@ -101,7 +103,7 @@ export const insertUser = form => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: INSERT_USER,

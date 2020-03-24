@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import { URL } from "../connection/vars";
+
 import {
   GET_CUSTOMER,
   GET_CUSTOMERS,
@@ -20,7 +22,7 @@ export const getCustomer = form => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: GET_CUSTOMER,
@@ -45,7 +47,7 @@ export const getCustomers = () => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: GET_CUSTOMERS,
@@ -75,7 +77,7 @@ export const createCustomer = form => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: INSERT_CUSTOMER,
@@ -106,7 +108,7 @@ export const updateCustomer = form => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: UPDATE_CUSTOMER,

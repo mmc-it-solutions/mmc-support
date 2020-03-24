@@ -1,6 +1,13 @@
 import axios from "axios";
 
-import { INSERT_PRODUCT, GET_PRODUCTS, INSERT_EXISTING_PRODUCT } from "./types";
+import { URL } from "../connection/vars";
+
+import {
+  INSERT_PRODUCT,
+  GET_PRODUCTS,
+  INSERT_EXISTING_PRODUCT,
+  UPDATE_PRODUCT
+} from "./types";
 
 export const getProducts = form => (dispatch, getState) => {
   const config = {
@@ -18,7 +25,7 @@ export const getProducts = form => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: GET_PRODUCTS,
@@ -46,7 +53,7 @@ export const createProduct = form => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: INSERT_PRODUCT,
@@ -74,10 +81,39 @@ export const createExistingProduct = form => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: INSERT_EXISTING_PRODUCT,
+        payload: res.data
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+};
+
+export const updateProduct = form => (dispatch, getState) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
+  const body = {
+    action: "updateProduct",
+    data: {
+      customerId: form["customerId"],
+      productId: form["productId"],
+      name: form["name"]
+    }
+  };
+
+  axios
+    .post(URL, body, config)
+    .then(res => {
+      dispatch({
+        type: UPDATE_PRODUCT,
         payload: res.data
       });
     })

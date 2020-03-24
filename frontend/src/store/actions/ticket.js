@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import { URL } from "../connection/vars";
+
 import {
   GET_TICKET,
   GET_TICKETS,
@@ -23,7 +25,7 @@ export const getTicket = form => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: GET_TICKET,
@@ -48,7 +50,7 @@ export const getTickets = () => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: GET_TICKETS,
@@ -78,7 +80,7 @@ export const createTicket = form => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: INSERT_TICKET,
@@ -106,7 +108,7 @@ export const updateTicketStatus = form => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: UPDATE_TICKETSTATUS,
@@ -134,7 +136,7 @@ export const updateCustomerOfTicket = form => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: UPDATE_CUSTOMER_OF_TICKET,
@@ -162,7 +164,7 @@ export const updateProductOfTicket = form => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: UPDATE_PRODUCT_OF_TICKET,
@@ -190,7 +192,7 @@ export const updateUserOfTicket = form => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: UPDATE_USER_OF_TICKET,

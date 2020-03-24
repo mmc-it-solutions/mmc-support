@@ -4,6 +4,7 @@ import "./CustomerInfo.css";
 import ProductList from "../../../components/productList/ProductList";
 import AddProductPopup from "../../../components/addProductPopup/AddProductPopup";
 import UpdateCustomerPopup from "../../../components/updateCustomerPopup/UpdateCustomerPopup";
+import UpdateProductPopup from "../../../components/updateProductPopup/UpdateProductPopup";
 
 import { Redirect } from "react-router-dom";
 
@@ -12,7 +13,8 @@ import { getCustomer, updateCustomer } from "../../../store/actions/customer";
 import {
   createProduct,
   createExistingProduct,
-  getProducts
+  getProducts,
+  updateProduct
 } from "../../../store/actions/product";
 
 class CustomerInfo extends React.Component {
@@ -25,8 +27,14 @@ class CustomerInfo extends React.Component {
       disabled: true
     },
 
-    updateModal: {
+    updateCustomerModal: {
       display: "none"
+    },
+
+    updateProductModal: {
+      display: "none",
+      productId: "",
+      name: ""
     }
   };
 
@@ -55,8 +63,23 @@ class CustomerInfo extends React.Component {
     });
   };
 
-  changeDisplay = section => {
-    const { addProductModal, updateModal } = this.state;
+  changeValue2 = event => {
+    const { updateProductModal } = this.state;
+
+    this.setState({
+      updateProductModal: {
+        ...updateProductModal,
+        name: event.target.value
+      }
+    });
+  };
+
+  changeDisplay = (section, productId, tekst) => {
+    const {
+      addProductModal,
+      updateCustomerModal,
+      updateProductModal
+    } = this.state;
 
     switch (section) {
       case "addProduct":
@@ -68,25 +91,37 @@ class CustomerInfo extends React.Component {
         });
         break;
 
-      case "update":
+      case "updateCustomer":
         this.setState({
-          updateModal: {
-            ...updateModal,
-            display: updateModal.display === "none" ? "flex" : "none"
+          updateCustomerModal: {
+            display: updateCustomerModal.display === "none" ? "flex" : "none"
           }
         });
         break;
+
+      case "updateProduct":
+        this.setState({
+          updateProductModal: {
+            display: updateProductModal.display === "none" ? "flex" : "none",
+            productId: productId,
+            name: tekst
+          }
+        });
+        break;
+
+      default:
+        console.log("Something is wrong");
     }
   };
 
   addProduct = event => {
     event.preventDefault();
 
-    const { modal, customerId } = this.state;
+    const { addProductModal, customerId } = this.state;
 
     let data = {
       customerId: customerId,
-      name: modal.name
+      name: addProductModal.name
     };
 
     this.props.createProduct(data);
@@ -138,8 +173,29 @@ class CustomerInfo extends React.Component {
     this.props.updateCustomer(data);
 
     this.setState({
-      updateModal: {
+      updateCustomerModal: {
         display: "none"
+      }
+    });
+  };
+
+  updateProduct = event => {
+    event.preventDefault();
+    const { updateProductModal } = this.state;
+
+    let data = {
+      customerId: this.state.customerId,
+      productId: updateProductModal.productId,
+      name: updateProductModal.name
+    };
+
+    this.props.updateProduct(data);
+
+    this.setState({
+      updateProductModal: {
+        display: "none",
+        productId: "",
+        name: ""
       }
     });
   };
@@ -159,18 +215,34 @@ class CustomerInfo extends React.Component {
         <div className="Wrapped_containers">
           <AddProductPopup
             modal={this.state.addProductModal}
-            changeDisplay={this.changeDisplay.bind(this, "addProduct")}
+            changeDisplay={this.changeDisplay.bind(
+              this,
+              "addProduct",
+              null,
+              null
+            )}
             changeValue={this.changeValue}
             addProduct={this.addProduct}
             addExistingProduct={this.addExistingProduct}
             products={this.props.products}
           />
           <UpdateCustomerPopup
-            modal={this.state.updateModal}
-            changeDisplay={this.changeDisplay.bind(this, "update")}
+            modal={this.state.updateCustomerModal}
+            changeDisplay={this.changeDisplay.bind(
+              this,
+              "updateCustomer",
+              null,
+              null
+            )}
             changeValue={this.changeValue}
             updateCustomer={this.updateCustomer}
             customer={this.props.customer}
+          />
+          <UpdateProductPopup
+            modal={this.state.updateProductModal}
+            changeDisplay={this.changeDisplay.bind(this, "updateProduct")}
+            changeValue={this.changeValue2}
+            updateProduct={this.updateProduct}
           />
           <h1 className="clientName">{name}</h1>
 
@@ -189,7 +261,10 @@ class CustomerInfo extends React.Component {
 
             <div className="containment_products">
               <div className="contained_products">
-                <ProductList products={products} />
+                <ProductList
+                  products={products}
+                  changeDisplay={this.changeDisplay.bind(this, "updateProduct")}
+                />
               </div>
             </div>
             <div>
@@ -203,9 +278,9 @@ class CustomerInfo extends React.Component {
             <div className="buttons-div">
               <button
                 className="update_button buttons"
-                onClick={this.changeDisplay.bind(this, "update")}
+                onClick={this.changeDisplay.bind(this, "updateCustomer")}
               >
-                Update
+                Update customer
               </button>
               <button className="archive_button buttons">Archive</button>
             </div>
@@ -232,7 +307,8 @@ const mapDispatchToProps = {
   updateCustomer,
   createProduct,
   getProducts,
-  createExistingProduct
+  createExistingProduct,
+  updateProduct
 };
 
 export default connect(mapStateProps, mapDispatchToProps)(CustomerInfo);
