@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import {
+  URL,
   INSERT_PRODUCT,
   GET_PRODUCTS,
   INSERT_EXISTING_PRODUCT,
@@ -23,7 +24,7 @@ export const getProducts = form => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: GET_PRODUCTS,
@@ -51,7 +52,7 @@ export const createProduct = form => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: INSERT_PRODUCT,
@@ -79,7 +80,7 @@ export const createExistingProduct = form => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: INSERT_EXISTING_PRODUCT,
@@ -108,7 +109,7 @@ export const updateProduct = form => (dispatch, getState) => {
   };
 
   axios
-    .post("http://localhost/mmcSupport/backend/", body, config)
+    .post(URL, body, config)
     .then(res => {
       dispatch({
         type: UPDATE_PRODUCT,
