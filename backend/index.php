@@ -132,10 +132,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
                     echo json_encode(updateCustomer($this->getData(),$this->getCon()));
                 break;
 
-                case "updateProduct":
-                    echo json_encode(updateProduct($this->getData(),$this->getCon()));
-                break;
-
                 default:
                 return null;
             }
