@@ -1,7 +1,8 @@
 import axios from "axios";
 
+import { URL } from "../connection/vars";
+
 import {
-  URL,
   INSERT_PRODUCT,
   GET_PRODUCTS,
   INSERT_EXISTING_PRODUCT,

@@ -21,5 +21,3 @@ export const LOGIN = "LOGIN";
 export const GET_USER = "GET_USER";
 export const GET_USERS = "GET_USERS";
 export const INSERT_USER = "INSERT_USER";
-
-export const URL = "http://localhost/mmcSupport/backend/";

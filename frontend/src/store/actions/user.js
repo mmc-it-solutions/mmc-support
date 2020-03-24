@@ -1,6 +1,8 @@
 import axios from "axios";
 
-import { URL, LOGIN, GET_USER, GET_USERS, INSERT_USER } from "./types";
+import { URL } from "../connection/vars";
+
+import { LOGIN, GET_USER, GET_USERS, INSERT_USER } from "./types";
 
 export const login = form => (dispatch, getState) => {
   const config = {
