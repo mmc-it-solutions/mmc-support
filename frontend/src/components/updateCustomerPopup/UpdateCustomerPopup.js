@@ -18,7 +18,7 @@ const UpdateCustomerPopup = ({
       <div className="modal-wrap" style={{ display: modal.display }}>
         <div className="achtergrond" onClick={changeDisplay} />
         <div className="modal">
-          <h2 className="modal__titel">Add product</h2>
+          <h2 className="modal__titel">Update Customer</h2>
           <form className="modal__form">
             <label className="modal__form--label">Company Name</label>
             <br />
