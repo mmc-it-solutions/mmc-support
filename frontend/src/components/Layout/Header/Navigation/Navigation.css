@@ -1,5 +1,20 @@
 .desktop-menu {
   display: none;
+  list-style-type: none;
+  margin-top: 5px;
+}
+
+.desktop-menu-item {
+  margin: 10px 10px;
+  padding: 5px 0;
+  border-bottom: 2px solid white;
+}
+
+.desktop-menu-item a {
+  color: white;
+  padding: 10px;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 @media (min-width: 768px) {

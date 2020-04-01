@@ -2,3 +2,19 @@
   margin: 0;
   padding: 0;
 }
+
+main {
+  position: relative;
+  background-color: white;
+  width: 90%;
+  margin-left: 10vw;
+  margin-top: 10vh;
+  min-height: 90vh;
+  z-index: 20;
+}
+
+footer {
+  width: 90%;
+  margin-left: 10vw;
+  background-color: white;
+}
