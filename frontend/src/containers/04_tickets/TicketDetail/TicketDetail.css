@@ -29,7 +29,18 @@ div.ticketzien {
 
 .ticket-detail-info {
   display: grid;
-  grid-template-columns: 20% 80%;
+  grid-template-columns: 25% 75%;
+}
+
+.ticket-detail-info-head-tekst {
+  font-size: 20px;
+  font-weight: 350;
+}
+
+.ticket-detail-info-tekst {
+  display: flex;
+  align-items: center;
+  font-size: 17px;
 }
 
 .ticket-detail-extra-info {
@@ -42,13 +53,6 @@ div.ticketzien {
 .ticket-detail-extra-info {
   font-size: 15px;
   padding: 2px;
-}
-
-.ticket-detail-extra-info div:not(.ticket-detail-extra-info-button) {
-  border: 1px solid black;
-  padding: 20px;
-  text-align: center;
-  margin: 10px;
 }
 
 .ticket-detail-extra-info-button {
@@ -67,9 +71,26 @@ div.ticketzien {
   cursor: pointer;
 }
 
-.ticket-detail-extra-info-customer a {
+.ticket-detail-extra-info-div {
+  display: block;
+  border: 1px solid black;
+  text-align: center;
+  margin: 0 auto;
+  padding: 20px 50px;
+}
+
+.ticket-detail-extra-info-div a {
   color: black;
   text-decoration: none;
+}
+
+.ticket-detail-extra-info-div-title {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.ticket-detail-extra-info-div-text {
+  font-size: 12px;
 }
 
 @media (min-width: 1024px) {
