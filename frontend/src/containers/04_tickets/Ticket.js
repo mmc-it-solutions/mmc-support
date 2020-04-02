@@ -110,7 +110,7 @@ class Ticket extends React.Component {
     // }
 
     return (
-      <div>
+      <div className="ticket">
         <AddTicketPopup
           customers={this.props.customers}
           customer={this.props.customer}
@@ -120,11 +120,23 @@ class Ticket extends React.Component {
           onChangeCustomer={this.onChangeCustomer}
           submitHandler={this.submitHandler}
         />
-        <div className="Ticket-List"> Ticket List </div>
-        <div className="popup-button-div">
-          <button className="popup-button" onClick={this.changeDisplay}>
-            Add Ticket
-          </button>
+        <div className="ticket-head">
+          <h2 className="ticket-head-title"> Tickets </h2>
+          <div className="ticket-head-add-ticket">
+            <button
+              className="ticket-head-add-ticket-button"
+              onClick={this.changeDisplay}
+            >
+              Add new ticket
+            </button>
+          </div>
+          <div className="ticket-head-search">
+            <input
+              type="text"
+              className="ticket-head-search-input"
+              placeholder="Search..."
+            />
+          </div>
         </div>
         <div>
           <table className="ticket-table">

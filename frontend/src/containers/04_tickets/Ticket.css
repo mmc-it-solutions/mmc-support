@@ -1,19 +1,37 @@
-.Ticket-List {
-  margin-bottom: 10px;
-  text-align: center;
-  color: #0283e5;
-  font-size: 25px;
+.ticket {
+  padding: 10px 40px;
 }
 
-.popup-button-div {
-  width: 80%;
-  margin: 20px auto;
+.ticket-head {
+  display: grid;
+  grid-template-columns: 15% 20% 65%;
 }
 
-.popup-button {
-  padding: 10px;
-  font-size: 15px;
-  width: 30%;
+.ticket-head-title {
+  font-size: 50px;
+  font-weight: 350;
+}
+
+.ticket-head-add-ticket {
+  display: flex;
+  align-items: center;
+}
+
+.ticket-head-add-ticket-button {
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: #00d32b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  cursor: pointer;
+}
+
+.ticket-head-search {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .ticket-table {
