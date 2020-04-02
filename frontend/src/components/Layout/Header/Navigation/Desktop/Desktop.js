@@ -6,11 +6,6 @@ const DesktopNavigation = () => {
   return (
     <ul className="desktop-menu">
       <li className="desktop-menu-item">
-        <NavLink to="/" className="nav-link">
-          Home
-        </NavLink>
-      </li>
-      <li className="desktop-menu-item">
         <NavLink to="/tickets" className="nav-link">
           Tickets
         </NavLink>
@@ -18,6 +13,11 @@ const DesktopNavigation = () => {
       <li className="desktop-menu-item">
         <NavLink to="/customers" className="nav-link">
           Customers
+        </NavLink>
+      </li>
+      <li className="desktop-menu-item">
+        <NavLink to="/employees" className="nav-link">
+          Employees
         </NavLink>
       </li>
     </ul>
