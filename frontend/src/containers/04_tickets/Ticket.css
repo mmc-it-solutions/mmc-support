@@ -1,54 +1,76 @@
-.Ticket-List {
-  margin-bottom: 10px;
-  text-align: center;
-  color: #0283e5;
-  font-size: 25px;
+.ticket {
+  padding: 10px 40px;
 }
 
-.popup-button-div {
-  width: 80%;
-  margin: 20px auto;
+.ticket-head {
+  display: grid;
+  grid-template-columns: 15% 20% 65%;
 }
 
-.popup-button {
-  padding: 10px;
-  font-size: 15px;
-  width: 30%;
+.ticket-head-title {
+  font-size: 50px;
+  font-weight: 350;
+}
+
+.ticket-head-add-ticket {
+  display: flex;
+  align-items: center;
+}
+
+.ticket-head-add-ticket-button {
+  margin-top: 12px;
+  padding: 6px 12px;
+  font-size: 16px;
+  background-color: #00d32b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  cursor: pointer;
+}
+
+.ticket-head-search {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.ticket-head-search-input {
+  border: none;
+  border-bottom: solid #54595e 1px;
+  font-size: 16px;
+  width: 250px;
 }
 
 .ticket-table {
-  margin: 0 auto;
-  border: 1px solid #080808;
+  width: 100%;
   border-collapse: collapse;
-  width: 80%;
-  padding: 20px;
-  font-size: 15px;
+}
+.ticket-table-head-row {
+  display: grid;
+  grid-template-columns: 5% 30% repeat(4, 1fr) 10%;
+  border-bottom: solid #54595e 1px;
+  padding: 30px 10px 0 10px;
 }
 
-.ticket-table th {
-  padding: 3px;
+.ticket-table-head-row-item {
+  text-align: left;
+  text-transform: uppercase;
+  color: #54595e;
+  font-weight: 750;
+  font-size: 18px;
 }
 
-.status_1 {
-  background-color: red;
+.ticket-table-body-row {
+  display: grid;
+  grid-template-columns: 5% 30% repeat(4, 1fr) 10%;
+  box-shadow: 0 2px 5px 1px #cacaca;
+  margin: 10px 0;
+  padding: 15px 10px;
 }
 
-.status_2 {
-  background-color: orange;
-}
-
-.status_3 {
-  background-color: green;
-}
-
-.ticket-table tbody tr td {
-  border: 1px solid #080808;
-  padding: 3px;
-}
-
-.ticket-table tr th {
-  color: white;
-  background-color: #0283e5;
+.ticket-table-body-row-item {
+  font-size: 18px;
 }
 
 .FA svg {
@@ -64,7 +86,6 @@
 }
 
 @media (min-width: 768px) {
-  .ticket-table,
   .popup-button-div {
     width: 50%;
     font-size: 20px;
@@ -72,7 +93,6 @@
 }
 
 @media (min-width: 1024px) {
-  .ticket-table,
   .popup-button-div {
     width: 45%;
   }

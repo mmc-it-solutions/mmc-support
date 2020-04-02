@@ -71,10 +71,10 @@ function getTickets($data,$con){
     foreach ($tickets as $ticketData) {
 
         $companyName = "none";
+        $productName = "none";
         $employeeName = "none";
 
         $companyIdColoration = selectStatement($con, "ticket_customer",true,['ticket_id'],[$ticketData['id']]);
-
         if(!empty($companyIdColoration)){
             foreach ($companyIdColoration as $companyId) {
                 $company = selectStatement($con,'customer',true,['id'],[$companyId['customer_id']]);
@@ -85,8 +85,18 @@ function getTickets($data,$con){
             }
         }
 
+        $productIdColoration = selectStatement($con, "ticket_product",true,['ticket_id'],[$ticketData['id']]);
+        if(!empty($productIdColoration)){
+            foreach ($productIdColoration as $productId) {
+                $product = selectStatement($con,'product',true,['id'],[$productId['product_id']]);
+
+                foreach ($product as $productData) {
+                    $productName = $productData['name'];
+                }
+            }
+        }
+
         $userIdColoration = selectStatement($con, 'user_ticket', true, ['ticket_id'], [$ticketData['id']]);
-        
         if(!empty($userIdColoration)){
             foreach ($userIdColoration as $userId) {
                 $employee = selectStatement($con, 'user', true, ['id'], [$userId['user_id']]);
@@ -106,7 +116,8 @@ function getTickets($data,$con){
             'name'          => $ticketData['title'],
             'status'        => $ticketData['status'],
             'company'       => $companyName,
-            'employee'      => $employeeName
+            'product'       => $productName,
+            'employee'      => $employeeName,
         ];
     }
     return $returnArray;
