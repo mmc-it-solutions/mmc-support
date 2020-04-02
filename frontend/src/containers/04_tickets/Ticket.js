@@ -139,37 +139,47 @@ class Ticket extends React.Component {
           </div>
         </div>
         <div>
-          <table className="ticket-table">
-            <thead>
-              <tr>
-                <th> Id </th>
-                <th> Name </th>
-                <th> Company </th>
-                <th> Employee </th>
-                <th> Status </th>
-                <th> Actions </th>
-              </tr>
-            </thead>
-            <tbody>
+          <div className="ticket-table">
+            <div className="ticket-table-head">
+              <div className="ticket-table-head-row">
+                <div className="ticket-table-head-row-item"> Id </div>
+                <div className="ticket-table-head-row-item"> Title </div>
+                <div className="ticket-table-head-row-item"> Customer </div>
+                <div className="ticket-table-head-row-item"> Product </div>
+                <div className="ticket-table-head-row-item"> Employee </div>
+                <div className="ticket-table-head-row-item"> Status </div>
+                <div className="ticket-table-head-row-item"> Actions </div>
+              </div>
+            </div>
+            <div className="ticket-table-body">
               {this.props.tickets.map(ticket => (
-                <tr key={ticket.id}>
-                  <td> {ticket.id} </td>
-                  <td> {ticket.name} </td>
-                  <td> {ticket.company} </td>
-                  <td> {ticket.employee} </td>
-                  <td className={"status_" + ticket.status}>
+                <div key={ticket.id} className="ticket-table-body-row">
+                  <div className="ticket-table-body-row-item">{ticket.id}</div>
+                  <div className="ticket-table-body-row-item">
+                    {ticket.name}
+                  </div>
+                  <div className="ticket-table-body-row-item">
+                    {ticket.company}
+                  </div>
+                  <div className="ticket-table-body-row-item">
+                    {ticket.product}
+                  </div>
+                  <div className="ticket-table-body-row-item">
+                    {ticket.employee}
+                  </div>
+                  <div className="ticket-table-body-row-item">
                     {this.getStatus(ticket.status)}
-                  </td>
-                  <td className="FA">
+                  </div>
+                  <div className="ticket-table-body-row-item FA">
                     <NavLink to={"/tickets/" + ticket.id}>
                       <FontAwesomeIcon icon={faEye} />
                     </NavLink>
                     <FontAwesomeIcon icon={faTrashAlt} />
-                  </td>
-                </tr>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </div>
         </div>
       </div>
     );
