@@ -1,7 +1,7 @@
 .desktop-menu {
   display: none;
   list-style-type: none;
-  padding-top: 15px;
+  height: 100%;
 }
 
 .desktop-menu-item {
@@ -14,7 +14,7 @@
 
 .desktop-menu-item a {
   color: white;
-  padding: 10px;
+  padding: 10px 5px;
   text-decoration: none;
   cursor: pointer;
 }

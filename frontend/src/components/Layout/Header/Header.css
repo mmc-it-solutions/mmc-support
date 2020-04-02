@@ -1,9 +1,16 @@
 header {
-  background-image: linear-gradient(to right, #0283e5, #00d32b);
+  background-image: linear-gradient(to top right, #02a0dc, #0283e5, #2ca846);
   color: white;
+}
+
+nav {
+  height: 100%;
+  background-image: linear-gradient(to top, #02a0dc, #0283e5);
 }
 
 .logo-container {
   margin: 15px;
   font-size: 30px;
+  background-image: linear-gradient(to left, #2ca846, #0283e5);
+  height: 8vh;
 }
