@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import "../Layout/Modal/Modal.css";
 
@@ -8,10 +8,21 @@ const UpdateCustomerPopup = ({
   updateCustomer,
   customer
 }) => {
-  const [companyName, setCompanyName] = useState(customer.name);
-  const [name, setName] = useState(customer.contact.name);
-  const [email, setEmail] = useState(customer.contact.email);
-  const [phoneNumber, setPhoneNumber] = useState(customer.contact.phone);
+  const [companyName, setCompanyName] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [customerValue, setCustomerValue] = useState("");
+
+  useEffect(() => {
+    if (customer !== customerValue) {
+      setCompanyName(customer.name);
+      setName(customer.contact.name);
+      setEmail(customer.contact.email);
+      setPhoneNumber(customer.contact.phone);
+      setCustomerValue(customer);
+    }
+  });
 
   return (
     <div className="wrapper">

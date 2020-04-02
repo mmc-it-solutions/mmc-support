@@ -44,7 +44,8 @@ class TicketDetail extends React.Component {
   changeHandler = event => {
     let data = {
       ticketId: this.props.match.params.id,
-      newStatus: event.target.value
+      newStatus: event.target.value,
+      list: false
     };
 
     this.props.updateTicketStatus(data);

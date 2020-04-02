@@ -3,7 +3,8 @@
 function getTicket($data,$con){
     $customerInfo = [
         'id' => 0,
-        'company_name'=> "None"
+        'name'=> "None",
+        'products' => []
     ];
     $productInfo = [
         'id' => 0,
@@ -187,10 +188,16 @@ function insertTicket($data,$con){
     return $returnArray;
 }
 
-function updateTicketStatus($data, $con){
+function updateTicketStatusOne($data, $con){
     updateStatement($con,'ticket',['status'],[$data['newStatus']],['id'],[$data['ticketId']]);
 
     return getTicket($data, $con);
+}
+
+function updateTicketStatusList($data, $con){
+    updateStatement($con,'ticket',['status'],[$data['newStatus']],['id'],[$data['ticketId']]);
+
+    return getTickets($data, $con);
 }
 
 function updateCustomerOfTicket($data, $con){

@@ -6,7 +6,8 @@ import {
   GET_TICKET,
   GET_TICKETS,
   INSERT_TICKET,
-  UPDATE_TICKETSTATUS,
+  UPDATE_TICKETSTATUS_ONE,
+  UPDATE_TICKETSTATUS_LIST,
   UPDATE_CUSTOMER_OF_TICKET,
   UPDATE_PRODUCT_OF_TICKET,
   UPDATE_USER_OF_TICKET
@@ -98,9 +99,8 @@ export const updateTicketStatus = form => (dispatch, getState) => {
       "Content-Type": "application/json"
     }
   };
-
   const body = {
-    action: "updateTicketStatus",
+    action: form["list"] ? "updateTicketStatusList" : "updateTicketStatusOne",
     data: {
       ticketId: form["ticketId"],
       newStatus: form["newStatus"]
@@ -111,7 +111,7 @@ export const updateTicketStatus = form => (dispatch, getState) => {
     .post(URL, body, config)
     .then(res => {
       dispatch({
-        type: UPDATE_TICKETSTATUS,
+        type: form["list"] ? UPDATE_TICKETSTATUS_LIST : UPDATE_TICKETSTATUS_ONE,
         payload: res.data
       });
     })

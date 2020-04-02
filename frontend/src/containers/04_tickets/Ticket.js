@@ -10,7 +10,11 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import AddTicketPopup from "../../components/addTicketPopup/AddTicketPopup";
 
 import { connect } from "react-redux";
-import { getTickets, createTicket } from "../../store/actions/ticket";
+import {
+  getTickets,
+  createTicket,
+  updateTicketStatus
+} from "../../store/actions/ticket";
 import { getCustomer, getCustomers } from "../../store/actions/customer";
 
 class Ticket extends React.Component {
@@ -28,22 +32,6 @@ class Ticket extends React.Component {
     this.props.getTickets();
     this.props.getCustomers();
   }
-
-  getStatus = status => {
-    switch (status) {
-      case 1:
-        return "To do";
-
-      case 2:
-        return "Doing";
-
-      case 3:
-        return "Done";
-
-      default:
-        return "Unknown";
-    }
-  };
 
   changeValue = event => {
     const { target } = event;
@@ -65,6 +53,16 @@ class Ticket extends React.Component {
     };
 
     this.props.getCustomer(data);
+  };
+
+  updateStatus = (id, newValue) => {
+    let body = {
+      ticketId: id,
+      newStatus: newValue,
+      list: true
+    };
+
+    this.props.updateTicketStatus(body);
   };
 
   changeDisplay = () => {
@@ -168,7 +166,17 @@ class Ticket extends React.Component {
                     {ticket.employee}
                   </div>
                   <div className="ticket-table-body-row-item">
-                    {this.getStatus(ticket.status)}
+                    <select
+                      className="ticket-table-body-row-select"
+                      value={ticket.status}
+                      onChange={event => {
+                        this.updateStatus(ticket.id, event.target.value);
+                      }}
+                    >
+                      <option value={1}>To do</option>
+                      <option value={2}>Doing</option>
+                      <option value={3}>Done</option>
+                    </select>
                   </div>
                   <div className="ticket-table-body-row-item FA">
                     <NavLink to={"/tickets/" + ticket.id}>
@@ -196,6 +204,7 @@ const mapStateProps = (state, ownProps) => ({
 const mapDispatchToProps = {
   getTickets,
   createTicket,
+  updateTicketStatus,
   getCustomer,
   getCustomers
 };
