@@ -27,7 +27,7 @@ class App extends React.Component {
     return (
       <Provider store={store}>
         <Router>
-          <React.Fragment>
+          <div className="mmc-support">
             <Header />
             <main>
               <React.Suspense fallback={<div> loading.. </div>}>
@@ -45,7 +45,7 @@ class App extends React.Component {
               </React.Suspense>
             </main>
             <Footer />
-          </React.Fragment>
+          </div>
         </Router>
       </Provider>
     );
