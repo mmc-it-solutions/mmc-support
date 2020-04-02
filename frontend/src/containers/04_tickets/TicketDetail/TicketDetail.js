@@ -160,13 +160,15 @@ class TicketDetail extends React.Component {
             userId={this.props.ticket.user.id}
             users={this.props.users}
           />
-          <h2> {ticket.title} </h2>
-          <div className="grid">
-            <div className="description">
-              <h3> Desription </h3>
-              <p className="description-tekst"> {ticket.description} </p>
+          <h2 className="ticket-detail-title"> {ticket.title} </h2>
+          <div className="ticket-detail-grid">
+            <div className="ticket-detail-decription">
+              <h3 className="ticket-detail-decription-title"> Desription </h3>
+              <p className="ticket-detail-description-text">
+                {ticket.description}
+              </p>
             </div>
-            <div className="info">
+            <div className="ticket-detail-info">
               <p> Status:</p>
               <div>
                 <select value={ticket.status} onChange={this.changeHandler}>
@@ -180,18 +182,18 @@ class TicketDetail extends React.Component {
               <p> Date created:</p>
               <p> {ticket.date_created} </p>
             </div>
-            <div className="extra-info">
-              <div className="extra-info-button">
+            <div className="ticket-detail-extra-info">
+              <div className="ticket-detail-extra-info-button">
                 <button onClick={this.modalDisplayChange.bind(this, "product")}>
                   Change Product
                 </button>
               </div>
-              <div className="extra-info-button">
+              <div className="ticket-detail-extra-info-button">
                 <button onClick={this.modalDisplayChange.bind(this, "company")}>
                   Change Company
                 </button>
               </div>
-              <div className="extra-info-button">
+              <div className="ticket-detail-extra-info-button">
                 <button onClick={this.modalDisplayChange.bind(this, "user")}>
                   Change User
                 </button>
@@ -200,7 +202,7 @@ class TicketDetail extends React.Component {
                 <h3>Product</h3>
                 <p> {ticket.product.product_name} </p>
               </div>
-              <div className="extra-info-customer">
+              <div className="ticket-detail-extra-info-customer">
                 {ticket.customer.id == 0 ? (
                   <React.Fragment>
                     <h3>Company</h3>
