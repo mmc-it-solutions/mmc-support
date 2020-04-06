@@ -7,8 +7,8 @@
   display: grid;
   height: 100vh;
   width: 100vw;
-  grid-template-columns: 12% 88%;
-  grid-template-rows: 10% 85% 5%;
+  grid-template-columns: 15% 85%;
+  grid-template-rows: 13% 82% 5%;
 }
 
 header {

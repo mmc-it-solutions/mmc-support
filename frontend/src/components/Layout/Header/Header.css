@@ -1,16 +1,20 @@
 header {
-  background-image: linear-gradient(to top right, #02a0dc, #0283e5, #2ca846);
+  background-color: #0283e5;
   color: white;
 }
 
 nav {
-  height: 100%;
   background-image: linear-gradient(to top, #02a0dc, #0283e5);
+  height: 85.5%;
 }
 
 .logo-container {
-  margin: 15px;
-  font-size: 30px;
+  display: flex;
+  align-items: center;
+  margin: 0 15px;
+  font-size: 40px;
+  font-weight: 350;
   background-image: linear-gradient(to left, #2ca846, #0283e5);
-  height: 8vh;
+  height: 13vh;
+  width: 100%;
 }

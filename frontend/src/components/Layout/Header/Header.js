@@ -7,7 +7,7 @@ import "./Header.css";
 const Header = () => {
   return (
     <header>
-      <div className="logo-container">MMC IT Solutions</div> <Navigation />
+      <div className="logo-container">Product Support</div> <Navigation />
     </header>
   );
 };

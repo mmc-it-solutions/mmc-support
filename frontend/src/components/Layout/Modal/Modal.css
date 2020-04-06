@@ -29,13 +29,13 @@
 
 .modal__titel {
   text-align: center;
-  font-size: 34px;
+  font-size: 50px;
+  font-weight: 350;
   margin-bottom: 50px;
-  color: #0283e5;
 }
 
 .modal__form {
-  margin: 0 auto;
+  margin: 0 50px;
   width: 85%;
 }
 
@@ -53,29 +53,32 @@
 }
 
 .modal__form--label {
-  font-size: 25px;
+  text-transform: uppercase;
   color: #54595e;
+  font-weight: 650;
+  font-size: 20px;
 }
 
 .modal__form--input,
 .modal__form--textarea,
 .modal__form--select {
-  padding: 13px;
+  padding: 20px 13px;
   font-size: 20px;
-  margin-bottom: 15px;
+  margin: 5px 0 15px 0;
   width: 100%;
 }
 
 .modal__form--submit {
   display: block;
-  margin: 20px auto 0 auto;
-  padding: 12px;
+  margin: 20px 0;
+  padding: 5px 20px;
+  font-weight: 350;
   font-size: 25px;
-  border-radius: 24px;
   border: none;
   cursor: pointer;
   color: white;
   background-color: #00d32b;
+  border-radius: 10px;
 }
 
 .modal__form--close {
@@ -104,7 +107,7 @@
   }
 
   .modal__form {
-    width: 90%;
+    width: 60%;
   }
 
   .container {

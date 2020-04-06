@@ -1,5 +1,6 @@
 import React from "react";
 import "./Ticket.css";
+import "../../components/Layout/List/List.css";
 
 import { NavLink, Redirect } from "react-router-dom";
 
@@ -13,7 +14,7 @@ import { connect } from "react-redux";
 import {
   getTickets,
   createTicket,
-  updateTicketStatus
+  updateTicketStatus,
 } from "../../store/actions/ticket";
 import { getCustomer, getCustomers } from "../../store/actions/customer";
 
@@ -24,8 +25,8 @@ class Ticket extends React.Component {
       title: "",
       description: "",
       customer: 0,
-      product: 0
-    }
+      product: 0,
+    },
   };
 
   componentDidMount() {
@@ -33,23 +34,32 @@ class Ticket extends React.Component {
     this.props.getCustomers();
   }
 
-  changeValue = event => {
+  changeValue = (event) => {
     const { target } = event;
     const { modal } = this.state;
+
+    let productNumber = modal.product;
+
+    if (target.name === "customer") {
+      productNumber = 0;
+    } else if (target.name === "product") {
+      productNumber = target.value;
+    }
 
     this.setState({
       modal: {
         ...modal,
-        [target.name]: target.value
-      }
+        [target.name]: target.value,
+        product: productNumber,
+      },
     });
   };
 
-  onChangeCustomer = event => {
+  onChangeCustomer = (event) => {
     this.changeValue(event);
 
     let data = {
-      customerId: event.target.value
+      customerId: event.target.value,
     };
 
     this.props.getCustomer(data);
@@ -59,7 +69,7 @@ class Ticket extends React.Component {
     let body = {
       ticketId: id,
       newStatus: newValue,
-      list: true
+      list: true,
     };
 
     this.props.updateTicketStatus(body);
@@ -71,12 +81,12 @@ class Ticket extends React.Component {
     this.setState({
       modal: {
         ...modal,
-        display: modal.display === "none" ? "flex" : "none"
-      }
+        display: modal.display === "none" ? "flex" : "none",
+      },
     });
   };
 
-  submitHandler = event => {
+  submitHandler = (event) => {
     event.preventDefault();
 
     const { modal } = this.state;
@@ -85,7 +95,7 @@ class Ticket extends React.Component {
       title: modal.title,
       description: modal.description,
       customerId: modal.customer,
-      productId: modal.product
+      productId: modal.product,
     };
 
     this.props.createTicket(data);
@@ -96,8 +106,8 @@ class Ticket extends React.Component {
         title: "",
         description: "",
         customer: 0,
-        product: 0
-      }
+        product: 0,
+      },
     });
   };
 
@@ -137,39 +147,31 @@ class Ticket extends React.Component {
           </div>
         </div>
         <div>
-          <div className="ticket-table">
-            <div className="ticket-table-head">
-              <div className="ticket-table-head-row">
-                <div className="ticket-table-head-row-item"> Id </div>
-                <div className="ticket-table-head-row-item"> Title </div>
-                <div className="ticket-table-head-row-item"> Customer </div>
-                <div className="ticket-table-head-row-item"> Product </div>
-                <div className="ticket-table-head-row-item"> Employee </div>
-                <div className="ticket-table-head-row-item"> Status </div>
-                <div className="ticket-table-head-row-item"> Actions </div>
+          <div className="list">
+            <div className="list-head">
+              <div className="list-head-row">
+                <div className="list-head-row-item"> Id </div>
+                <div className="list-head-row-item"> Title </div>
+                <div className="list-head-row-item"> Customer </div>
+                <div className="list-head-row-item"> Product </div>
+                <div className="list-head-row-item"> Employee </div>
+                <div className="list-head-row-item"> Status </div>
+                <div className="list-head-row-item"> Actions </div>
               </div>
             </div>
-            <div className="ticket-table-body">
-              {this.props.tickets.map(ticket => (
-                <div key={ticket.id} className="ticket-table-body-row">
-                  <div className="ticket-table-body-row-item">{ticket.id}</div>
-                  <div className="ticket-table-body-row-item">
-                    {ticket.name}
-                  </div>
-                  <div className="ticket-table-body-row-item">
-                    {ticket.company}
-                  </div>
-                  <div className="ticket-table-body-row-item">
-                    {ticket.product}
-                  </div>
-                  <div className="ticket-table-body-row-item">
-                    {ticket.employee}
-                  </div>
-                  <div className="ticket-table-body-row-item">
+            <div className="list-body">
+              {this.props.tickets.map((ticket) => (
+                <div key={ticket.id} className="list-body-row">
+                  <div className="list-body-row-item">{ticket.id}</div>
+                  <div className="list-body-row-item">{ticket.name}</div>
+                  <div className="list-body-row-item">{ticket.company}</div>
+                  <div className="list-body-row-item">{ticket.product}</div>
+                  <div className="list-body-row-item">{ticket.employee}</div>
+                  <div className="list-body-row-item">
                     <select
-                      className="ticket-table-body-row-select"
+                      className="list-body-row-select"
                       value={ticket.status}
-                      onChange={event => {
+                      onChange={(event) => {
                         this.updateStatus(ticket.id, event.target.value);
                       }}
                     >
@@ -178,7 +180,7 @@ class Ticket extends React.Component {
                       <option value={3}>Done</option>
                     </select>
                   </div>
-                  <div className="ticket-table-body-row-item FA">
+                  <div className="list-body-row-item FA">
                     <NavLink to={"/tickets/" + ticket.id}>
                       <FontAwesomeIcon icon={faEye} />
                     </NavLink>
@@ -198,7 +200,7 @@ const mapStateProps = (state, ownProps) => ({
   authantication: state.user.authantication,
   tickets: state.ticket.tickets,
   customers: state.customer.customers,
-  customer: state.customer.customer
+  customer: state.customer.customer,
 });
 
 const mapDispatchToProps = {
@@ -206,7 +208,7 @@ const mapDispatchToProps = {
   createTicket,
   updateTicketStatus,
   getCustomer,
-  getCustomers
+  getCustomers,
 };
 
 export default connect(mapStateProps, mapDispatchToProps)(Ticket);
