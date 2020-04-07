@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import {
@@ -10,14 +10,10 @@ import {
 import { getCustomer, getCustomers } from "../../store/actions/customer";
 
 import Header from "../../components/Layout/List/Header/Header"; /* voorbeeld reusable component*/
+import List from "../../components/Layout/List/List/List"; /* voorbeeld reusable component*/
 import AddTicketPopup from "../../components/addTicketPopup/AddTicketPopup";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-
 import "./Ticket.css";
-import "../../components/Layout/List/List.css";
 
 class Ticket extends React.Component {
   state = {
@@ -72,7 +68,6 @@ class Ticket extends React.Component {
       newStatus: newValue,
       list: true,
     };
-
     this.props.updateTicketStatus(body);
   };
 
@@ -118,6 +113,33 @@ class Ticket extends React.Component {
     //   return <Redirect to={"/"} />;
     // }
 
+    const { tickets } = this.props;
+
+    let listColumnNames = [
+      "Id",
+      "Title",
+      "Customer",
+      "Product",
+      "Employee",
+      "Status",
+      "Actions",
+    ];
+
+    let listColumnValues = [];
+    for (let i = 0; i < tickets.length; i++) {
+      listColumnValues[i] = [
+        tickets[i].id,
+        tickets[i].name,
+        tickets[i].company,
+        tickets[i].product,
+        tickets[i].employee,
+        tickets[i].status,
+        null,
+      ];
+    }
+
+    let btnActions = { Status: this.updateStatus };
+
     return (
       <React.Fragment>
         <AddTicketPopup
@@ -134,52 +156,11 @@ class Ticket extends React.Component {
           btnText={"Add new ticket"}
           btnAction={this.changeDisplay}
         />
-
-        <div>
-          <div className="list">
-            <div className="list-head">
-              <div className="list-head-row">
-                <div className="list-head-row-item"> Id </div>
-                <div className="list-head-row-item"> Title </div>
-                <div className="list-head-row-item"> Customer </div>
-                <div className="list-head-row-item"> Product </div>
-                <div className="list-head-row-item"> Employee </div>
-                <div className="list-head-row-item"> Status </div>
-                <div className="list-head-row-item"> Actions </div>
-              </div>
-            </div>
-            <div className="list-body">
-              {this.props.tickets.map((ticket) => (
-                <div key={ticket.id} className="list-body-row">
-                  <div className="list-body-row-item">{ticket.id}</div>
-                  <div className="list-body-row-item">{ticket.name}</div>
-                  <div className="list-body-row-item">{ticket.company}</div>
-                  <div className="list-body-row-item">{ticket.product}</div>
-                  <div className="list-body-row-item">{ticket.employee}</div>
-                  <div className="list-body-row-item">
-                    <select
-                      className="list-body-row-select"
-                      value={ticket.status}
-                      onChange={(event) => {
-                        this.updateStatus(ticket.id, event.target.value);
-                      }}
-                    >
-                      <option value={1}>To do</option>
-                      <option value={2}>Doing</option>
-                      <option value={3}>Done</option>
-                    </select>
-                  </div>
-                  <div className="list-body-row-item FA">
-                    <NavLink to={"/tickets/" + ticket.id}>
-                      <FontAwesomeIcon icon={faEye} />
-                    </NavLink>
-                    <FontAwesomeIcon icon={faTrashAlt} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        <List
+          listColumnsNames={listColumnNames}
+          listColumnsValues={listColumnValues}
+          btnActions={btnActions}
+        />
       </React.Fragment>
     );
   }

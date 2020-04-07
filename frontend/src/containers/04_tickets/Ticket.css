@@ -45,6 +45,10 @@
   outline: none;
 }
 
+.list-row {
+  grid-template-columns: 5% 30% repeat(4, 1fr) 10%;
+}
+
 .FA svg {
   margin: 0 10px;
   height: 16px;
