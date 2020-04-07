@@ -140,6 +140,7 @@ class Customer extends React.Component {
           btnAction={this.changeDisplay}
         />
         <List
+          extraClass={"customer"}
           listColumnsNames={listColumnNames}
           listColumnsValues={listColumnValues}
         />

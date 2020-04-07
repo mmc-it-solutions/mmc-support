@@ -6,8 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
-const ListHead = ({ columns }) => (
-  <div className="list-head-row list-row">
+const ListHead = ({ extraClass, columns }) => (
+  <div className={"list-head-row " + extraClass + "-list-row"}>
     {columns.map((columnName, index) => (
       <div key={index} className="list-head-row-item">
         {columnName}
@@ -16,12 +16,15 @@ const ListHead = ({ columns }) => (
   </div>
 );
 
-const ListItems = ({ columnNames, columnValues, btnActions }) => (
+const ListItems = ({ extraClass, columnNames, columnValues, btnActions }) => (
   <div className="list-body">
     {columnValues.map((rowData, rowIndex) => {
       let amountOfBtnActions = -1;
       return (
-        <div key={rowIndex} className="list-body-row list-row">
+        <div
+          key={rowIndex}
+          className={"list-body-row " + extraClass + "-list-row"}
+        >
           {rowData.map((columnData, columnIndex) => {
             if (columnNames[columnIndex] === "Status") {
               return (
@@ -66,10 +69,16 @@ const ListItems = ({ columnNames, columnValues, btnActions }) => (
   </div>
 );
 
-const List = ({ listColumnsNames, listColumnsValues, btnActions }) => (
+const List = ({
+  extraClass,
+  listColumnsNames,
+  listColumnsValues,
+  btnActions,
+}) => (
   <div className="list">
-    <ListHead columns={listColumnsNames} />
+    <ListHead extraClass={extraClass} columns={listColumnsNames} />
     <ListItems
+      extraClass={extraClass}
       columnNames={listColumnsNames}
       columnValues={listColumnsValues}
       btnActions={btnActions}

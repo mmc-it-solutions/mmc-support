@@ -45,7 +45,7 @@
   outline: none;
 }
 
-.list-row {
+.ticket-list-row {
   grid-template-columns: 5% 30% repeat(4, 1fr) 10%;
 }
 

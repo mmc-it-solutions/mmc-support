@@ -157,6 +157,7 @@ class Ticket extends React.Component {
           btnAction={this.changeDisplay}
         />
         <List
+          extraClass={"ticket"}
           listColumnsNames={listColumnNames}
           listColumnsValues={listColumnValues}
           btnActions={btnActions}
