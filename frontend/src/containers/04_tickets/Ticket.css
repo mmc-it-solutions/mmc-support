@@ -49,18 +49,6 @@
   grid-template-columns: 5% 30% repeat(4, 1fr) 10%;
 }
 
-.FA svg {
-  margin: 0 10px;
-  height: 16px;
-  width: 16px;
-  color: black;
-  cursor: pointer;
-}
-
-.FA svg:hover {
-  color: #4c56af;
-}
-
 @media (min-width: 768px) {
   .popup-button-div {
     width: 50%;

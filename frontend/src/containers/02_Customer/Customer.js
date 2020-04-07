@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "./Customer.css";
-import AddCustomer from "../../components/customers/AddCustomer";
 
 import { NavLink, Redirect } from "react-router-dom";
 
@@ -11,6 +10,8 @@ import { connect } from "react-redux";
 import { getCustomers, createCustomer } from "../../store/actions/customer";
 
 import Header from "../../components/Layout/List/Header/Header"; /* voorbeeld reusable component*/
+import List from "../../components/Layout/List/List/List";
+import AddCustomer from "../../components/customers/AddCustomer";
 
 class Customer extends React.Component {
   state = {
@@ -110,6 +111,21 @@ class Customer extends React.Component {
     //   return <Redirect to={"/"} />;
     // }
 
+    const { customers } = this.props;
+
+    let listColumnNames = ["Id", "Name", "Email", "Products", "Actions"];
+
+    let listColumnValues = [];
+    for (let i = 0; i < customers.length; i++) {
+      listColumnValues[i] = [
+        customers[i].id,
+        customers[i].name,
+        customers[i].email,
+        customers[i].products,
+        null,
+      ];
+    }
+
     return (
       <React.Fragment>
         <AddCustomer
@@ -123,14 +139,10 @@ class Customer extends React.Component {
           btnText={"Add new customer"}
           btnAction={this.changeDisplay}
         />
-
-        <table id="customers">
-          <thead>
-            <tr>{this.renderTableHeader()}</tr>
-          </thead>
-          <tbody>{this.renderTableData()}</tbody>
-        </table>
-        {this.state.modalOpen ? <AddCustomer /> : null}
+        <List
+          listColumnsNames={listColumnNames}
+          listColumnsValues={listColumnValues}
+        />
       </React.Fragment>
     );
   }

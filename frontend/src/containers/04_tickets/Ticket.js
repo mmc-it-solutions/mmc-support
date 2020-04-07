@@ -10,7 +10,7 @@ import {
 import { getCustomer, getCustomers } from "../../store/actions/customer";
 
 import Header from "../../components/Layout/List/Header/Header"; /* voorbeeld reusable component*/
-import List from "../../components/Layout/List/List/List"; /* voorbeeld reusable component*/
+import List from "../../components/Layout/List/List/List";
 import AddTicketPopup from "../../components/addTicketPopup/AddTicketPopup";
 
 import "./Ticket.css";
