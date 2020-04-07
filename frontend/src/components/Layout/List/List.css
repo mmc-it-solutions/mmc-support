@@ -32,6 +32,8 @@
 
 .list-body-row-item {
   font-size: 18px;
+  display: flex;
+  align-items: center;
 }
 
 .list-body-row-select {

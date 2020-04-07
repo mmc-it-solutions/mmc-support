@@ -6,9 +6,12 @@ import "./Header.css";
 
 const Header = () => {
   return (
-    <header>
-      <div className="logo-container">Product Support</div> <Navigation />
-    </header>
+    <React.Fragment>
+      <header>
+        <div className="logo-container">Product Support</div>
+      </header>
+      <Navigation />
+    </React.Fragment>
   );
 };
 

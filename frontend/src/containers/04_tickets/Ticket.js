@@ -1,22 +1,23 @@
 import React from "react";
-import "./Ticket.css";
-import "../../components/Layout/List/List.css";
-
 import { NavLink, Redirect } from "react-router-dom";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-
-import AddTicketPopup from "../../components/addTicketPopup/AddTicketPopup";
-
 import { connect } from "react-redux";
+
 import {
   getTickets,
   createTicket,
   updateTicketStatus,
 } from "../../store/actions/ticket";
 import { getCustomer, getCustomers } from "../../store/actions/customer";
+
+import Header from "../../components/Layout/List/Header/Header"; /* voorbeeld reusable component*/
+import AddTicketPopup from "../../components/addTicketPopup/AddTicketPopup";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+
+import "./Ticket.css";
+import "../../components/Layout/List/List.css";
 
 class Ticket extends React.Component {
   state = {
@@ -118,7 +119,7 @@ class Ticket extends React.Component {
     // }
 
     return (
-      <div className="ticket">
+      <React.Fragment>
         <AddTicketPopup
           customers={this.props.customers}
           customer={this.props.customer}
@@ -128,24 +129,12 @@ class Ticket extends React.Component {
           onChangeCustomer={this.onChangeCustomer}
           submitHandler={this.submitHandler}
         />
-        <div className="ticket-head">
-          <h2 className="ticket-head-title"> Tickets </h2>
-          <div className="ticket-head-add-ticket">
-            <button
-              className="ticket-head-add-ticket-button"
-              onClick={this.changeDisplay}
-            >
-              Add new ticket
-            </button>
-          </div>
-          <div className="ticket-head-search">
-            <input
-              type="text"
-              className="ticket-head-search-input"
-              placeholder="Search..."
-            />
-          </div>
-        </div>
+        <Header
+          title={"Tickets"}
+          btnText={"Add new ticket"}
+          btnAction={this.changeDisplay}
+        />
+
         <div>
           <div className="list">
             <div className="list-head">
@@ -191,7 +180,7 @@ class Ticket extends React.Component {
             </div>
           </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
