@@ -9,7 +9,7 @@ const AddTicketPopup = ({
   onClose,
   onChange,
   onChangeCustomer,
-  submitHandler
+  submitHandler,
 }) => {
   return (
     <div className="modal-wrap" style={{ display: modal.display }}>
@@ -34,6 +34,7 @@ const AddTicketPopup = ({
             name="description"
             value={modal.description}
             onChange={onChange}
+            rows="3"
           />
           <br />
           <label className="modal__form--label">Customer</label>
@@ -45,7 +46,7 @@ const AddTicketPopup = ({
             onChange={onChangeCustomer}
           >
             <option value="0">none</option>
-            {customers.map(customer => (
+            {customers.map((customer) => (
               <option key={customer.id} value={customer.id}>
                 {customer.name}
               </option>
@@ -63,7 +64,7 @@ const AddTicketPopup = ({
             <option value="0">none</option>
             {Array.isArray(customer)
               ? null
-              : customer.products.map(product => {
+              : customer.products.map((product) => {
                   return <option value={product.id}>{product.name}</option>;
                 })}
           </select>

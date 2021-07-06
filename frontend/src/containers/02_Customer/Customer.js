@@ -3,12 +3,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "./Customer.css";
-import AddCustomer from "../../components/customers/AddCustomer";
 
 import { NavLink, Redirect } from "react-router-dom";
 
 import { connect } from "react-redux";
 import { getCustomers, createCustomer } from "../../store/actions/customer";
+
+import Header from "../../components/Layout/List/Header/Header"; /* voorbeeld reusable component*/
+import List from "../../components/Layout/List/List/List";
+import AddCustomer from "../../components/customers/AddCustomer";
 
 class Customer extends React.Component {
   state = {
@@ -17,23 +20,23 @@ class Customer extends React.Component {
       company: "",
       name: "",
       email: "",
-      phone: ""
-    }
+      phone: "",
+    },
   };
 
   componentDidMount() {
     this.props.getCustomers();
   }
 
-  changeValue = event => {
+  changeValue = (event) => {
     const { target } = event;
     const { modal } = this.state;
 
     this.setState({
       modal: {
         ...modal,
-        [target.name]: target.value
-      }
+        [target.name]: target.value,
+      },
     });
   };
 
@@ -43,12 +46,12 @@ class Customer extends React.Component {
     this.setState({
       modal: {
         ...modal,
-        display: modal.display === "none" ? "flex" : "none"
-      }
+        display: modal.display === "none" ? "flex" : "none",
+      },
     });
   };
 
-  submitHandler = event => {
+  submitHandler = (event) => {
     event.preventDefault();
     const { modal } = this.state;
 
@@ -56,7 +59,7 @@ class Customer extends React.Component {
       name: modal.name,
       company_name: modal.company,
       email: modal.email,
-      phone_number: modal.phone
+      phone_number: modal.phone,
     };
 
     this.props.createCustomer(form);
@@ -67,13 +70,13 @@ class Customer extends React.Component {
         company: "",
         name: "",
         email: "",
-        phone: ""
-      }
+        phone: "",
+      },
     });
   };
 
   renderTableData() {
-    return this.props.customers.map(customers => {
+    return this.props.customers.map((customers) => {
       const { id, name, email, products } = customers;
       return (
         <tr key={id}>
@@ -108,36 +111,47 @@ class Customer extends React.Component {
     //   return <Redirect to={"/"} />;
     // }
 
+    const { customers } = this.props;
+
+    let listColumnNames = ["Id", "Name", "Email", "Products", "Actions"];
+
+    let listColumnValues = [];
+    for (let i = 0; i < customers.length; i++) {
+      listColumnValues[i] = [
+        customers[i].id,
+        customers[i].name,
+        customers[i].email,
+        customers[i].products,
+        null,
+      ];
+    }
+
     return (
-      <div className="wrapper">
+      <React.Fragment>
         <AddCustomer
           modal={this.state.modal}
           onClose={this.changeDisplay}
           onChange={this.changeValue}
           submitHandler={this.submitHandler}
         />
-        <h2 className="title">Company List</h2>
-
-        <div className="content">
-          <button onClick={this.changeDisplay}>Add Company</button>
-          <input type="text" placeholder=" Search" />
-        </div>
-
-        <table id="customers">
-          <thead>
-            <tr>{this.renderTableHeader()}</tr>
-          </thead>
-          <tbody>{this.renderTableData()}</tbody>
-        </table>
-        {this.state.modalOpen ? <AddCustomer /> : null}
-      </div>
+        <Header
+          title={"Customers"}
+          btnText={"Add new customer"}
+          btnAction={this.changeDisplay}
+        />
+        <List
+          extraClass={"customer"}
+          listColumnsNames={listColumnNames}
+          listColumnsValues={listColumnValues}
+        />
+      </React.Fragment>
     );
   }
 }
 
 const mapStateProps = (state, ownProps) => ({
   authantication: state.user.authantication,
-  customers: state.customer.customers
+  customers: state.customer.customers,
 });
 
 const mapDispatchToProps = { getCustomers, createCustomer };

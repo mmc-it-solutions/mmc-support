@@ -1,17 +1,19 @@
 import React from "react";
-import "./Ticket.css";
+import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 
-import { NavLink, Redirect } from "react-router-dom";
+import {
+  getTickets,
+  createTicket,
+  updateTicketStatus,
+} from "../../store/actions/ticket";
+import { getCustomer, getCustomers } from "../../store/actions/customer";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-
+import Header from "../../components/Layout/List/Header/Header"; /* voorbeeld reusable component*/
+import List from "../../components/Layout/List/List/List";
 import AddTicketPopup from "../../components/addTicketPopup/AddTicketPopup";
 
-import { connect } from "react-redux";
-import { getTickets, createTicket } from "../../store/actions/ticket";
-import { getCustomer, getCustomers } from "../../store/actions/customer";
+import "./Ticket.css";
 
 class Ticket extends React.Component {
   state = {
@@ -20,8 +22,8 @@ class Ticket extends React.Component {
       title: "",
       description: "",
       customer: 0,
-      product: 0
-    }
+      product: 0,
+    },
   };
 
   componentDidMount() {
@@ -29,42 +31,44 @@ class Ticket extends React.Component {
     this.props.getCustomers();
   }
 
-  getStatus = status => {
-    switch (status) {
-      case 1:
-        return "To do";
-
-      case 2:
-        return "Doing";
-
-      case 3:
-        return "Done";
-
-      default:
-        return "Unknown";
-    }
-  };
-
-  changeValue = event => {
+  changeValue = (event) => {
     const { target } = event;
     const { modal } = this.state;
+
+    let productNumber = modal.product;
+
+    if (target.name === "customer") {
+      productNumber = 0;
+    } else if (target.name === "product") {
+      productNumber = target.value;
+    }
 
     this.setState({
       modal: {
         ...modal,
-        [target.name]: target.value
-      }
+        [target.name]: target.value,
+        product: productNumber,
+      },
     });
   };
 
-  onChangeCustomer = event => {
+  onChangeCustomer = (event) => {
     this.changeValue(event);
 
     let data = {
-      customerId: event.target.value
+      customerId: event.target.value,
     };
 
     this.props.getCustomer(data);
+  };
+
+  updateStatus = (id, newValue) => {
+    let body = {
+      ticketId: id,
+      newStatus: newValue,
+      list: true,
+    };
+    this.props.updateTicketStatus(body);
   };
 
   changeDisplay = () => {
@@ -73,12 +77,12 @@ class Ticket extends React.Component {
     this.setState({
       modal: {
         ...modal,
-        display: modal.display === "none" ? "flex" : "none"
-      }
+        display: modal.display === "none" ? "flex" : "none",
+      },
     });
   };
 
-  submitHandler = event => {
+  submitHandler = (event) => {
     event.preventDefault();
 
     const { modal } = this.state;
@@ -87,7 +91,7 @@ class Ticket extends React.Component {
       title: modal.title,
       description: modal.description,
       customerId: modal.customer,
-      productId: modal.product
+      productId: modal.product,
     };
 
     this.props.createTicket(data);
@@ -98,8 +102,8 @@ class Ticket extends React.Component {
         title: "",
         description: "",
         customer: 0,
-        product: 0
-      }
+        product: 0,
+      },
     });
   };
 
@@ -109,8 +113,35 @@ class Ticket extends React.Component {
     //   return <Redirect to={"/"} />;
     // }
 
+    const { tickets } = this.props;
+
+    let listColumnNames = [
+      "Id",
+      "Title",
+      "Customer",
+      "Product",
+      "Employee",
+      "Status",
+      "Actions",
+    ];
+
+    let listColumnValues = [];
+    for (let i = 0; i < tickets.length; i++) {
+      listColumnValues[i] = [
+        tickets[i].id,
+        tickets[i].name,
+        tickets[i].company,
+        tickets[i].product,
+        tickets[i].employee,
+        tickets[i].status,
+        null,
+      ];
+    }
+
+    let btnActions = { Status: this.updateStatus };
+
     return (
-      <div>
+      <React.Fragment>
         <AddTicketPopup
           customers={this.props.customers}
           customer={this.props.customer}
@@ -120,46 +151,18 @@ class Ticket extends React.Component {
           onChangeCustomer={this.onChangeCustomer}
           submitHandler={this.submitHandler}
         />
-        <div className="Ticket-List"> Ticket List </div>
-        <div className="popup-button-div">
-          <button className="popup-button" onClick={this.changeDisplay}>
-            Add Ticket
-          </button>
-        </div>
-        <div>
-          <table className="ticket-table">
-            <thead>
-              <tr>
-                <th> Id </th>
-                <th> Name </th>
-                <th> Company </th>
-                <th> Employee </th>
-                <th> Status </th>
-                <th> Actions </th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.props.tickets.map(ticket => (
-                <tr key={ticket.id}>
-                  <td> {ticket.id} </td>
-                  <td> {ticket.name} </td>
-                  <td> {ticket.company} </td>
-                  <td> {ticket.employee} </td>
-                  <td className={"status_" + ticket.status}>
-                    {this.getStatus(ticket.status)}
-                  </td>
-                  <td className="FA">
-                    <NavLink to={"/tickets/" + ticket.id}>
-                      <FontAwesomeIcon icon={faEye} />
-                    </NavLink>
-                    <FontAwesomeIcon icon={faTrashAlt} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+        <Header
+          title={"Tickets"}
+          btnText={"Add new ticket"}
+          btnAction={this.changeDisplay}
+        />
+        <List
+          extraClass={"ticket"}
+          listColumnsNames={listColumnNames}
+          listColumnsValues={listColumnValues}
+          btnActions={btnActions}
+        />
+      </React.Fragment>
     );
   }
 }
@@ -168,14 +171,15 @@ const mapStateProps = (state, ownProps) => ({
   authantication: state.user.authantication,
   tickets: state.ticket.tickets,
   customers: state.customer.customers,
-  customer: state.customer.customer
+  customer: state.customer.customer,
 });
 
 const mapDispatchToProps = {
   getTickets,
   createTicket,
+  updateTicketStatus,
   getCustomer,
-  getCustomers
+  getCustomers,
 };
 
 export default connect(mapStateProps, mapDispatchToProps)(Ticket);

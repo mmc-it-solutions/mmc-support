@@ -5,19 +5,19 @@ import { NavLink } from "react-router-dom";
 const DesktopNavigation = () => {
   return (
     <ul className="desktop-menu">
-      <li>
-        <NavLink to="/" className="nav-link">
-          Home
-        </NavLink>
-      </li>
-      <li>
+      <li className="desktop-menu-item">
         <NavLink to="/tickets" className="nav-link">
           Tickets
         </NavLink>
       </li>
-      <li>
+      <li className="desktop-menu-item">
         <NavLink to="/customers" className="nav-link">
           Customers
+        </NavLink>
+      </li>
+      <li className="desktop-menu-item">
+        <NavLink to="/employees" className="nav-link">
+          Employees
         </NavLink>
       </li>
     </ul>

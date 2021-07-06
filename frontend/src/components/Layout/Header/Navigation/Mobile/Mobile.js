@@ -6,11 +6,6 @@ const MobileNavigation = () => {
   return (
     <ul className="mobile-menu">
       <li>
-        <NavLink to="/" className="nav-link">
-          Mobile Home
-        </NavLink>
-      </li>
-      <li>
         <NavLink to="/tickets" className="nav-link">
           Tickets
         </NavLink>
@@ -18,6 +13,11 @@ const MobileNavigation = () => {
       <li>
         <NavLink to="/customers" className="nav-link">
           Customers
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/employees" className="nav-link">
+          Employees
         </NavLink>
       </li>
     </ul>

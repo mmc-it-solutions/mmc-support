@@ -44,7 +44,8 @@ class TicketDetail extends React.Component {
   changeHandler = event => {
     let data = {
       ticketId: this.props.match.params.id,
-      newStatus: event.target.value
+      newStatus: event.target.value,
+      list: false
     };
 
     this.props.updateTicketStatus(data);
@@ -160,14 +161,16 @@ class TicketDetail extends React.Component {
             userId={this.props.ticket.user.id}
             users={this.props.users}
           />
-          <h2> {ticket.title} </h2>
-          <div className="grid">
-            <div className="description">
-              <h3> Desription </h3>
-              <p className="description-tekst"> {ticket.description} </p>
+          <h2 className="ticket-detail-title"> {ticket.title} </h2>
+          <div className="ticket-detail-grid">
+            <div className="ticket-detail-decription">
+              <h3 className="ticket-detail-decription-title"> Desription </h3>
+              <p className="ticket-detail-description-text">
+                {ticket.description}
+              </p>
             </div>
-            <div className="info">
-              <p> Status:</p>
+            <div className="ticket-detail-info">
+              <p className="ticket-detail-info-head-tekst"> Status:</p>
               <div>
                 <select value={ticket.status} onChange={this.changeHandler}>
                   <option value="1">To Do</option>
@@ -175,49 +178,61 @@ class TicketDetail extends React.Component {
                   <option value="3">Done</option>
                 </select>
               </div>
-              <p> Work time:</p>
-              <p> {ticket.worktime} </p>
-              <p> Date created:</p>
-              <p> {ticket.date_created} </p>
+              <p className="ticket-detail-info-head-tekst"> Work time:</p>
+              <p className="ticket-detail-info-tekst"> {ticket.worktime} </p>
+              <p className="ticket-detail-info-head-tekst"> Date created:</p>
+              <p className="ticket-detail-info-tekst">{ticket.date_created}</p>
             </div>
-            <div className="extra-info">
-              <div className="extra-info-button">
-                <button onClick={this.modalDisplayChange.bind(this, "product")}>
-                  Change Product
-                </button>
+            <div className="ticket-detail-extra-info">
+              <div className="ticket-detail-extra-info-div">
+                <h3 className="ticket-detail-extra-info-div-title">Product</h3>
+                <p className="ticket-detail-extra-info-div-text">
+                  {ticket.product.product_name}
+                </p>
               </div>
-              <div className="extra-info-button">
-                <button onClick={this.modalDisplayChange.bind(this, "company")}>
-                  Change Company
-                </button>
-              </div>
-              <div className="extra-info-button">
-                <button onClick={this.modalDisplayChange.bind(this, "user")}>
-                  Change User
-                </button>
-              </div>
-              <div>
-                <h3>Product</h3>
-                <p> {ticket.product.product_name} </p>
-              </div>
-              <div className="extra-info-customer">
+              <div className="ticket-detail-extra-info-div">
                 {ticket.customer.id == 0 ? (
                   <React.Fragment>
-                    <h3>Company</h3>
-                    <p> {ticket.customer.name} </p>
+                    <h3 className="ticket-detail-extra-info-div-title">
+                      Company
+                    </h3>
+                    <p className="ticket-detail-extra-info-div-text">
+                      {ticket.customer.name}
+                    </p>
                   </React.Fragment>
                 ) : (
                   <NavLink to={"/customers/" + ticket.customer.id}>
                     <React.Fragment>
-                      <h3>Company</h3>
-                      <p> {ticket.customer.name} </p>
+                      <h3 className="ticket-detail-extra-info-div-title">
+                        Company
+                      </h3>
+                      <p className="ticket-detail-extra-info-div-text">
+                        {ticket.customer.name}
+                      </p>
                     </React.Fragment>
                   </NavLink>
                 )}
               </div>
-              <div>
-                <h3>User</h3>
-                <p> {ticket.user.user_name} </p>
+              <div className="ticket-detail-extra-info-div">
+                <h3 className="ticket-detail-extra-info-div-title">User</h3>
+                <p className="ticket-detail-extra-info-div-text">
+                  {ticket.user.user_name}
+                </p>
+              </div>
+              <div className="ticket-detail-extra-info-button">
+                <button onClick={this.modalDisplayChange.bind(this, "product")}>
+                  Change Product
+                </button>
+              </div>
+              <div className="ticket-detail-extra-info-button">
+                <button onClick={this.modalDisplayChange.bind(this, "company")}>
+                  Change Company
+                </button>
+              </div>
+              <div className="ticket-detail-extra-info-button">
+                <button onClick={this.modalDisplayChange.bind(this, "user")}>
+                  Change User
+                </button>
               </div>
             </div>
           </div>

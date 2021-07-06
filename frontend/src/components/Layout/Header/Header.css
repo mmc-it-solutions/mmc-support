@@ -1,0 +1,21 @@
+header {
+  background-color: #0283e5;
+  color: white;
+}
+
+nav {
+  background-image: linear-gradient(to top, #02a0dc, #0283e5);
+  grid-column: 1 / 2;
+  grid-row: 2 / 4;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  margin: 0 15px;
+  font-size: 40px;
+  font-weight: 350;
+  background-image: linear-gradient(to left, #2ca846, #0283e5);
+  height: 13vh;
+  width: 100%;
+}

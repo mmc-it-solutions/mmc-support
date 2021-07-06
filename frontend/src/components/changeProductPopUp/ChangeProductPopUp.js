@@ -9,19 +9,19 @@ const ChangeProductPopUp = ({
   productId,
   customer
 }) => {
-  const [productIdHook, setProductIdHook] = useState(productId);
+  const [productIdHook, setProductIdHook] = useState("");
+  const [customerValue, setCustomerValue] = useState("");
+  const [first, setFirst] = useState(true);
 
   useEffect(() => {
-    let checker = false;
+    if (customer !== customerValue) {
+      setProductIdHook(productId);
+      setCustomerValue(customer);
+    }
 
-    customer.products.forEach(product => {
-      if (product.id === productId) {
-        checker = true;
-      }
-    });
-
-    if (!checker && productId !== 0) {
-      setProductIdHook(0);
+    if (first) {
+      setProductIdHook(productId);
+      setFirst(false);
     }
   });
 
